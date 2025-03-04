@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bfc266a6b96984c89bcd3f3370b9407e
+guid: 36a429361de434740be20feaff6e96e6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,11 +123,32 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MiniZombie_0
+      name: PrinceMan_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c21671b2d8de44675b4cea8a1622c80e
+      internalID: -1222096311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_1
       rect:
         serializedVersion: 2
         x: 32
-        y: 256
+        y: 160
         width: 32
         height: 32
       alignment: 7
@@ -137,18 +158,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eccb77f7a6f954a4b97a7ef4574b10b7
-      internalID: 1365185406
+      spriteID: fa3a3a3f9b96948cb87a24879928ed9a
+      internalID: 995829212
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_1
+      name: PrinceMan_2
       rect:
         serializedVersion: 2
         x: 64
-        y: 256
+        y: 160
         width: 32
         height: 32
       alignment: 7
@@ -158,18 +179,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9ae1583894a44518bddc9e9c4a21e9c
-      internalID: -575133206
+      spriteID: 1fe171cc95f544d83bd9a0f53b46cb36
+      internalID: 1228742856
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_2
+      name: PrinceMan_3
       rect:
         serializedVersion: 2
         x: 96
-        y: 256
+        y: 160
         width: 32
         height: 32
       alignment: 7
@@ -179,18 +200,102 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8d35070533c44537a11aca6e884a1a8
-      internalID: -1257054716
+      spriteID: 8b727d4014f0444f19afcae7877c2eb4
+      internalID: 1797879356
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_3
+      name: PrinceMan_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e56dc4a633294e9b96ae39158e21864
+      internalID: -348504599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 128
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 656a0ee14b1714c6298c5772da8ba71e
+      internalID: 1404678429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9223516cee5b04d06a25d25ef6943dd3
+      internalID: -843458646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_7
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 128
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b53ac15a664245f1a31f5568a549768
+      internalID: -1955489232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_8
       rect:
         serializedVersion: 2
         x: 128
-        y: 256
+        y: 128
         width: 32
         height: 32
       alignment: 7
@@ -200,437 +305,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7db9ca722b1974eb195dbbbac323fbea
-      internalID: -491775688
+      spriteID: 5e82957d1aa74495f965fa117570b8e8
+      internalID: -296573372
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_4
+      name: PrinceMan_9
       rect:
         serializedVersion: 2
         x: 160
-        y: 256
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ed348b4494d484ba8a3ccdd9307c6fe0
-      internalID: 447603052
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_5
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 256
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 48b0a71314bd24813a481383ead4d30b
-      internalID: 1619246980
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_6
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 256
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ed3d8a8f856474bfa8ad17dfb892be26
-      internalID: -752591337
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_7
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 256
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 390fc97ca90c143bc9d43a223d3d966f
-      internalID: 1239999426
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_8
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 224
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bab5d13c241b548a796d88bf5bc4a9b3
-      internalID: 1866498483
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_9
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 224
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5f6b558d9b419449ea860da656975f9c
-      internalID: 1345249323
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_10
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 224
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0c65fbb3678d84c898e336f2dc86b3e3
-      internalID: -298796538
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_11
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 224
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a18cca165ffbe4b9f84e55b3fd0ab1f2
-      internalID: -149151685
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_12
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: df4b99566a2dd460988a1b148c0e5889
-      internalID: -1536595846
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_13
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 192
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5bc324094b7c647ebb37de7b8b8c95a4
-      internalID: -693608822
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_14
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 192
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e6de271980e944e7693bdc0b4ca17c92
-      internalID: 222728852
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_15
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 192
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2995f9976c235402da168f468b8ae394
-      internalID: -773348123
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_16
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 192
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a30aa4bf063eb4372a0f9a593ae3c264
-      internalID: 537367691
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_17
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 192
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5179879451aa84e7288bd89b4f8015d5
-      internalID: 70969418
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_18
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 160
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2e4402d9af4214b4fafb87bfdf26dbac
-      internalID: -1165236962
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_19
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 160
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 68fbc6f31a4494563bf83187593d55c9
-      internalID: 639517637
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_20
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 160
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 283ddf95a2cef488893efae3a56acfed
-      internalID: -160833006
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_21
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 160
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f2673407268c04fc9b459dff4475a595
-      internalID: 1545465440
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_22
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 160
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d55b7c2ed29b847749193126d825a7f0
-      internalID: 49586141
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_23
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 160
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 90f7cf8dac2504b83bfd2e2bb7029101
-      internalID: 99705979
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_24
-      rect:
-        serializedVersion: 2
-        x: 0
         y: 128
         width: 32
         height: 32
@@ -641,98 +326,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 202a7c1329fee4c398ddb0d8358209b7
-      internalID: -1715770562
+      spriteID: 731932851fe5c456a80f89829e66e7c6
+      internalID: 1157798513
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_25
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6b8cf129cbfff4121ba1abed936d9c42
-      internalID: -1058730858
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_26
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 23989b7690f4f4a44963071e692b641a
-      internalID: -2084905727
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_27
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 128
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dfd6a91ef6ac64d6f85466e9d7fb3756
-      internalID: 963193216
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_28
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fe059a23ae78042178f8f6aab29c666e
-      internalID: 783934497
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_29
+      name: PrinceMan_10
       rect:
         serializedVersion: 2
         x: 0
@@ -746,14 +347,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b6d4ced037c9a468590300fee29dd382
-      internalID: -2086243445
+      spriteID: 5f8460d4781b8471fa113137b439c0db
+      internalID: -2102793770
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_30
+      name: PrinceMan_11
       rect:
         serializedVersion: 2
         x: 32
@@ -767,14 +368,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec541633d51af423795f32367b580be3
-      internalID: 1576725871
+      spriteID: 2a908cf92d88b4628b68208800cc1b1e
+      internalID: -1835983184
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_31
+      name: PrinceMan_12
       rect:
         serializedVersion: 2
         x: 64
@@ -788,35 +389,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c52a4dce67c449d7b6ecfdacb606437
-      internalID: -582607898
+      spriteID: 4529a3e01794743d993d2d01f75aee8f
+      internalID: -1588346377
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_32
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 96
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2dc5479fa70634862bfdb67d753280ce
-      internalID: -2138646547
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_33
+      name: PrinceMan_13
       rect:
         serializedVersion: 2
         x: 0
@@ -830,14 +410,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 300befb9719e2487db57dc0a436a0ac5
-      internalID: 1744004445
+      spriteID: 511255632e7884017a14654308b6e65f
+      internalID: -1888530768
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_34
+      name: PrinceMan_14
       rect:
         serializedVersion: 2
         x: 32
@@ -851,14 +431,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6aef62f1e4e4426d90893dbfd146d1c
-      internalID: -1866601397
+      spriteID: f03a83995e7264e7dbef38767d49880e
+      internalID: 2104404960
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_35
+      name: PrinceMan_15
       rect:
         serializedVersion: 2
         x: 64
@@ -872,14 +452,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d69d83ba54fa64209ac53b6ae3f93338
-      internalID: 1541629007
+      spriteID: 5f9628bf3398740b596533e23b744a9b
+      internalID: 1279521328
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_36
+      name: PrinceMan_16
       rect:
         serializedVersion: 2
         x: 96
@@ -893,14 +473,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7506a73647c58408a96708b79006e437
-      internalID: 2048947196
+      spriteID: 5d8721cda28dd4fe9a4611d7dde553f0
+      internalID: 137312451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_37
+      name: PrinceMan_17
       rect:
         serializedVersion: 2
         x: 128
@@ -914,35 +494,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf65a10c5b6a646f18c090dd61592644
-      internalID: 1829699377
+      spriteID: 2bb3a9200ba2f458eb86d5d1a757f33c
+      internalID: -637194202
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_38
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 64
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6df386dfeb41741a39b0e268bea54f46
-      internalID: 589353404
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MiniZombie_39
+      name: PrinceMan_18
       rect:
         serializedVersion: 2
         x: 0
@@ -956,14 +515,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fd9710e2e1d3547a281b27bd5d54f299
-      internalID: -1054248134
+      spriteID: 7b241ceb6d8024a6897fdb474bea79ee
+      internalID: -1874374951
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_40
+      name: PrinceMan_19
       rect:
         serializedVersion: 2
         x: 32
@@ -977,14 +536,98 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb44e2d097bd04131b565776f0bd8074
-      internalID: 257402357
+      spriteID: 83c896ff1aedc4f2fb6ebdc3116fad07
+      internalID: 1518203715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_41
+      name: PrinceMan_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1fe823e3a96e4d66958e9e30ca648d8
+      internalID: 199429743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_21
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b60ac1b02f528405ca8aa712a27a77ea
+      internalID: -1363742469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_22
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d15d71847cde94ebcb5c00249d41360e
+      internalID: -2100933877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_23
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8266a26be354245ffa0ad3657b9cb9a6
+      internalID: -1315435542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_24
       rect:
         serializedVersion: 2
         x: 0
@@ -998,14 +641,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: edbd01c525400489f9d3ae30cbd4fbe6
-      internalID: 1658254051
+      spriteID: 27a9ea7b998a3494abb11a0947d24a16
+      internalID: -1622092707
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_42
+      name: PrinceMan_25
       rect:
         serializedVersion: 2
         x: 32
@@ -1019,14 +662,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 78a076da7291a4dc7ad785ecd05c79f5
-      internalID: -736945566
+      spriteID: 95ecb8996cc85470e80317b8e30e65ba
+      internalID: 2136046443
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_43
+      name: PrinceMan_26
       rect:
         serializedVersion: 2
         x: 64
@@ -1040,14 +683,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9ff50294168547cead1b6d3b849830f
-      internalID: 1539019376
+      spriteID: f43c14132499045cea234d30a88bc993
+      internalID: 148514189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MiniZombie_44
+      name: PrinceMan_27
       rect:
         serializedVersion: 2
         x: 96
@@ -1061,8 +704,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe4746711e7484dc8917f269f026071e
-      internalID: -1156754219
+      spriteID: 983896e08673645be943685e6db01baf
+      internalID: -1508827027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_28
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68f75036fd9614ef6b45eac3e1f505af
+      internalID: -2082191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PrinceMan_29
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6730692493c043eb89e66f37a2b13fd
+      internalID: -1924544
       vertices: []
       indices: 
       edges: []
@@ -1078,51 +763,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      MiniZombie_0: 1365185406
-      MiniZombie_1: -575133206
-      MiniZombie_10: -298796538
-      MiniZombie_11: -149151685
-      MiniZombie_12: -1536595846
-      MiniZombie_13: -693608822
-      MiniZombie_14: 222728852
-      MiniZombie_15: -773348123
-      MiniZombie_16: 537367691
-      MiniZombie_17: 70969418
-      MiniZombie_18: -1165236962
-      MiniZombie_19: 639517637
-      MiniZombie_2: -1257054716
-      MiniZombie_20: -160833006
-      MiniZombie_21: 1545465440
-      MiniZombie_22: 49586141
-      MiniZombie_23: 99705979
-      MiniZombie_24: -1715770562
-      MiniZombie_25: -1058730858
-      MiniZombie_26: -2084905727
-      MiniZombie_27: 963193216
-      MiniZombie_28: 783934497
-      MiniZombie_29: -2086243445
-      MiniZombie_3: -491775688
-      MiniZombie_30: 1576725871
-      MiniZombie_31: -582607898
-      MiniZombie_32: -2138646547
-      MiniZombie_33: 1744004445
-      MiniZombie_34: -1866601397
-      MiniZombie_35: 1541629007
-      MiniZombie_36: 2048947196
-      MiniZombie_37: 1829699377
-      MiniZombie_38: 589353404
-      MiniZombie_39: -1054248134
-      MiniZombie_4: 447603052
-      MiniZombie_40: 257402357
-      MiniZombie_41: 1658254051
-      MiniZombie_42: -736945566
-      MiniZombie_43: 1539019376
-      MiniZombie_44: -1156754219
-      MiniZombie_5: 1619246980
-      MiniZombie_6: -752591337
-      MiniZombie_7: 1239999426
-      MiniZombie_8: 1866498483
-      MiniZombie_9: 1345249323
+      PrinceMan_0: -1222096311
+      PrinceMan_1: 995829212
+      PrinceMan_10: -2102793770
+      PrinceMan_11: -1835983184
+      PrinceMan_12: -1588346377
+      PrinceMan_13: -1888530768
+      PrinceMan_14: 2104404960
+      PrinceMan_15: 1279521328
+      PrinceMan_16: 137312451
+      PrinceMan_17: -637194202
+      PrinceMan_18: -1874374951
+      PrinceMan_19: 1518203715
+      PrinceMan_2: 1228742856
+      PrinceMan_20: 199429743
+      PrinceMan_21: -1363742469
+      PrinceMan_22: -2100933877
+      PrinceMan_23: -1315435542
+      PrinceMan_24: -1622092707
+      PrinceMan_25: 2136046443
+      PrinceMan_26: 148514189
+      PrinceMan_27: -1508827027
+      PrinceMan_28: -2082191
+      PrinceMan_29: -1924544
+      PrinceMan_3: 1797879356
+      PrinceMan_4: -348504599
+      PrinceMan_5: 1404678429
+      PrinceMan_6: -843458646
+      PrinceMan_7: -1955489232
+      PrinceMan_8: -296573372
+      PrinceMan_9: 1157798513
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
