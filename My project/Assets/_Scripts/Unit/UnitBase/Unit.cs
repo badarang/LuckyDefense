@@ -70,6 +70,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     void Update()
     {
+        if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (unitMovement.IsDragging) return;
         attackCooldown -= Time.deltaTime;
         if (attackCooldown <= 0f)

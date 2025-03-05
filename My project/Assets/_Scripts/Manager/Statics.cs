@@ -24,6 +24,11 @@ public static class Statics
                 return Color.white;
         }
     }
+    
+    public static void DebugColor(string _text, Color _color)
+    {
+        Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(_color)}>{_text}</color>");
+    }
 }
 
 public enum Grade

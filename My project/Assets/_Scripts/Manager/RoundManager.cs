@@ -20,6 +20,12 @@ public class RoundManager : Singleton<RoundManager>
     {
     }
     
+    public void OnLoad()
+    {
+        Statics.DebugColor("RoundManager Loaded", new Color(1, .5f, 0));
+        currentRound = 1;
+    }
+    
     public void GoToNextRound()
     {
         currentRound++;

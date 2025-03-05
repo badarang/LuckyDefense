@@ -19,6 +19,7 @@ public class UnitMovement : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (GameManager.Instance.CurrentState != GameState.InGame) return;
         offset = transform.position - GetMouseWorldPosition();
         isDragging = true;
         animator.SetTrigger("Walk");
@@ -26,6 +27,7 @@ public class UnitMovement : MonoBehaviour
 
     void OnMouseDrag()
     {
+        if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (!isDragging) return;
 
         Vector3 newPosition = GetMouseWorldPosition() + offset;
