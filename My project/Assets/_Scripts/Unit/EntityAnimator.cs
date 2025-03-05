@@ -13,6 +13,7 @@ public class EntityAnimator : MonoBehaviour
     private float hitEffectValue = 0;
     private float attackAnimationLength;
     public float AttackAnimationLength => attackAnimationLength;
+    private Tween walkMotionTween;
     
 
     void Start()
@@ -62,12 +63,22 @@ public class EntityAnimator : MonoBehaviour
     }
 
     
+    public void StartWalkShakeAnimation()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(flippable.DOLocalRotate(new Vector3(0, 0, 7), 0.3f));
+        sequence.Append(flippable.DOLocalRotate(new Vector3(0, 0, -7), 0.3f));
+        sequence.SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+        walkMotionTween = sequence;
+    }
+    
     public void StartHitAnimation(bool isAttackerOnRight)
     {
         if (hitAnimationCoroutine != null)
         {
             StopCoroutine(hitAnimationCoroutine);
         }
+        walkMotionTween.Kill();
         hitAnimationCoroutine = StartCoroutine(HitAnimation(isAttackerOnRight));
     }
     

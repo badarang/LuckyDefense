@@ -41,9 +41,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6843950323951204128}
-  - component: {fileID: 5434119651410826161}
   - component: {fileID: 3169137721863427423}
   - component: {fileID: 2189251581141865104}
+  - component: {fileID: 3989959845235854144}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -67,20 +67,6 @@ Transform:
   - {fileID: 1726400358628904774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5434119651410826161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5075657228313207197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53096299546c431dba61812fd8d313f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlaceUpper: 1
-  cellSize: 1
 --- !u!70 &3169137721863427423
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -128,9 +114,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a588e4d1e2f4b26ac0e87ed44f60f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 20
+  hp: 100
   speed: 0
   dropGold: 1
+--- !u!114 &3989959845235854144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075657228313207197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bf48f532c497421daf6ded6f96849fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlaceUpper: 0
+  PathUpper: {fileID: 0}
+  PathLower: {fileID: 0}
 --- !u!1 &6670563596986172858
 GameObject:
   m_ObjectHideFlags: 0

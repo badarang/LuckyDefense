@@ -6,6 +6,7 @@ public abstract class Enemy : MonoBehaviour, IHittable
     private EntityAnimator _entityAnimator;
     [SerializeField] private float hp;
     [SerializeField] private float speed;
+    public float Speed => speed;
     [SerializeField] private int dropGold;
     public bool IsDead { get; set; }
     
