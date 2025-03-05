@@ -24,8 +24,20 @@ public class UIManager : Singleton<UIManager>
     {
         GameManager.Instance.OnGameStart += () =>
         {
+            SetAllUIText();
             StartCoroutine(ExpandAllUISequencially());
         };
+    }
+    
+    private void SetAllUIText()
+    {
+        foreach (var ui in UIDictionary)
+        {
+            if (ui.Value.TryGetComponent<IUITextBase>(out var uiTextBase))
+            {
+                uiTextBase.ResetText();
+            }
+        }
     }
     private IEnumerator ExpandAllUISequencially()
     {
