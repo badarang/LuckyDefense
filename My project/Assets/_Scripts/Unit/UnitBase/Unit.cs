@@ -102,6 +102,8 @@ public abstract class Unit : MonoBehaviour, IAttackable
             return;
         }
         
+        var isCritical = Random.value <= criticalChance;
+
         if (_entityAnimator.AttackAnimationLength > 0)
         {
             float frameRate = 12f;
@@ -110,14 +112,13 @@ public abstract class Unit : MonoBehaviour, IAttackable
             Debug.Log(targetFrame);
             float targetTime = (float)targetFrame / frameRate;
 
-            Invoke(nameof(OnHit), targetTime);
+            StartCoroutine(AttackCoroutine(isCritical, targetTime));
         }
         else
         {
-            OnHit();
+            OnHit(isCritical);
         }
-
-        var isCritical = Random.value <= criticalChance;
+        
         animator.SetTrigger((isCritical) ? "SpecialAttack" : "Attack");
 
         if (enemiesInRange[0].transform.position.x < transform.position.x)
@@ -125,17 +126,22 @@ public abstract class Unit : MonoBehaviour, IAttackable
         else
             flippable.localScale = new Vector3(1, 1, 1);
     }
-
-    /// <summary>
-    /// Animation Event
-    /// </summary>
-    public void OnHit()
+    
+    IEnumerator AttackCoroutine(bool isCritical, float targetTime)
+    {
+        yield return new WaitForSeconds(targetTime);
+        OnHit(isCritical);
+    }
+    
+    public void OnHit(bool isCritical)
     {
         foreach (var enemy in currentTargets)
         {
             if (enemy == null || enemy.IsDead) continue; //enemy가 도중에 죽은 경우
             bool isAttackerRight = enemy.transform.position.x < transform.position.x;
-            float finalDamage = (Random.value <= criticalChance) ? damage * 2f : damage;
+            int finalDamage = Mathf.RoundToInt((isCritical) ? damage * 2f : damage);
+            
+            UIManager.Instance.CreateDamageText(enemy.transform.position, finalDamage, isCritical);
             enemy.TakeDamage(finalDamage, isAttackerRight);
         }
         animator.SetTrigger("Idle");

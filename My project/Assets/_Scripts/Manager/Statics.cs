@@ -12,13 +12,13 @@ public static class Statics
         switch (grade)
         {
             case Grade.Normal:
-                return Color.white;
+                return new Color(1, 1, 1, 0.5f);
             case Grade.Rare:
-                return Color.green;
+                return new Color(0, 1, .3f, .5f);
             case Grade.Epic:
-                return Color.blue;
+                return new Color(0, .4f, .8f, .5f);
             case Grade.Mythic:
-                return new Color(1, 0.5f, 0);
+                return new Color(1, 0.5f, 0, .5f);
             default:
                 return Color.white;
         }
