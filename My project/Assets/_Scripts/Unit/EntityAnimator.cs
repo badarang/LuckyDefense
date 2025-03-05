@@ -68,7 +68,7 @@ public class EntityAnimator : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.Append(flippable.DOLocalRotate(new Vector3(0, 0, 7), 0.3f));
         sequence.Append(flippable.DOLocalRotate(new Vector3(0, 0, -7), 0.3f));
-        sequence.SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+        sequence.SetLoops(-1);
         walkMotionTween = sequence;
     }
     
@@ -79,6 +79,7 @@ public class EntityAnimator : MonoBehaviour
             StopCoroutine(hitAnimationCoroutine);
         }
         walkMotionTween.Kill();
+        walkMotionTween = null;
         hitAnimationCoroutine = StartCoroutine(HitAnimation(isAttackerOnRight));
     }
     
@@ -107,6 +108,7 @@ public class EntityAnimator : MonoBehaviour
         sequence.Append(unitTransform.DOScale(originalScale, 0.07f));
 
         yield return sequence.WaitForCompletion();
+        if (walkMotionTween == null) StartWalkShakeAnimation();
     }
     
     public void StopAllCoroutines()
