@@ -10,7 +10,7 @@ public class UIManager : Singleton<UIManager>
     public void CreateDamageText(Vector3 position, int damage, bool isCritical)
     {
         var offset = new Vector3(Random.Range(-0.1f, 0.1f), 1f, 0);
-        GameObject damageText = Instantiate(damageTextPrefab, position + offset, Quaternion.identity, canvas.transform);
+        GameObject damageText = Instantiate(damageTextPrefab, position + offset, Quaternion.identity);
         if (damageText.TryGetComponent<DamageText>(out var damageTextComponent))
         {
             damageTextComponent.Init();

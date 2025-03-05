@@ -106,7 +106,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
         if (_entityAnimator.AttackAnimationLength > 0)
         {
-            int targetFrame = Mathf.Max((int)_entityAnimator.AttackAnimationLength - 1, 1);
+            int targetFrame = Mathf.Max((int)_entityAnimator.AttackAnimationLength - 2, 1);
             float targetTime = (float)targetFrame * Statics.SpeedPerOneAnimation;
 
             StartCoroutine(AttackCoroutine(isCritical, targetTime));

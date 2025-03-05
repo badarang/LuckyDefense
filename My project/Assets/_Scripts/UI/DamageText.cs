@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class DamageText : MonoBehaviour
 {
-    private TextMeshProUGUI damageText;
+    private TextMeshPro damageText;
 
     public void Init()
     {
-        damageText = GetComponent<TextMeshProUGUI>();
+        damageText = GetComponent<TextMeshPro>();
         StartCoroutine(DestroyText());
     }
     
@@ -47,6 +47,6 @@ public class DamageText : MonoBehaviour
         damageText.color = isCritical ? lightRed : Color.white;
         
         //Set Scale
-        damageText.fontSize = isCritical ? 110 : 60;
+        damageText.fontSize = isCritical ? 5 : 3;
     }
 }
