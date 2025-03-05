@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class Enemy : MonoBehaviour, IHittable
 {
-    private UnitAnimator unitAnimator;
+    private EntityAnimator _entityAnimator;
     [SerializeField] private float hp;
     [SerializeField] private float speed;
     [SerializeField] private int dropGold;
+    public bool IsDead { get; set; }
     
     private void Start()
     {
-        unitAnimator = GetComponentInChildren<UnitAnimator>();
+        _entityAnimator = GetComponentInChildren<EntityAnimator>();
+        _entityAnimator.InitEnemy(this);
+        IsDead = false;
     }
     
     public void TakeDamage(float amount, bool isAttackerRight = true)
     {
-        Debug.Log("TakeDamage");
         hp -= amount;
-        unitAnimator.StartHitAnimation(isAttackerRight);
+        _entityAnimator.StartHitAnimation(isAttackerRight);
         if (hp <= 0)
         {
             Die();
@@ -27,24 +29,15 @@ public abstract class Enemy : MonoBehaviour, IHittable
     public void Die()
     {
         if (IsDead) return;
+        IsDead = true;
         GoodsManager.Instance.Gold += dropGold;
         StartCoroutine(DestroyEnemy());
     }
     
     private IEnumerator DestroyEnemy()
     {
-        unitAnimator.StartDieAnimation();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        Color color = spriteRenderer.color;
-        while (color.a > 0)
-        {
-            color.a -= 0.1f;
-            spriteRenderer.color = color;
-            yield return new WaitForSeconds(0.05f);
-        }
-        yield return new WaitForSeconds(.5f);
+        _entityAnimator.StartDieAnimation();
+        yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
-    
-    public bool IsDead => hp <= 0;
 }

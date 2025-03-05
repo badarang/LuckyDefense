@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class Unit : MonoBehaviour, IAttackable
 {
@@ -11,6 +13,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     [SerializeField]
     private Grade grade;
+    public Grade Grade => grade;
     
     [SerializeField]
     private float hp;
@@ -45,16 +48,22 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     private float attackCooldown = 0f;
     private Animator animator;
-    private UnitAnimator unitAnimator;
+    private EntityAnimator _entityAnimator;
     private UnitMovement unitMovement;
     private Transform flippable;
 
     #endregion
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        unitAnimator = GetComponentInChildren<UnitAnimator>();
+        _entityAnimator = GetComponentInChildren<EntityAnimator>();
+        _entityAnimator.InitUnit(this);
         unitMovement = GetComponent<UnitMovement>();
         flippable = transform.Find("Flippable");
     }
@@ -72,23 +81,9 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     public void Attack()
     {
+        if (unitMovement.IsDragging) return;
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
-
-        if (enemiesInRange.Length <= 0)
-        {
-            animator.ResetTrigger("Attack");
-            animator.ResetTrigger("SpecialAttack");
-            return;
-        }
-
-        var isCritical = Random.value <= criticalChance;
-        animator.SetTrigger((isCritical) ? "SpecialAttack" : "Attack");
-
-        if (enemiesInRange[0].transform.position.x < transform.position.x)
-            flippable.localScale = new Vector3(-1, 1, 1);
-        else
-            flippable.localScale = new Vector3(1, 1, 1);
-
+        
         currentTargets.Clear();
         int attackCount = Mathf.Min(attackableUnitCount, enemiesInRange.Length);
         for (int i = 0; i < attackCount; i++)
@@ -100,11 +95,19 @@ public abstract class Unit : MonoBehaviour, IAttackable
             }
         }
         
-        if (unitAnimator.AttackAnimationLength > 0)
+        if (enemiesInRange.Length <= 0 || currentTargets.Count <= 0)
+        {
+            animator.ResetTrigger("Attack");
+            animator.ResetTrigger("SpecialAttack");
+            return;
+        }
+        
+        if (_entityAnimator.AttackAnimationLength > 0)
         {
             float frameRate = 12f;
-            int totalFrames = Mathf.RoundToInt(unitAnimator.AttackAnimationLength * frameRate);
+            int totalFrames = Mathf.RoundToInt(_entityAnimator.AttackAnimationLength * frameRate);
             int targetFrame = Mathf.Max(totalFrames - 2, 1);
+            Debug.Log(targetFrame);
             float targetTime = (float)targetFrame / frameRate;
 
             Invoke(nameof(OnHit), targetTime);
@@ -113,20 +116,28 @@ public abstract class Unit : MonoBehaviour, IAttackable
         {
             OnHit();
         }
+
+        var isCritical = Random.value <= criticalChance;
+        animator.SetTrigger((isCritical) ? "SpecialAttack" : "Attack");
+
+        if (enemiesInRange[0].transform.position.x < transform.position.x)
+            flippable.localScale = new Vector3(-1, 1, 1);
+        else
+            flippable.localScale = new Vector3(1, 1, 1);
     }
 
     /// <summary>
-    /// Animation Event에서 호출되는 함수
+    /// Animation Event
     /// </summary>
     public void OnHit()
     {
         foreach (var enemy in currentTargets)
         {
+            if (enemy == null || enemy.IsDead) continue; //enemy가 도중에 죽은 경우
             bool isAttackerRight = enemy.transform.position.x < transform.position.x;
             float finalDamage = (Random.value <= criticalChance) ? damage * 2f : damage;
             enemy.TakeDamage(finalDamage, isAttackerRight);
         }
-        
         animator.SetTrigger("Idle");
     }
 

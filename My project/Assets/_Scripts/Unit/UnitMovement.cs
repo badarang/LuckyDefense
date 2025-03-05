@@ -6,9 +6,11 @@ public class UnitMovement : MonoBehaviour
     public float cellSize = 1f;
     
     private Vector3 offset;
+    private float yOffset = -.3f;
     private bool isDragging = false;
     public bool IsDragging => isDragging;
     private Animator animator;
+    
 
     void Start()
     {
@@ -35,12 +37,12 @@ public class UnitMovement : MonoBehaviour
         if (PlaceUpper)
         {
             gridPosition.y = Mathf.Clamp(gridPosition.y, -1, 1);
-            gridPosition.y = Mathf.Round(gridPosition.y);
+            gridPosition.y = Mathf.Round(gridPosition.y) + yOffset;
         }
         else
         {
             gridPosition.y = Mathf.Clamp(gridPosition.y, -5.5f, -3.5f);
-            gridPosition.y = Mathf.Round(gridPosition.y - 0.5f) + 0.5f;
+            gridPosition.y = Mathf.Round(gridPosition.y - 0.5f) + 0.5f + yOffset;
         }
 
         transform.position = GridToWorld(gridPosition);

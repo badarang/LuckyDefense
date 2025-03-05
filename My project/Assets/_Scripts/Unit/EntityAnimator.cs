@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class UnitAnimator : MonoBehaviour
+public class EntityAnimator : MonoBehaviour
 {
     private Transform flippable;
     private Animator animator;
     private Material spriteMat;
+    private SpriteRenderer spriteRenderer;
     private Coroutine hitAnimationCoroutine;
     private float hitEffectValue = 0;
     private float attackAnimationLength;
@@ -17,51 +18,48 @@ public class UnitAnimator : MonoBehaviour
     {
         transform.localPosition = new Vector3(0, 0, 0);
         animator = GetComponent<Animator>();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteMat = Instantiate(spriteRenderer.material);
         spriteRenderer.material = spriteMat;
         
         flippable = transform.parent.transform;
-        
-        if (gameObject.layer == LayerMask.NameToLayer("Unit"))
-        {
-            InitUnit();
-        }
-        else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            InitEnemy();
-        }
     }
 
-    void InitUnit()
+    public void InitUnit(Unit _unit)
     {
         AnimationClip attackClip = GetAttackAnimationClip();
         if (attackClip != null)
         {
             attackAnimationLength = attackClip.length; 
         }
+
+        var shadow = transform.parent.Find("Shadow").gameObject;
+        if (shadow != null)
+        {
+            shadow.GetComponent<SpriteRenderer>().color = Statics.GradeColor(_unit.Grade);
+        }
     }
 
-    void InitEnemy()
+    public void InitEnemy(Enemy _enemy)
     {
         
     }
     
     private AnimationClip GetAttackAnimationClip()
     {
-        AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-        animator.runtimeAnimatorController = overrideController;
-        AnimationClip attackClip = null;
-        foreach (AnimationClip clip in overrideController.animationClips)
+        RuntimeAnimatorController controller = animator.runtimeAnimatorController;
+
+        foreach (AnimationClip clip in controller.animationClips)
         {
             if (clip.name.Contains("Attack"))
             {
-                attackClip = clip;
-                break;
+                return clip;
             }
         }
-        return attackClip;
+
+        return null; // 찾지 못한 경우
     }
+
     
     public void StartHitAnimation(bool isAttackerOnRight)
     {
@@ -99,6 +97,14 @@ public class UnitAnimator : MonoBehaviour
         yield return sequence.WaitForCompletion();
     }
     
+    public void StopAllCoroutines()
+    {
+        if (hitAnimationCoroutine != null)
+        {
+            StopCoroutine(hitAnimationCoroutine);
+        }
+    }
+    
     public void ToggleOutline(bool toggle)
     {
         if (toggle)
@@ -114,12 +120,25 @@ public class UnitAnimator : MonoBehaviour
     public void StartDieAnimation()
     {
         animator.SetTrigger("Die");
+        StartCoroutine(DieAnimationCO());
+    }
+
+    private IEnumerator DieAnimationCO()
+    {
+        Color color = spriteRenderer.color;
+        while (color.a > 0)
+        {
+            color.a -= 0.1f;
+            spriteRenderer.color = color;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
     
     void Update()
     {
         if (hitEffectValue > 0)
         {
+            if (hitEffectValue < .1f) hitEffectValue = 0;
             spriteMat.SetFloat("_HitEffectBlend", hitEffectValue);
             hitEffectValue -= Time.deltaTime * 10;
         }
