@@ -13,6 +13,7 @@ public class EntityAnimator : MonoBehaviour
     private float hitEffectValue = 0;
     private float attackAnimationLength;
     public float AttackAnimationLength => attackAnimationLength;
+    
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class EntityAnimator : MonoBehaviour
         AnimationClip attackClip = GetAttackAnimationClip();
         if (attackClip != null)
         {
-            attackAnimationLength = attackClip.length; 
+            attackAnimationLength = attackClip.length;
         }
 
         var shadow = transform.parent.Find("Shadow").gameObject;

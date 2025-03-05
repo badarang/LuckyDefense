@@ -89,7 +89,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         for (int i = 0; i < attackCount; i++)
         {
             Enemy enemy = enemiesInRange[i].GetComponent<Enemy>();
-            if (enemy != null)
+            if (enemy != null && !enemy.IsDead)
             {
                 currentTargets.Add(enemy);
             }
@@ -106,11 +106,8 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
         if (_entityAnimator.AttackAnimationLength > 0)
         {
-            float frameRate = 12f;
-            int totalFrames = Mathf.RoundToInt(_entityAnimator.AttackAnimationLength * frameRate);
-            int targetFrame = Mathf.Max(totalFrames - 2, 1);
-            Debug.Log(targetFrame);
-            float targetTime = (float)targetFrame / frameRate;
+            int targetFrame = Mathf.Max((int)_entityAnimator.AttackAnimationLength - 2, 1);
+            float targetTime = (float)targetFrame * Statics.SpeedPerOneAnimation;
 
             StartCoroutine(AttackCoroutine(isCritical, targetTime));
         }
@@ -140,7 +137,6 @@ public abstract class Unit : MonoBehaviour, IAttackable
             if (enemy == null || enemy.IsDead) continue; //enemy가 도중에 죽은 경우
             bool isAttackerRight = enemy.transform.position.x < transform.position.x;
             int finalDamage = Mathf.RoundToInt((isCritical) ? damage * 2f : damage);
-            
             UIManager.Instance.CreateDamageText(enemy.transform.position, finalDamage, isCritical);
             enemy.TakeDamage(finalDamage, isAttackerRight);
         }
