@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 public abstract class Enemy : MonoBehaviour, IHittable
 {
@@ -17,11 +18,19 @@ public abstract class Enemy : MonoBehaviour, IHittable
         _entityAnimator.InitEnemy(this);
         IsDead = false;
         RoundManager.Instance.AliveEnemies++;
+        Appear();
     }
     
     private void OnDisable()
     {
-        RoundManager.Instance.AliveEnemies--;
+        StopAllCoroutines();
+        DOTween.Kill(_entityAnimator);
+    }
+    
+    private void Appear()
+    {
+        transform.localScale = Vector3.zero;
+        transform.DOScale(Vector3.one, .5f).SetEase(Ease.OutBack);
     }
 
     public void TakeDamage(float amount, bool isAttackerRight = true)
@@ -39,6 +48,7 @@ public abstract class Enemy : MonoBehaviour, IHittable
         if (IsDead) return;
         IsDead = true;
         GoodsManager.Instance.Gold += dropGold;
+        RoundManager.Instance.AliveEnemies--;
         StartCoroutine(DestroyEnemy());
     }
     

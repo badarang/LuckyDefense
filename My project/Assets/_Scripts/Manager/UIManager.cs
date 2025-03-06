@@ -15,10 +15,9 @@ public class UIManager : Singleton<UIManager>
     {
         base.Awake();
         
-        TextMeshProUGUI[] textMeshPros = canvas.GetComponentsInChildren<TextMeshProUGUI>(); // 수정된 부분
+        TextMeshProUGUI[] textMeshPros = canvas.GetComponentsInChildren<TextMeshProUGUI>();
         foreach (var textMeshPro in textMeshPros)
         {
-            Debug.Log(textMeshPro.name);
             UITextDictionary.Add(textMeshPro.name, textMeshPro);
         }
 
@@ -28,6 +27,13 @@ public class UIManager : Singleton<UIManager>
             UIDictionary.Add(uiAnimationBase.name, uiAnimationBase.gameObject);
             uiAnimationBase.gameObject.SetActive(false);
         }
+    }
+    
+    private void OnApplicationQuit()
+    {
+        base.OnApplicationQuit();
+        UIDictionary.Clear();
+        UITextDictionary.Clear();
     }
     
     public void OnLoad()
@@ -99,6 +105,14 @@ public class UIManager : Singleton<UIManager>
         }
     }
     
+    public void SetRoundText(int wave)
+    {
+        if (UITextDictionary.TryGetValue("CurrentWaveText", out var waveText))
+        {
+            waveText.text = $"Wave {wave}";
+        }
+    }
+
     public void CreateDamageText(Vector3 position, int damage, bool isCritical)
     {
         var offset = new Vector3(Random.Range(-0.1f, 0.1f), 1f, 0);

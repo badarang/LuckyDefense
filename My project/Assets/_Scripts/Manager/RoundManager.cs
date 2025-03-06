@@ -12,6 +12,7 @@ public class RoundManager : Singleton<RoundManager>
     [SerializeField] private GameObject enemySpawnGroup;
     public int currentRound = 1;
     private int aliveEnemies;
+    private WaitForSeconds waveDelay = new WaitForSeconds(1f);
 
     public int AliveEnemies
     {
@@ -42,12 +43,23 @@ public class RoundManager : Singleton<RoundManager>
         currentRound = 1;
     }
     
-    public void OnGameStart()
+    private void OnDisable()
     {
-        StartCoroutine(StartRound());
+        StopAllCoroutines();
     }
     
-    private IEnumerator StartRound()
+    private void OnApplicationQuit()
+    {
+        base.OnApplicationQuit();
+        rounds.Clear();
+    }
+    
+    public void OnGameStart()
+    {
+        StartCoroutine(RepeatRound());
+    }
+    
+    private IEnumerator RepeatRound()
     {
         if (currentRound > rounds.Count)
         {
@@ -58,43 +70,27 @@ public class RoundManager : Singleton<RoundManager>
         Round currentRoundData = rounds[currentRound - 1];
         float roundTime = currentRoundData.roundTime;
         UIManager.Instance.SetRoundTime(roundTime);
-
-        float roundStartTime = Time.time;
-        float elapsedTime = 0f;
-
-        foreach (var roundSpawn in currentRoundData.roundSpawnData)
+        UIManager.Instance.SetRoundText(currentRound);
+        StartCoroutine(SpawnWaves(currentRoundData));
+        yield return new WaitForSeconds(roundTime);
+        GoToNextRound();
+        StartCoroutine(RepeatRound());
+    }
+    
+    private IEnumerator SpawnWaves(Round currentRoundData)
+    {
+        foreach (var roundSpawnData in currentRoundData.roundSpawnData)
         {
-            float spawnTime = roundSpawn.spawnTime;
-            List<WavePreset> wavePresets = roundSpawn.wavePresets;
-            float remainingTimeBeforeSpawn = Mathf.Max(0, spawnTime - (elapsedTime));
-
-            if (remainingTimeBeforeSpawn > 0)
+            yield return new WaitForSeconds(roundSpawnData.spawnTime);
+            foreach (var wavePreset in roundSpawnData.wavePresets)
             {
-                yield return new WaitForSeconds(remainingTimeBeforeSpawn);
-            }
-
-            foreach (var wavePreset in wavePresets)
-            {
-                List<WaveSpawnData> spawnData = wavePreset.spawnData;
-
-                foreach (var waveSpawnData in spawnData)
+                foreach (var spawnData in wavePreset.spawnData)
                 {
-                    var delay = waveSpawnData.spawnTime;
-                    GameObject enemyPrefab = waveSpawnData.enemyPrefab;
-                    int isUpper = waveSpawnData.isUpper;
-
-                    SpawnEnemy(enemyPrefab, isUpper);
-
-                    elapsedTime += Mathf.Max(0.3f, delay);
-                    yield return new WaitForSeconds(Mathf.Max(0.3f, delay));
+                    yield return waveDelay;
+                    SpawnEnemy(spawnData.enemyPrefab, spawnData.isUpper);
                 }
             }
         }
-
-        yield return new WaitForSeconds(Mathf.Max(0, roundTime - elapsedTime));
-
-        GoToNextRound();
-        StartCoroutine(StartRound());
     }
 
 

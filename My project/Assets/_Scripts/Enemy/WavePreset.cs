@@ -10,7 +10,6 @@ public class WavePreset : ScriptableObject
 [System.Serializable]
 public class WaveSpawnData
 {
-    public float spawnTime;
     public GameObject enemyPrefab;
     public int isUpper = -1; // -1: 양쪽, 0: 하단, 1: 상단
 }

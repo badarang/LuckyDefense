@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
     private Enemy enemy;
     private Animator animator;
     private EntityAnimator entityAnimator;
+    private GameObject flippable;
 
     private bool isWalking;
 
@@ -43,6 +44,7 @@ public class EnemyMovement : MonoBehaviour
         enemy = GetComponent<Enemy>();
         animator = GetComponentInChildren<Animator>();
         entityAnimator = GetComponentInChildren<EntityAnimator>();
+        flippable = transform.Find("Flippable").gameObject;
         StartCoroutine(StartWalkCO());
     }
 
@@ -58,6 +60,9 @@ public class EnemyMovement : MonoBehaviour
         else
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, Time.deltaTime * enemy.Speed);
+            var dir = -1;
+            if (idx == 1 || idx == 2) dir = 1;
+            flippable.transform.localScale = new Vector3(dir, 1, 1);
             if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
             {
                 transform.position = targetPoint.position;

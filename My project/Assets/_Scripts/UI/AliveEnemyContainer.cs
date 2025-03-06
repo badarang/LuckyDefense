@@ -8,6 +8,7 @@ public class AliveEnemyContainer : MonoBehaviour, IUITextBase
 {
     [SerializeField] private TextMeshProUGUI aliveEnemyText;
     [SerializeField] private Image barImage;
+    [SerializeField] private BossIcon bossIcon;
     private float targetValue;
      
     public void ResetText()
@@ -27,6 +28,14 @@ public class AliveEnemyContainer : MonoBehaviour, IUITextBase
         var _value = (float)current / max;
         targetValue = _value;
         aliveEnemyText.text = $"{current}/{max}";
+        if (_value >= .75f)
+        {
+            bossIcon.ToggleBoss(true);
+        }
+        else
+        {
+            bossIcon.ToggleBoss(false);
+        }
     }
     
     private void Update()
