@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
-  speed: 0
+  speed: 2
   dropGold: 1
 --- !u!114 &3989959845235854144
 MonoBehaviour:
@@ -129,9 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf48f532c497421daf6ded6f96849fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceUpper: 0
-  PathUpper: {fileID: 0}
-  PathLower: {fileID: 0}
+  PlaceUpper: 1
+  PathUpper: {fileID: 4206005259688057762, guid: b9101279f744a47fb81871061095c690, type: 3}
+  PathLower: {fileID: 488765249368472142, guid: 4001f8c93b9264512b79ece39ea9eb7d, type: 3}
 --- !u!1 &6670563596986172858
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +228,7 @@ Animator:
   m_GameObject: {fileID: 6670563596986172858}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: cc4008a9970e94d8ebe5776e3c5cd6a2, type: 2}
+  m_Controller: {fileID: 22100000, guid: 696e9ddd1661645e4b84656373da4763, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

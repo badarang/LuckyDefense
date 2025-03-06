@@ -16,6 +16,7 @@ public static class Statics
         {"MaxUnitLevel", 5},
         {"MaxUnitGrade", 4},
         {"MaxUnitGather", 3},
+        {"MaxAliveEnemy", 100},
     };
 
     public static Color GradeColor(Grade grade)

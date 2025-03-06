@@ -22,9 +22,11 @@ public class AliveEnemyContainer : MonoBehaviour, IUITextBase
         targetValue = 0;
     }
     
-    public void SetBar(float _value)
+    public void SetBar(int current, int max)
     {
+        var _value = (float)current / max;
         targetValue = _value;
+        aliveEnemyText.text = $"{current}/{max}";
     }
     
     private void Update()

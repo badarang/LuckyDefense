@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public bool PlaceUpper;
+    private bool placeUpper;
     public PathCreator PathUpper;
     public PathCreator PathLower;
     private PathCreator currentPath;
@@ -28,9 +28,18 @@ public class EnemyMovement : MonoBehaviour
 
     
 
-    void Start()
+    void OnEnable()
     {
-        currentPath = PlaceUpper ? PathUpper : PathLower;
+        if (transform.position.y > -2f)
+        {
+            placeUpper = true;
+        }
+        else
+        {
+            placeUpper = false;
+        }
+        
+        currentPath = placeUpper ? PathUpper : PathLower;
         enemy = GetComponent<Enemy>();
         animator = GetComponentInChildren<Animator>();
         entityAnimator = GetComponentInChildren<EntityAnimator>();
@@ -39,6 +48,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
+        if (currentPath == null) return;
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (!IsWalking || enemy.IsDead) return;
         if (targetPoint == null)

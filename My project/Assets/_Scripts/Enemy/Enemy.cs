@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,20 @@ public abstract class Enemy : MonoBehaviour, IHittable
     public float Speed => speed;
     [SerializeField] private int dropGold;
     public bool IsDead { get; set; }
-    
-    private void Start()
+
+    private void OnEnable()
     {
         _entityAnimator = GetComponentInChildren<EntityAnimator>();
         _entityAnimator.InitEnemy(this);
         IsDead = false;
+        RoundManager.Instance.AliveEnemies++;
     }
     
+    private void OnDisable()
+    {
+        RoundManager.Instance.AliveEnemies--;
+    }
+
     public void TakeDamage(float amount, bool isAttackerRight = true)
     {
         hp -= amount;

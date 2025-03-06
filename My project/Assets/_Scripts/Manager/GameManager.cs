@@ -18,8 +18,9 @@ public class GameManager : Singleton<GameManager>
     private void OnLoad()
     {
         Statics.DebugColor("GameManager Loaded", new Color(0, .5f, 1f));
-        RoundManager.Instance.OnLoad();
+        UIManager.Instance.OnLoad();
         GoodsManager.Instance.OnLoad();
+        RoundManager.Instance.OnLoad();
     }
 
     private void Update()
