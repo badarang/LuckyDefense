@@ -12,6 +12,7 @@ public class EntityAnimator : MonoBehaviour
     private Coroutine hitAnimationCoroutine;
     private float hitEffectValue = 0;
     private float attackAnimationLength;
+    private Vector3 originalScale = new Vector3(1, 1, 1);
     public float AttackAnimationLength => attackAnimationLength;
     private Tween walkMotionTween;
     
@@ -87,13 +88,14 @@ public class EntityAnimator : MonoBehaviour
         hitEffectValue = .8f;
         
         Transform unitTransform = transform;
-        Vector3 originalScale = unitTransform.localScale;
         Vector3 originalPosition = unitTransform.localPosition;
         float moveDistance = 0.005f;
         float rotationAngle = 15f;
         
         int direction = isAttackerOnRight ? -1 : 1;
         
+        unitTransform.DOKill(true);
+
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(unitTransform.DOScale(new Vector3(0.6f, 1.4f, 1f), 0.07f));
@@ -107,6 +109,7 @@ public class EntityAnimator : MonoBehaviour
         sequence.Append(unitTransform.DOScale(originalScale, 0.07f));
 
         yield return sequence.WaitForCompletion();
+        unitTransform.localScale = originalScale;
         if (walkMotionTween == null) StartWalkShakeAnimation();
     }
     
