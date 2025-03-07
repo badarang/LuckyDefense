@@ -6,12 +6,15 @@ public class GoodsManager : Singleton<GoodsManager>
 {
     private int gold;
     private int diamond;
+    private int requiredSummonGold;
+    public int RequiredSummonGold => requiredSummonGold;
 
     public void OnLoad()
     {
         Statics.DebugColor("GoodsManager Loaded", new Color(1, 1f, 0));
-        gold = 0;
-        diamond = 0;
+        gold = Statics.InitialGameDataDic["InitialGold"];
+        diamond = Statics.InitialGameDataDic["InitialDiamond"];
+        requiredSummonGold = Statics.InitialGameDataDic["UnitRequiredGold"];
     }
     public int Gold
     {
@@ -23,5 +26,10 @@ public class GoodsManager : Singleton<GoodsManager>
     {
         get => diamond;
         set => diamond = value;
+    }
+    
+    public void IncreaseRequiredSummonGold()
+    {
+        requiredSummonGold += Statics.InitialGameDataDic["UnitRequiredGoldIncrease"];
     }
 }

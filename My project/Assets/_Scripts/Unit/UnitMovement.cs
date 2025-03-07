@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class UnitMovement : MonoBehaviour
 {
-    public bool PlaceUpper = true;
     public float cellSize = 1f;
-    
+    private bool placeUpper;
     private Vector3 offset;
     private float yOffset = -.3f;
     private bool isDragging = false;
@@ -15,6 +14,11 @@ public class UnitMovement : MonoBehaviour
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
+    }
+
+    public void Init(bool isMyPlayer)
+    {
+        placeUpper = !isMyPlayer;
     }
 
     void OnMouseDown()
@@ -36,7 +40,7 @@ public class UnitMovement : MonoBehaviour
         gridPosition.x = Mathf.Round(gridPosition.x + 2.5f) - 2.5f;
         gridPosition.x = Mathf.Clamp(gridPosition.x, -2.5f, 2.5f);
 
-        if (PlaceUpper)
+        if (placeUpper)
         {
             gridPosition.y = Mathf.Clamp(gridPosition.y, -1, 1);
             gridPosition.y = Mathf.Round(gridPosition.y) + yOffset;

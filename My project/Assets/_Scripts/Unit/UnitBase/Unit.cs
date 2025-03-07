@@ -10,6 +10,8 @@ public abstract class Unit : MonoBehaviour, IAttackable
     [Header("Unit Properties")]
     [SerializeField]
     private string unitName;
+    private UnitTypeEnum unitType;
+    public UnitTypeEnum UnitType => unitType;
 
     [SerializeField]
     private Grade grade;
@@ -51,26 +53,19 @@ public abstract class Unit : MonoBehaviour, IAttackable
     private EntityAnimator _entityAnimator;
     private UnitMovement unitMovement;
     private Transform flippable;
+    private bool isInitialized = false;
 
     #endregion
 
     private void OnDisable()
     {
         StopAllCoroutines();
-    }
-
-    void Start()
-    {
-        animator = GetComponentInChildren<Animator>();
-        _entityAnimator = GetComponentInChildren<EntityAnimator>();
-        _entityAnimator.InitUnit(this);
-        unitMovement = GetComponent<UnitMovement>();
-        flippable = transform.Find("Flippable");
+        isInitialized = false;
     }
 
     void Update()
     {
-        if (GameManager.Instance.CurrentState != GameState.InGame) return;
+        if (!isInitialized || GameManager.Instance.CurrentState != GameState.InGame) return;
         if (unitMovement.IsDragging) return;
         attackCooldown -= Time.deltaTime;
         if (attackCooldown <= 0f)
@@ -80,6 +75,20 @@ public abstract class Unit : MonoBehaviour, IAttackable
         }
     }
 
+    public void Init(UnitTypeEnum unitType, bool isMyPlayer)
+    {
+        this.unitType = unitType;
+        animator = GetComponentInChildren<Animator>();
+        _entityAnimator = GetComponentInChildren<EntityAnimator>();
+        _entityAnimator.Init();
+        _entityAnimator.InitUnit(this);
+        flippable = transform.Find("Flippable");
+        unitMovement = GetComponent<UnitMovement>();
+        unitMovement.Init(isMyPlayer);
+
+        isInitialized = true;
+    }
+    
     public void Attack()
     {
         if (unitMovement.IsDragging) return;
@@ -144,15 +153,6 @@ public abstract class Unit : MonoBehaviour, IAttackable
         animator.SetTrigger("Idle");
     }
 
-    public void Upgrade()
-    {
-        if (upgradeTo != null)
-        {
-            Instantiate(upgradeTo, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
-    }
-
     public void TakeDamage(float amount)
     {
         //Not use
@@ -173,4 +173,18 @@ public abstract class Unit : MonoBehaviour, IAttackable
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+}
+
+
+public enum UnitTypeEnum
+{
+    None,
+    Sword,
+    Shield,
+    Horse,
+    Spear,
+    Halberd,
+    Prince,
+    Cavalier,
+    King,
 }

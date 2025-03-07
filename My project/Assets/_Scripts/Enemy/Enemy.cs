@@ -12,15 +12,16 @@ public abstract class Enemy : MonoBehaviour, IHittable
     [SerializeField] private int dropGold;
     public bool IsDead { get; set; }
 
-    private void OnEnable()
+    public void Init()
     {
         _entityAnimator = GetComponentInChildren<EntityAnimator>();
+        _entityAnimator.Init();
         _entityAnimator.InitEnemy(this);
         IsDead = false;
         RoundManager.Instance.AliveEnemies++;
         Appear();
     }
-    
+
     private void OnDisable()
     {
         StopAllCoroutines();

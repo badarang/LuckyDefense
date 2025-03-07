@@ -106,14 +106,19 @@ public class RoundManager : Singleton<RoundManager>
         {
             GameObject enemy = Instantiate(enemyPrefab, upperStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
             GameObject enemy2 = Instantiate(enemyPrefab, lowerStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
+            
+            enemy.GetComponent<Enemy>().Init();
+            enemy2.GetComponent<Enemy>().Init();
         }
         else if (isUpper == 0) // 하단
         {
             GameObject enemy = Instantiate(enemyPrefab, lowerStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
+            enemy.GetComponent<Enemy>().Init();
         }
         else if (isUpper == 1) // 상단
         {
             GameObject enemy = Instantiate(enemyPrefab, upperStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
+            enemy.GetComponent<Enemy>().Init();
         }
     }
     

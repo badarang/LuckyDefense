@@ -7,18 +7,20 @@ public class SummonUnitContainer : MonoBehaviour, IUITextBase
 {
     [SerializeField] private TextMeshProUGUI requiredGoldText;
     [SerializeField] private Image iconImage;
+    [SerializeField] private Button summonButton;
     private WaitForSeconds twoSec = new WaitForSeconds(2f);
 
     private float shineLocation = 0;
 
     public void ResetText()
     {
-        requiredGoldText.text = Statics.InitialGameDataDic["UnitRequiredGold"].ToString();
+        requiredGoldText.text = GoodsManager.Instance.RequiredSummonGold.ToString();
     }
 
     private void OnEnable()
     {
         StartShineUI();
+        summonButton.onClick.AddListener(OnClickSummonBtn);
     }
 
     private void StartShineUI()
@@ -40,11 +42,22 @@ public class SummonUnitContainer : MonoBehaviour, IUITextBase
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            Debug.Log(elapsed);
             elapsed += Time.deltaTime;
             shineLocation = Mathf.Lerp(from, to, elapsed / duration);
             iconImage.material.SetFloat("_ShineLocation", shineLocation);
             yield return null;
+        }
+    }
+    
+    private void OnClickSummonBtn()
+    {
+        if (GoodsManager.Instance.Gold >= GoodsManager.Instance.RequiredSummonGold)
+        {
+            GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
+            GoodsManager.Instance.IncreaseRequiredSummonGold();
+            UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
+            UIManager.Instance.ChangeGoldText(GoodsManager.Instance.Gold);
+            UnitManager.Instance.SummonUnit(isMyPlayer: true);
         }
     }
 }

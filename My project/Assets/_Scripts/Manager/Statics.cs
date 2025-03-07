@@ -10,6 +10,7 @@ public static class Statics
     public static Dictionary<string, int> InitialGameDataDic = new Dictionary<string, int>
     {
         {"UnitRequiredGold", 20},
+        {"UnitRequiredGoldIncrease", 2},
         {"InitialGold", 100},
         {"InitialDiamond", 0},
         {"MaxUnitCount", 20},

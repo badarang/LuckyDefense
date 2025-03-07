@@ -33,7 +33,6 @@ public class UIManager : Singleton<UIManager>
     {
         base.OnApplicationQuit();
         UIDictionary.Clear();
-        UITextDictionary.Clear();
     }
     
     public void OnLoad()
@@ -121,6 +120,21 @@ public class UIManager : Singleton<UIManager>
         {
             damageTextComponent.Init();
             damageTextComponent.SetText(damage, isCritical);
+        }
+    }
+    
+    public void ChangeGoldText(int gold)
+    {
+        if (UITextDictionary.TryGetValue("GoldText", out var goldText))
+        {
+            goldText.text = gold.ToString();
+        }
+    }
+    public void ChangeRequiredGoldText(int gold)
+    {
+        if (UITextDictionary.TryGetValue("RequiredGoldAmountText", out var goldText))
+        {
+            goldText.text = gold.ToString();
         }
     }
 }

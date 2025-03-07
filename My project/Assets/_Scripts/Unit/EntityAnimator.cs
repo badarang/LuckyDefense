@@ -16,14 +16,13 @@ public class EntityAnimator : MonoBehaviour
     private Tween walkMotionTween;
     
 
-    void Start()
+    public void Init()
     {
         transform.localPosition = new Vector3(0, 0, 0);
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteMat = Instantiate(spriteRenderer.material);
         spriteRenderer.material = spriteMat;
-        
         flippable = transform.parent.transform;
     }
 
@@ -153,6 +152,7 @@ public class EntityAnimator : MonoBehaviour
         if (hitEffectValue > 0)
         {
             if (hitEffectValue < .1f) hitEffectValue = 0;
+            if (!spriteMat.HasFloat("_HitEffectBlend")) return;
             spriteMat.SetFloat("_HitEffectBlend", hitEffectValue);
             hitEffectValue -= Time.deltaTime * 10;
         }
