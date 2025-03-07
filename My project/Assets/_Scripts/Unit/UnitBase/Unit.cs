@@ -53,6 +53,8 @@ public abstract class Unit : MonoBehaviour, IAttackable
     private EntityAnimator _entityAnimator;
     private UnitMovement unitMovement;
     private Transform flippable;
+    public Transform Flippable => flippable;
+    private Transform rendererTransform;
     private bool isInitialized = false;
 
     #endregion
@@ -83,6 +85,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         _entityAnimator.Init();
         _entityAnimator.InitUnit(this);
         flippable = transform.Find("Flippable");
+        rendererTransform = flippable.transform.Find("Renderer");
         unitMovement = GetComponent<UnitMovement>();
         unitMovement.Init(isMyPlayer);
 
@@ -128,10 +131,10 @@ public abstract class Unit : MonoBehaviour, IAttackable
         
         animator.SetTrigger((isCritical) ? "SpecialAttack" : "Attack");
 
-        if (enemiesInRange[0].transform.position.x < transform.position.x)
-            flippable.localScale = new Vector3(-1, 1, 1);
-        else
-            flippable.localScale = new Vector3(1, 1, 1);
+        var localScale = flippable.localScale;
+        if (enemiesInRange[0].transform.position.x < transform.position.x && localScale.x > 0) localScale.x *= -1;
+        else if (enemiesInRange[0].transform.position.x > transform.position.x && localScale.x < 0) localScale.x *= -1;
+        flippable.localScale = localScale;
     }
     
     IEnumerator AttackCoroutine(bool isCritical, float targetTime)
