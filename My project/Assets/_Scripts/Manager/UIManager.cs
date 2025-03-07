@@ -11,6 +11,7 @@ public class UIManager : Singleton<UIManager>
     public Dictionary<string, TextMeshProUGUI> UITextDictionary = new Dictionary<string, TextMeshProUGUI>();
     private WaitForSeconds oneSec = new WaitForSeconds(1f);
 
+
     private void Awake()
     {
         base.Awake();

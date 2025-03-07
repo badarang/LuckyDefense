@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a588e4d1e2f4b26ac0e87ed44f60f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 40
   speed: 2
   dropGold: 1
 --- !u!114 &3989959845235854144
@@ -129,7 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf48f532c497421daf6ded6f96849fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceUpper: 1
   PathUpper: {fileID: 4206005259688057762, guid: b9101279f744a47fb81871061095c690, type: 3}
   PathLower: {fileID: 488765249368472142, guid: 4001f8c93b9264512b79ece39ea9eb7d, type: 3}
 --- !u!1 &6670563596986172858

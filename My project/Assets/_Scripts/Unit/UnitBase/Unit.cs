@@ -37,6 +37,12 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     [SerializeField]
     private Unit upgradeTo;
+
+    [SerializeField]
+    private float moveSpeed;
+    public float MoveSpeed => moveSpeed;
+    
+    public Vector2Int GridPosition { get; set; }
     
     [Header("Combat Settings")]
     [SerializeField]
@@ -77,7 +83,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         }
     }
 
-    public void Init(UnitTypeEnum unitType, bool isMyPlayer)
+    public void Init(UnitTypeEnum unitType, bool isMyPlayer, Vector2Int spawnPosition)
     {
         this.unitType = unitType;
         animator = GetComponentInChildren<Animator>();
@@ -88,8 +94,17 @@ public abstract class Unit : MonoBehaviour, IAttackable
         rendererTransform = flippable.transform.Find("Renderer");
         unitMovement = GetComponent<UnitMovement>();
         unitMovement.Init(isMyPlayer);
+        GridPosition = spawnPosition;
 
         isInitialized = true;
+    }
+
+    public void Flip(bool isFacingRight)
+    {
+        var localScale = flippable.localScale;
+        if (isFacingRight) localScale.x = Mathf.Abs(localScale.x);
+        else localScale.x = -Mathf.Abs(localScale.x);
+        flippable.localScale = localScale;
     }
     
     public void Attack()
@@ -130,11 +145,9 @@ public abstract class Unit : MonoBehaviour, IAttackable
         }
         
         animator.SetTrigger((isCritical) ? "SpecialAttack" : "Attack");
-
-        var localScale = flippable.localScale;
-        if (enemiesInRange[0].transform.position.x < transform.position.x && localScale.x > 0) localScale.x *= -1;
-        else if (enemiesInRange[0].transform.position.x > transform.position.x && localScale.x < 0) localScale.x *= -1;
-        flippable.localScale = localScale;
+        
+        var isFacingRight = (currentTargets[0].transform.position.x < transform.position.x) ? false : true; 
+        Flip(isFacingRight);
     }
     
     IEnumerator AttackCoroutine(bool isCritical, float targetTime)

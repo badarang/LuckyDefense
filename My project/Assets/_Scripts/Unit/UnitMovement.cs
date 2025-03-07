@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class UnitMovement : MonoBehaviour
@@ -9,21 +11,27 @@ public class UnitMovement : MonoBehaviour
     private bool isDragging = false;
     public bool IsDragging => isDragging;
     private Animator animator;
+    private Unit unit;
+    private Coroutine moveCoroutine;
     
-
-    void Start()
-    {
-        animator = GetComponentInChildren<Animator>();
-    }
 
     public void Init(bool isMyPlayer)
     {
+        animator = GetComponentInChildren<Animator>();
+        unit = GetComponent<Unit>();
         placeUpper = !isMyPlayer;
     }
 
     void OnMouseDown()
     {
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
+        if (placeUpper) return; //상대 유닛은 드래그 불가능
+        if (isDragging) return;
+        UnitManager.Instance.StartDragPosition(unit.GridPosition);
+    }
+
+    public void StartDrag()
+    {
         offset = transform.position - GetMouseWorldPosition();
         isDragging = true;
         animator.SetTrigger("Walk");
@@ -55,6 +63,44 @@ public class UnitMovement : MonoBehaviour
     }
 
     void OnMouseUp()
+    {
+        if (GameManager.Instance.CurrentState != GameState.InGame) return;
+        if (isDragging) return;
+        UnitManager.Instance.EndDragPosition();
+    }
+
+    public void StartMove(Vector2 target)
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        moveCoroutine = StartCoroutine(MoveCO(target));
+    }
+
+    public IEnumerator MoveCO(Vector2 target)
+    {
+        Vector2 startPosition = transform.position;
+        var isFacingRight = startPosition.x < target.x ? true : false;
+        unit.Flip(isFacingRight);
+        float distance = Vector2.Distance(startPosition, target);
+        float speed = unit.MoveSpeed;
+        float time = distance / speed;
+        float elapsedTime = 0;
+        StartDrag();
+        
+        while (elapsedTime < time)
+        {
+            transform.position = Vector2.Lerp(startPosition, target, elapsedTime / time);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        EndDrag();
+        transform.position = target;
+    }
+    
+    public void EndDrag()
     {
         isDragging = false;
         animator.SetTrigger("Idle");
