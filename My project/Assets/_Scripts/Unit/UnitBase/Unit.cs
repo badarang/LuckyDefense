@@ -12,6 +12,8 @@ public abstract class Unit : MonoBehaviour, IAttackable
     private string unitName;
     private UnitTypeEnum unitType;
     public UnitTypeEnum UnitType => unitType;
+    
+    [SerializeField] private GameObject circlePrefab;
 
     [SerializeField]
     private Grade grade;
@@ -188,6 +190,11 @@ public abstract class Unit : MonoBehaviour, IAttackable
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    public void ToggleSelectedCircle(bool isShow)
+    {
+        circlePrefab.SetActive(isShow);
     }
 }
 

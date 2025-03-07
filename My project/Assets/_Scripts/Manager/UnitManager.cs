@@ -7,6 +7,7 @@ public class UnitManager : Singleton<UnitManager>
 {
     public GameObject unitPrefab;
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private GameObject destinationGUI;
     private const int Width = 6, Height = 3;
     private UnitGroup[,] upperUnitGroups = new UnitGroup[Width, Height];
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
@@ -34,6 +35,8 @@ public class UnitManager : Singleton<UnitManager>
             if (gridPos != dragTo)
             {
                 dragTo = gridPos;
+                destinationGUI.transform.position = GridToWorld(dragTo);
+                destinationGUI.SetActive(true);
                 UpdateDragLine();
             }
         }
@@ -209,7 +212,7 @@ public class UnitManager : Singleton<UnitManager>
         lineRenderer.SetPosition(1, GridToWorld(dragTo));
         lineRenderer.enabled = true;
         isDragging = true;
-
+        destinationGUI.transform.position = GridToWorld(dragTo);
 
         // List<Unit> units = lowerUnitGroups[gridPosition.x, gridPosition.y].units;
         // if (units.Count == 0) return;
@@ -228,6 +231,7 @@ public class UnitManager : Singleton<UnitManager>
         Statics.DebugColor($"End Drag Position: {dragTo}", new Color(.9f, 0.5f, 0));
         isDragging = false;
         lineRenderer.enabled = false;
+        destinationGUI.SetActive(false);
 
         if (dragFrom == dragTo)
         {
