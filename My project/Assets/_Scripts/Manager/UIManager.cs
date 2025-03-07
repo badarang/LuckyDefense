@@ -139,4 +139,12 @@ public class UIManager : Singleton<UIManager>
             goldText.text = gold.ToString();
         }
     }
+    
+    public void ChangeUnitCountText(int aliveUnits)
+    {
+        if (UITextDictionary.TryGetValue("UnitCountText", out var aliveUnitsText))
+        {
+            aliveUnitsText.text = $"{aliveUnits}/{Statics.InitialGameDataDic["MaxUnitCount"]}";
+        }
+    }
 }

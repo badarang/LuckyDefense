@@ -6,13 +6,27 @@ using UnityEngine;
 public class UnitManager : Singleton<UnitManager>
 {
     public GameObject unitPrefab;
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private GameObject destinationGUI;
+
+    [SerializeField]
+    private LineRenderer lineRenderer;
+
+    [SerializeField]
+    private GameObject destinationGUI;
+
     private const int Width = 6, Height = 3;
     private UnitGroup[,] upperUnitGroups = new UnitGroup[Width, Height];
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
-    
-    
+    private int unitCount;
+
+    public int UnitCount {
+        get => unitCount;
+        set
+        {
+            unitCount = value;
+            UIManager.Instance.ChangeUnitCountText(value);
+        }
+    }
+
     private bool isDragging = false;
     private Vector2Int dragFrom;
     private Vector2Int dragTo;
@@ -101,14 +115,8 @@ public class UnitManager : Singleton<UnitManager>
         if (spawnPosition.x == -1)
         {
             spawnPosition = FindEmptyPosition(priorityPositions, unitGroups);
-            Debug.Log($"Empty Position: {spawnPosition}");
+        }
 
-        }
-        else
-        {
-            Debug.Log($"Merge Position: {spawnPosition}");
-        }
-        
         return spawnPosition;
     }
     
@@ -153,7 +161,6 @@ public class UnitManager : Singleton<UnitManager>
 
     private bool CanMerge(List<Unit> unitGroup, UnitTypeEnum newUnitType)
     {
-        Debug.Log($"UnitGroup Count: {unitGroup.Count} / NewUnitType: {newUnitType}");
         return unitGroup.Count < 3 && unitGroup[0].UnitType == newUnitType;
     }
 
@@ -200,13 +207,11 @@ public class UnitManager : Singleton<UnitManager>
     
     public void SelectPosition(Vector2Int gridPosition)
     {
-        Statics.DebugColor($"Selected Position: {gridPosition}", new Color(.8f, 0.7f, 0));
         //TODO: UI에 선택된 위치 표시
     }
 
     public void StartDragPosition(Vector2Int gridPosition)
     {
-        Statics.DebugColor($"Start Drag Position: {gridPosition}", new Color(.8f, 0.7f, 0));
         dragFrom = gridPosition;
         dragTo = gridPosition;
         lineRenderer.SetPosition(0, GridToWorld(dragFrom));
@@ -214,22 +219,10 @@ public class UnitManager : Singleton<UnitManager>
         lineRenderer.enabled = true;
         isDragging = true;
         destinationGUI.transform.position = GridToWorld(dragTo);
-
-        // List<Unit> units = lowerUnitGroups[gridPosition.x, gridPosition.y].units;
-        // if (units.Count == 0) return;
-        //
-        // foreach (var unit in units)
-        // {
-        //     if (unit.TryGetComponent(out UnitMovement unitMovement))
-        //     {
-        //         unitMovement.StartDrag();
-        //     }
-        // }
     }
     
     public void EndDragPosition()
     {
-        Statics.DebugColor($"End Drag Position: {dragTo}", new Color(.9f, 0.5f, 0));
         isDragging = false;
         lineRenderer.enabled = false;
         destinationGUI.SetActive(false);
@@ -244,17 +237,6 @@ public class UnitManager : Singleton<UnitManager>
             //이동 요청
             MovePosition(dragFrom, dragTo, isMyPlayer: true);
         }
-        
-        // List<Unit> units = lowerUnitGroups[dragFrom.x, dragFrom.y].units;
-        // if (units.Count == 0) return;
-        //
-        // foreach (var unit in units)
-        // {
-        //     if (unit.TryGetComponent(out UnitMovement unitMovement))
-        //     {
-        //         unitMovement.EndDrag();
-        //     }
-        // }
     }
 
     public void MovePosition(Vector2Int from, Vector2Int to, bool isMyPlayer = true)
@@ -265,13 +247,11 @@ public class UnitManager : Singleton<UnitManager>
         if (toGroup.units.Count == 0)
         {
             //이동
-            Debug.Log("Move Empty Position");
             MoveEmptyPosition(from, to, isMyPlayer);
         }
         else
         {
             //Swap
-            Debug.Log("Swap Position");
             SwapPosition(from, to, isMyPlayer);
         }
     }
@@ -285,7 +265,6 @@ public class UnitManager : Singleton<UnitManager>
         Vector2 worldPosition = GridToWorld(to, isMyPlayer);
         foreach (var unit in fromGroup.units)
         {
-            Debug.Log($"Move Unit: {unit.UnitType} from {from} to {to}");
             unit.GetComponent<UnitMovement>().StartMove(worldPosition);
             unit.GridPosition = to;
         }

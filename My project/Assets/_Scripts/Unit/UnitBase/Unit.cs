@@ -99,6 +99,9 @@ public abstract class Unit : MonoBehaviour, IAttackable
         GridPosition = spawnPosition;
 
         isInitialized = true;
+        
+        if (isMyPlayer) UnitManager.Instance.UnitCount++;
+
     }
 
     public void Flip(bool isFacingRight)
@@ -184,6 +187,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
     void Die()
     {
         Destroy(gameObject);
+        
     }
 
     void OnDrawGizmosSelected()
