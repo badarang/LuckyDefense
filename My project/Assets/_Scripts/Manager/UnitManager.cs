@@ -56,11 +56,12 @@ public class UnitManager : Singleton<UnitManager>
     private void InitializeLineRenderer()
     {
         lineRenderer.positionCount = 2;
-        lineRenderer.startWidth = 0.25f;
-        lineRenderer.endWidth = 0.25f;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = new Color(1, 1, 0, 0.7f);
-        lineRenderer.endColor = new Color(1, 1, 0, 0.8f);
+        Color yellow = new Color(1, 0.98f, 0, .8f);
+        lineRenderer.startColor = yellow;
+        lineRenderer.endColor = yellow;
         lineRenderer.useWorldSpace = true;
         lineRenderer.enabled = false;
     }

@@ -93,7 +93,14 @@ public class RoundManager : Singleton<RoundManager>
         }
     }
 
-
+    private void GetAndInitEnemy(GameObject enemyPrefab, bool isUpper = true)
+    {
+        var pos = isUpper ? upperStartPos.position : lowerStartPos.position;
+        GameObject enemy = PoolManager.Instance.GetEnemy(enemyPrefab, pos);
+        enemy.transform.parent = enemySpawnGroup.transform;
+        enemy.SetActive(true);
+        enemy.GetComponent<Enemy>().Init();
+    }
 
     private void SpawnEnemy(GameObject enemyPrefab, int isUpper)
     {
@@ -104,21 +111,16 @@ public class RoundManager : Singleton<RoundManager>
         
         if (isUpper == -1) // 양쪽
         {
-            GameObject enemy = Instantiate(enemyPrefab, upperStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
-            GameObject enemy2 = Instantiate(enemyPrefab, lowerStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
-            
-            enemy.GetComponent<Enemy>().Init();
-            enemy2.GetComponent<Enemy>().Init();
+            GetAndInitEnemy(enemyPrefab, true);
+            GetAndInitEnemy(enemyPrefab, false);
         }
         else if (isUpper == 0) // 하단
         {
-            GameObject enemy = Instantiate(enemyPrefab, lowerStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
-            enemy.GetComponent<Enemy>().Init();
+            GetAndInitEnemy(enemyPrefab, false);
         }
         else if (isUpper == 1) // 상단
         {
-            GameObject enemy = Instantiate(enemyPrefab, upperStartPos.position, Quaternion.identity, enemySpawnGroup.transform);
-            enemy.GetComponent<Enemy>().Init();
+            GetAndInitEnemy(enemyPrefab, true);
         }
     }
     

@@ -17,6 +17,10 @@ public abstract class Enemy : MonoBehaviour, IHittable
         _entityAnimator = GetComponentInChildren<EntityAnimator>();
         _entityAnimator.Init();
         _entityAnimator.InitEnemy(this);
+        if (TryGetComponent(out EnemyMovement enemyMovement))
+        {
+            enemyMovement.Init();
+        }
         IsDead = false;
         RoundManager.Instance.AliveEnemies++;
         Appear();
@@ -49,6 +53,7 @@ public abstract class Enemy : MonoBehaviour, IHittable
         if (IsDead) return;
         IsDead = true;
         GoodsManager.Instance.Gold += dropGold;
+        UIManager.Instance.ChangeGoldText(GoodsManager.Instance.Gold);
         RoundManager.Instance.AliveEnemies--;
         StartCoroutine(DestroyEnemy());
     }
@@ -57,6 +62,6 @@ public abstract class Enemy : MonoBehaviour, IHittable
     {
         _entityAnimator.StartDieAnimation();
         yield return new WaitForSeconds(1f);
-        Destroy(gameObject);
+        PoolManager.Instance.ReturnEnemy(gameObject);
     }
 }

@@ -56,5 +56,10 @@ public class UnitGroup
         {
             units.Clear();
         }
+        
+        foreach (Unit unit in units)
+        {
+            unit.ToggleOutline(unitCount == 3);
+        }
     }
 }

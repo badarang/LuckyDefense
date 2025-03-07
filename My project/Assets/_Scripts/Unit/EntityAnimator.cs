@@ -22,6 +22,7 @@ public class EntityAnimator : MonoBehaviour
         transform.localPosition = new Vector3(0, 0, 0);
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
         spriteMat = Instantiate(spriteRenderer.material);
         spriteRenderer.material = spriteMat;
         flippable = transform.parent.transform;
@@ -125,11 +126,11 @@ public class EntityAnimator : MonoBehaviour
     {
         if (toggle)
         {
-            animator.SetInteger("_OutlineAlpha", 1);
+            spriteMat.SetFloat("_OutlineAlpha", 1);
         }
         else
         {
-            animator.SetInteger("_OutlineAlpha", 0);
+            spriteMat.SetFloat("_OutlineAlpha", 0);
         }
     }
     
@@ -157,7 +158,7 @@ public class EntityAnimator : MonoBehaviour
             if (hitEffectValue < .1f) hitEffectValue = 0;
             if (!spriteMat.HasFloat("_HitEffectBlend")) return;
             spriteMat.SetFloat("_HitEffectBlend", hitEffectValue);
-            hitEffectValue -= Time.deltaTime * 10;
+            hitEffectValue -= Time.deltaTime * 8;
         }
     }
 }

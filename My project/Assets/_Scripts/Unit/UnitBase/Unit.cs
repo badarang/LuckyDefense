@@ -196,6 +196,18 @@ public abstract class Unit : MonoBehaviour, IAttackable
     {
         circlePrefab.SetActive(isShow);
     }
+    
+    public void ToggleOutline(bool toggle)
+    {
+        if (toggle)
+        {
+            _entityAnimator.ToggleOutline(true);
+        }
+        else
+        {
+            _entityAnimator.ToggleOutline(false);
+        }
+    }
 }
 
 

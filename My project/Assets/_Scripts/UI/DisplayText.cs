@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class DamageText : MonoBehaviour
+public class DisplayText : MonoBehaviour
 {
-    private TextMeshPro damageText;
+    [SerializeField] private TextMeshPro displayText;
 
     public void Init()
     {
-        damageText = GetComponent<TextMeshPro>();
-        StartCoroutine(DestroyText());
+        StartCoroutine(ReleaseText());
     }
     
     void Update()
@@ -19,7 +19,7 @@ public class DamageText : MonoBehaviour
         transform.position += new Vector3(0, 1f, 0) * Time.deltaTime;
     }
     
-    IEnumerator DestroyText()
+    IEnumerator ReleaseText()
     {
         yield return new WaitForSeconds(.2f);
         StartCoroutine(FadeOut());
@@ -27,26 +27,26 @@ public class DamageText : MonoBehaviour
     
     IEnumerator FadeOut()
     {
-        var color = damageText.color;
+        var color = displayText.color;
         while (color.a > 0)
         {
             color.a -= Time.deltaTime * 5f;
-            damageText.color = color;
+            displayText.color = color;
             yield return null;
         }
-        Destroy(gameObject);
+        PoolManager.Instance.ReturnDisplayText(gameObject);
     }
     
     public void SetText(int damage, bool isCritical)
     {
         //Set Text
-        damageText.text = damage.ToString();
+        displayText.text = damage.ToString();
         
         //Set Color
         var lightRed = new Color(1, 0.3f, 0.2f);
-        damageText.color = isCritical ? lightRed : Color.white;
+        displayText.color = isCritical ? lightRed : Color.white;
         
         //Set Scale
-        damageText.fontSize = isCritical ? 5 : 3;
+        displayText.fontSize = isCritical ? 5 : 3;
     }
 }

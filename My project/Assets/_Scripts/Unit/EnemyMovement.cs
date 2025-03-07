@@ -29,7 +29,7 @@ public class EnemyMovement : MonoBehaviour
 
     
 
-    void OnEnable()
+    public void Init()
     {
         if (transform.position.y > -2f)
         {
@@ -40,6 +40,8 @@ public class EnemyMovement : MonoBehaviour
             placeUpper = false;
         }
         
+        idx = 0;
+        targetPoint = null;
         currentPath = placeUpper ? PathUpper : PathLower;
         enemy = GetComponent<Enemy>();
         animator = GetComponentInChildren<Animator>();
