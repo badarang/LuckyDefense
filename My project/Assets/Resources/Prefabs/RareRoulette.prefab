@@ -143,7 +143,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3813365722587077199}
-  - component: {fileID: 5754289756727297080}
+  - component: {fileID: 6698770712764692874}
   - component: {fileID: 4483467346992937510}
   - component: {fileID: 2782564174473748528}
   - component: {fileID: 4411161359431719144}
@@ -174,7 +174,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -38}
   m_SizeDelta: {x: 220, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5754289756727297080
+--- !u!114 &6698770712764692874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,10 +183,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1305510014424578923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c0786a3cd6b4431a8c130b5c40b71a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 50efdeb8e623c4aa187bccb0f98b997a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalPosition: {x: 0, y: 0}
   originalScale: {x: 1, y: 1, z: 1}
+  direction: 1
+  isUpDown: 0
+  isExpandShrink: 1
 --- !u!222 &4483467346992937510
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -427,6 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickUpButton: {fileID: 1059454368835233258}
+  gamblingIdx: 0
 --- !u!1 &4849992278459081854
 GameObject:
   m_ObjectHideFlags: 0

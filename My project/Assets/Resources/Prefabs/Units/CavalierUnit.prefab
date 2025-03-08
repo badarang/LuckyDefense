@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
       propertyPath: m_Name
-      value: CavalierUnit Variant
+      value: CavalierUnit
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2251840463363966479, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
@@ -104,6 +104,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   currentTargets: []
+  RequiredUnits:
+  - {fileID: 3917608145986306056, guid: d2c77cecf4ade4afca3061491b8cbefe, type: 3}
+  - {fileID: 8925309419743858732, guid: 2df4ad3682f8245c1a5523738f6d1b47, type: 3}
+  - {fileID: 1589290177870584038, guid: 44eacc0c3baee4ff58559581b9cf7865, type: 3}
 --- !u!1 &4544725351635957935 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8773164886972097682, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}

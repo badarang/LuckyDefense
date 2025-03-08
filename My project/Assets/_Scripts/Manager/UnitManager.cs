@@ -17,7 +17,8 @@ public class UnitManager : Singleton<UnitManager>
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
     private int unitCount;
     private Dictionary<UnitTypeEnum, GameObject> spawnableUnitDic;
-    
+    public Dictionary <UnitTypeEnum, MythicUnitInfo> MythicUnitInfoDic;
+
 
     public int UnitCount {
         get => unitCount;
@@ -40,6 +41,7 @@ public class UnitManager : Singleton<UnitManager>
         InitializeUnitGroups();
         InitializeLineRenderer();
         InitializeSpawnableUnitDic();
+        InitializeMythicUnitInfoDic();
     }
 
     private void Update()
@@ -48,6 +50,8 @@ public class UnitManager : Singleton<UnitManager>
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {
+                //null check
+                if (EventSystem.current.currentSelectedGameObject == null) return;
                 if (EventSystem.current.currentSelectedGameObject.name == "SellButton" || EventSystem.current.currentSelectedGameObject.name == "UpgradeButton")
                 {
                     return;
@@ -104,6 +108,15 @@ public class UnitManager : Singleton<UnitManager>
             spawnableUnitDic.Add(unit.GetComponent<Unit>().UnitType, unit);
         }
     }
+    
+    private void InitializeMythicUnitInfoDic()
+    {
+        MythicUnitInfoDic = new Dictionary<UnitTypeEnum, MythicUnitInfo>();
+        foreach (var unit in Resources.LoadAll<MythicUnitInfo>("Data/MythicUnitInfo"))
+        {
+            MythicUnitInfoDic.Add(unit.mythicUnitType, unit);
+        }
+    }
 
     public void SummonUnit(bool isMyPlayer = true, Grade grade = Grade.None)
     {
@@ -117,6 +130,10 @@ public class UnitManager : Singleton<UnitManager>
             }
         }
         
+        GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
+        GoodsManager.Instance.IncreaseRequiredSummonGold();
+        UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
+        
         var isUpper = !isMyPlayer;
         
         UnitTypeEnum newUnitType;
@@ -125,7 +142,7 @@ public class UnitManager : Singleton<UnitManager>
         //등급을 지정한 경우 해당 등급의 유닛을 소환
         else newUnitType = GetUnitType(grade);
         
-        Vector2Int spawnPosition = FindSpawnPosition(newUnitType, isMyPlayer, isUpper);
+        Vector2Int spawnPosition = FindSpawnPosition(newUnitType, isMyPlayer);
         
         if (spawnPosition.x == -1)
         {
@@ -152,6 +169,16 @@ public class UnitManager : Singleton<UnitManager>
         GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], GridToWorld(spawnPosition), Quaternion.identity);
         Unit newUnit = unitObj.GetComponent<Unit>();
         newUnit.Init(newUnitType, true, spawnPosition);
+        
+        return newUnit;
+    }
+    
+    //신화 유닛 소환 시 사용
+    public Unit SummonUnit(UnitTypeEnum unitType, Vector2Int spawnPosition, bool isMyPlayer = true)
+    {
+        GameObject unitObj = Instantiate(spawnableUnitDic[unitType], GridToWorld(spawnPosition), Quaternion.identity);
+        Unit newUnit = unitObj.GetComponent<Unit>();
+        newUnit.Init(unitType, isMyPlayer, spawnPosition);
         
         return newUnit;
     }
@@ -239,8 +266,7 @@ public class UnitManager : Singleton<UnitManager>
         }
         return new KeyValuePair<UnitGroup, Unit>(null, null);
     }
-
-
+    
     public void UpgradeUnit(Unit unit, bool isMyPlayer = true)
     {
         Debug.Log("Upgrade Unit Called");
@@ -280,7 +306,44 @@ public class UnitManager : Singleton<UnitManager>
         }
         unitGroups[unit.GridPosition.x, unit.GridPosition.y].OnUnitChanged?.Invoke(unitGroups[unit.GridPosition.x, unit.GridPosition.y]);
     }
-    
+
+    public void UpgradeUnitMythic(UnitTypeEnum mythicUnit, bool isMyPlayer = true)
+    {
+        var mythicUnitInfo = MythicUnitInfoDic[mythicUnit];
+
+        Vector2Int spawnPos = new Vector2Int(-1, -1);
+        
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        foreach (var requiredUnit in mythicUnitInfo.requiredUnits)
+        {
+            foreach (var unit in unitGroups)
+            {
+                if (unit.units.Count > 0 && unit.units[0].UnitType == requiredUnit)
+                {
+                    var tmpPos = unit.units[0].GridPosition;
+                    Destroy(unit.units[0].gameObject);
+                    unit.units.RemoveAt(0);
+                    unit.OnUnitChanged?.Invoke(unit);
+                    
+                    //기존 유닛이 있던 위치에 신화 유닛 소환하려고 시도 (높은 등급 우선)
+                    if (spawnPos.x == -1 && unit.units.Count == 0) spawnPos = tmpPos;
+                    break;
+                }
+            }
+        }
+        
+        Unit newUnit = SummonUnit(mythicUnit, spawnPos, isMyPlayer);
+        
+        if (spawnPos.x == -1)
+        {
+            spawnPos = FindSpawnPosition(mythicUnit, isMyPlayer);
+        }
+
+        //신화 유닛은 단독으로 존재. (합성 불가)
+        unitGroups[spawnPos.x, spawnPos.y].units.Add(newUnit);
+        unitGroups[spawnPos.x, spawnPos.y].OnUnitChanged?.Invoke(unitGroups[spawnPos.x, spawnPos.y]);
+    }
+
     private UnitTypeEnum GetRandomUnitType()
     {
         Grade grade = GetRandomGrade();
@@ -320,8 +383,9 @@ public class UnitManager : Singleton<UnitManager>
     
     #region Unit Spawn System
     
-    private Vector2Int FindSpawnPosition(UnitTypeEnum newUnitType, bool isMyPlayer, bool isUpper)
+    private Vector2Int FindSpawnPosition(UnitTypeEnum newUnitType, bool isMyPlayer)
     {
+        bool isUpper = !isMyPlayer;
         List<Vector2Int> priorityPositions = GetPriorityPositions(isMyPlayer);
         UnitGroup[,] unitGroups = isUpper ? upperUnitGroups : lowerUnitGroups;
         
@@ -557,6 +621,48 @@ public class UnitManager : Singleton<UnitManager>
         }
     }
     
+    
+    #endregion
+    
+    #region Mythic Unit System
+    
+    public int GetProcess(UnitTypeEnum mythicUnitEnum, bool isMyPlayer = true)
+    {
+        int currentCount = 0;
+        
+        //Common : Rare : Epic = 1 : 3 : 6 비율을 따름
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        
+        foreach (var requiredUnit in MythicUnitInfoDic[mythicUnitEnum].requiredUnits)
+        {
+            foreach (var unit in unitGroups)
+            {
+                if (unit.units.Count > 0 && unit.units[0].UnitType == requiredUnit)
+                {
+                    if (unit.units[0].Grade == Grade.Common) currentCount++;
+                    else if (unit.units[0].Grade == Grade.Rare) currentCount += 3;
+                    else if (unit.units[0].Grade == Grade.Epic) currentCount += 6;
+                    break;
+                }
+            }
+        }
+        
+        float process = (float)currentCount / 10;
+        return (int)(process * 100);
+    }
+    
+    public int GetUnitCount(UnitTypeEnum unitType, bool isMyPlayer = true)
+    {
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        foreach (var unit in unitGroups)
+        {
+            if (unit.units.Count > 0 && unit.units[0].UnitType == unitType)
+            {
+                return unit.units.Count;
+            }
+        }
+        return 0;
+    }
     
     #endregion
 }

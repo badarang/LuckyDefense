@@ -35,6 +35,7 @@ public class UIManager : Singleton<UIManager>
     private void OnApplicationQuit()
     {
         base.OnApplicationQuit();
+        UITextDictionary.Clear();
         UIDictionary.Clear();
     }
     

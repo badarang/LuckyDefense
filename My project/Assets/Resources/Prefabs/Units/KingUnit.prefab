@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 473333662952762897, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 45525a7e7af3841ad9ea3fafb354d708, type: 2}
     - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -50,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
       propertyPath: m_Name
-      value: KingUnit Variant
+      value: KingUnit
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2251840463363966479, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
@@ -94,7 +98,7 @@ MonoBehaviour:
   goodsType: 1
   sellPrice: 5
   moveSpeed: 6
-  UnitIcon: {fileID: 0}
+  UnitIcon: {fileID: -1546279729, guid: 4ba2dba3754df43b4ac15da852cbc77a, type: 3}
   UnitName: "\uD0B9\uB9E8"
   UnitSkillName: "\uC5E0\uBE0C\uB85C\uC2DC\uC544"
   UnitSkillDescription: "\uC220\uC794\uC744 \uB358\uC838 \uC801\uC5D0\uAC8C 0.5\uCD08\uB9C8\uB2E4
