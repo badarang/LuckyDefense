@@ -14,9 +14,8 @@ public class TextAnimationBase : MonoBehaviour
     {
         if (tween != null) tween.Kill();
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(transform.DOScale(Vector3.one * 1.35f, appearDuration)).SetEase(Ease.OutBack);
-        sequence.Join(transform.DOShakeScale(0.5f, 0.1f, 10, 90, false));
-        sequence.Append(transform.DOScale(Vector3.one, appearDuration)).SetEase(Ease.OutBack);
+        sequence.Append(transform.DOScale(Vector3.one * 1.3f, appearDuration)).SetEase(Ease.OutBack);
+        sequence.Append(transform.DOScale(Vector3.one, appearDuration)).SetEase(Ease.OutExpo);
         sequence.WaitForCompletion();
         tween = sequence;
     }

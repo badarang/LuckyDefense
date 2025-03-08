@@ -8,6 +8,7 @@ public class RoundManager : Singleton<RoundManager>
     [Header("Rounds Settings")]
     [SerializeField] private List<Round> rounds;
     [SerializeField] private GameObject defaultEnemyPrefab;
+    [SerializeField] private List<SpawnCircle> spawnCircles;
 
     [SerializeField] private GameObject enemySpawnGroup;
     public int currentRound = 1;
@@ -69,6 +70,7 @@ public class RoundManager : Singleton<RoundManager>
 
         Round currentRoundData = rounds[currentRound - 1];
         float roundTime = currentRoundData.roundTime;
+        Invoke(nameof(AlertFiveSec), roundTime - 5f);
         UIManager.Instance.SetRoundTime(roundTime);
         UIManager.Instance.SetRoundText(currentRound);
         StartCoroutine(SpawnWaves(currentRoundData));
@@ -137,6 +139,14 @@ public class RoundManager : Singleton<RoundManager>
     public void GoToNextRound()
     {
         currentRound++;
+    }
+    
+    private void AlertFiveSec()
+    {
+        foreach (var spawnCircle in spawnCircles)
+        {
+            spawnCircle.StartShowAlert(5);
+        }
     }
 }
 

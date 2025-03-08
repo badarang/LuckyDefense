@@ -8,8 +8,6 @@ public abstract class Unit : MonoBehaviour, IAttackable
 {
     #region Unit Properties
     [Header("Unit Properties")]
-    [SerializeField]
-    private string unitName;
     private UnitTypeEnum unitType;
     public UnitTypeEnum UnitType => unitType;
     
@@ -24,12 +22,14 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     [SerializeField]
     private float attackSpeed;
+    public float AttackSpeed => attackSpeed;
 
     [SerializeField]
     private float range;
 
     [SerializeField]
     private float damage;
+    public float Damage => damage;
 
     [SerializeField]
     private float criticalChance;
@@ -44,6 +44,13 @@ public abstract class Unit : MonoBehaviour, IAttackable
     private float moveSpeed;
     public float MoveSpeed => moveSpeed;
     
+    [Header("Unit Info")]
+    public Sprite UnitIcon;
+    public string UnitName;
+    public string UnitSkillName;
+    public string UnitSkillDescription;
+    public UnitSkillTypeEnum UnitSkillType;
+
     public Vector2Int GridPosition { get; set; }
     
     [Header("Combat Settings")]
@@ -226,4 +233,10 @@ public enum UnitTypeEnum
     Prince,
     Cavalier,
     King,
+}
+
+public enum UnitSkillTypeEnum
+{
+    패시브,
+    액티브,
 }

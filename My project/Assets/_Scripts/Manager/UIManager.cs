@@ -64,9 +64,9 @@ public class UIManager : Singleton<UIManager>
     {
         foreach (var ui in UIDictionary)
         {
-            ui.Value.SetActive(true);
             if (ui.Value.TryGetComponent<UIAnimationBase>(out var uiAnimationBase))
             {
+                if (!uiAnimationBase.IsExpandedFirst) continue;
                 uiAnimationBase.Expand();
             }
             yield return new WaitForSeconds(0.1f);
@@ -145,6 +145,26 @@ public class UIManager : Singleton<UIManager>
         if (UITextDictionary.TryGetValue("UnitCountText", out var aliveUnitsText))
         {
             aliveUnitsText.text = $"{aliveUnits}/{Statics.InitialGameDataDic["MaxUnitCount"]}";
+        }
+    }
+    
+    public void ShowUnitInfo(Unit unit, int unitNum)
+    {
+        if (UIDictionary.TryGetValue("UnitInfo", out var unitInfoPanel))
+        {
+            if (unitInfoPanel.TryGetComponent<UnitInfo>(out var unitInfoPanelComponent))
+            {
+                unitInfoPanelComponent.SetUnitInfo(unit, unitNum);
+                unitInfoPanel.GetComponent<UIAnimationBase>().Expand();
+            }
+        }
+    }
+    
+    public void HideUnitInfo()
+    {
+        if (UIDictionary.TryGetValue("UnitInfo", out var unitInfoPanel))
+        {
+            unitInfoPanel.GetComponent<UIAnimationBase>().Shrink();
         }
     }
 }

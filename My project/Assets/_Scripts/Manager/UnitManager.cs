@@ -12,11 +12,14 @@ public class UnitManager : Singleton<UnitManager>
 
     [SerializeField]
     private GameObject destinationGUI;
+    
+    [SerializeField] private LayerMask unitLayer;
 
     private const int Width = 6, Height = 3;
     private UnitGroup[,] upperUnitGroups = new UnitGroup[Width, Height];
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
     private int unitCount;
+    
 
     public int UnitCount {
         get => unitCount;
@@ -42,6 +45,11 @@ public class UnitManager : Singleton<UnitManager>
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (IsClickingOnUnit()) return;
+            UIManager.Instance.HideUnitInfo();
+        }
         if (isDragging)
         {
             //dragFrom 에서 dragTo로 UI 선을 표시함. (노란색 점선)
@@ -55,6 +63,13 @@ public class UnitManager : Singleton<UnitManager>
             }
         }
     }
+    
+    private bool IsClickingOnUnit()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, unitLayer);
+    }
+    
     private void InitializeUnitGroups()
     {
         for (int x = 0; x < Width; x++)
@@ -207,7 +222,11 @@ public class UnitManager : Singleton<UnitManager>
     
     public void SelectPosition(Vector2Int gridPosition)
     {
-        //TODO: UI에 선택된 위치 표시
+        List<Unit> units = lowerUnitGroups[gridPosition.x, gridPosition.y].units;
+        if (units.Count > 0)
+        {
+            UIManager.Instance.ShowUnitInfo(units[0], units.Count);
+        }
     }
 
     public void StartDragPosition(Vector2Int gridPosition)

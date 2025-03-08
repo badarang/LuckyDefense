@@ -465,7 +465,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62cec7dac31354660abae39ec9653999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: "\uC18C\uB4DC\uB9E8"
   circlePrefab: {fileID: 8773164886972097682}
   grade: 0
   hp: 1
@@ -476,6 +475,11 @@ MonoBehaviour:
   sellPrice: 5
   upgradeTo: {fileID: 0}
   moveSpeed: 3
+  UnitIcon: {fileID: -1016063675, guid: 709f055482dea412585ca50a97bc03ca, type: 3}
+  UnitName: "\uAC80\uC0AC"
+  UnitSkillName: "\uB6F0\uC5B4\uB09C \uAC80\uC220"
+  UnitSkillDescription: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 2\uBC30\uAC00 \uB429\uB2C8\uB2E4."
+  UnitSkillType: 0
   attackableUnitCount: 1
   enemyLayer:
     serializedVersion: 2
