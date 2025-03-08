@@ -474,7 +474,7 @@ MonoBehaviour:
   criticalChance: 0.2
   sellPrice: 5
   upgradeTo: {fileID: 0}
-  moveSpeed: 3
+  moveSpeed: 5
   UnitIcon: {fileID: -1016063675, guid: 709f055482dea412585ca50a97bc03ca, type: 3}
   UnitName: "\uAC80\uC0AC"
   UnitSkillName: "\uB6F0\uC5B4\uB09C \uAC80\uC220"

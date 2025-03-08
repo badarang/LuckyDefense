@@ -6,11 +6,14 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour, IHittable
 {
     private EntityAnimator _entityAnimator;
-    [SerializeField] private float hp;
+    [SerializeField] private float maxHp;
     [SerializeField] private float speed;
+    [SerializeField] private EnemyType enemyType;
+    private float hp;
     public float Speed => speed;
     [SerializeField] private int dropGold;
     public bool IsDead { get; set; }
+    public EnemyHpBar HpBar;
 
     public void Init()
     {
@@ -22,6 +25,9 @@ public abstract class Enemy : MonoBehaviour, IHittable
             enemyMovement.Init();
         }
         IsDead = false;
+        hp = maxHp;
+        HpBar.Init(enemyType == EnemyType.Boss);
+        HpBar.gameObject.SetActive(false);
         RoundManager.Instance.AliveEnemies++;
         Appear();
     }
@@ -41,6 +47,8 @@ public abstract class Enemy : MonoBehaviour, IHittable
     public void TakeDamage(float amount, bool isAttackerRight = true)
     {
         hp -= amount;
+        HpBar.gameObject.SetActive(true);
+        HpBar.SetHpBar(hp, maxHp);
         _entityAnimator.StartHitAnimation(isAttackerRight);
         if (hp <= 0)
         {
@@ -52,6 +60,7 @@ public abstract class Enemy : MonoBehaviour, IHittable
     {
         if (IsDead) return;
         IsDead = true;
+        HpBar.gameObject.SetActive(false);
         GoodsManager.Instance.Gold += dropGold;
         UIManager.Instance.ChangeGoldText(GoodsManager.Instance.Gold);
         RoundManager.Instance.AliveEnemies--;
@@ -64,4 +73,10 @@ public abstract class Enemy : MonoBehaviour, IHittable
         yield return new WaitForSeconds(1f);
         PoolManager.Instance.ReturnEnemy(gameObject);
     }
+}
+
+public enum EnemyType
+{
+    Normal,
+    Boss
 }
