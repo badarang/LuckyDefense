@@ -10,6 +10,7 @@ public class UIManager : Singleton<UIManager>
     public Dictionary<string, GameObject> UIDictionary = new Dictionary<string, GameObject>();
     public Dictionary<string, TextMeshProUGUI> UITextDictionary = new Dictionary<string, TextMeshProUGUI>();
     private WaitForSeconds oneSec = new WaitForSeconds(1f);
+    private float enemyAlertDelay;
 
 
     private void Awake()
@@ -48,6 +49,14 @@ public class UIManager : Singleton<UIManager>
             SetAllUIText();
             StartCoroutine(ExpandAllUISequencially());
         };
+    }
+    
+    private void Update()
+    {
+        if (enemyAlertDelay > 0f)
+        {
+            enemyAlertDelay -= Time.deltaTime;
+        }
     }
     
     private void SetAllUIText()
@@ -184,4 +193,25 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
+    
+    public void ShowEnemyAlertPanel()
+    {
+        if (UIDictionary.TryGetValue("EnemyAlertPanel", out var enemyAlertPanel))
+        {
+            if (enemyAlertDelay > 0f) return;
+            enemyAlertDelay = 20f;
+            if (enemyAlertPanel.TryGetComponent(out UIAnimationBase uiAnimationBase))
+            {
+                uiAnimationBase.Expand();
+                StartCoroutine(ShrinkAfterDelay(uiAnimationBase, 2f));
+            }
+        }
+    }
+
+    private IEnumerator ShrinkAfterDelay(UIAnimationBase uiAnimationBase, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        uiAnimationBase.Shrink();
+    }
+
 }

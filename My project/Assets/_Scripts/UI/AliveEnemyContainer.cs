@@ -28,7 +28,7 @@ public class AliveEnemyContainer : MonoBehaviour, IUITextBase
         var _value = (float)current / max;
         targetValue = _value;
         aliveEnemyText.text = $"{current}/{max}";
-        if (_value >= .75f)
+        if (current >= Statics.InitialGameDataDic["EnemyAlertThresHold"])
         {
             bossIcon.ToggleBoss(true);
         }

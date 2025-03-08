@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class BossIcon : MonoBehaviour
 {
-    private bool isAlert;
+    [SerializeField] private bool isAlert;
     [SerializeField] private Sprite normalIcon;
     [SerializeField] private Sprite alertIcon;
     [SerializeField] private Image currentIcon;

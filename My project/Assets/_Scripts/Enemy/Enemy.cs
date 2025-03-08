@@ -29,6 +29,10 @@ public abstract class Enemy : MonoBehaviour, IHittable
         HpBar.Init(enemyType == EnemyType.Boss);
         HpBar.gameObject.SetActive(false);
         RoundManager.Instance.AliveEnemies++;
+        if (RoundManager.Instance.AliveEnemies >= Statics.InitialGameDataDic["EnemyAlertThresHold"])
+        {
+            UIManager.Instance.ShowEnemyAlertPanel();
+        }
         Appear();
     }
 

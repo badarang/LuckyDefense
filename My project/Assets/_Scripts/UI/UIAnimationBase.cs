@@ -10,7 +10,7 @@ public class UIAnimationBase : MonoBehaviour
     
     [Header("Animation Settings")]
     private float appearDuration = .5f;
-    private float disappearDuration = .1f;
+    private float disappearDuration = .2f;
     private Tween tween;
     
     public void Expand()
