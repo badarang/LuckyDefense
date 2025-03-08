@@ -28,11 +28,11 @@ public static class Statics
             case Grade.Common:
                 return new Color(1, 1, 1, 0.5f);
             case Grade.Rare:
-                return new Color(0, 1, .3f, .5f);
-            case Grade.Epic:
                 return new Color(0, .4f, .8f, .5f);
+            case Grade.Epic:
+                return new Color(1, 0, 1, .5f);
             case Grade.Mythic:
-                return new Color(1, 0.5f, 0, .5f);
+                return new Color(1, 0.6f, 0, .5f);
             default:
                 return Color.white;
         }

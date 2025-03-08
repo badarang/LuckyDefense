@@ -13,7 +13,19 @@ public class UIAnimationBase : MonoBehaviour
     private float disappearDuration = .2f;
     private Tween tween;
 
-    public void Expand(Vector3 originalScale = default)
+    public void Expand()
+    {
+        if (tween != null) tween.Kill();
+        transform.localScale = Vector3.zero;
+        transform.gameObject.SetActive(true);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(transform.DOScale(Vector3.one * 1.2f, appearDuration)).SetEase(Ease.OutBack);
+        sequence.Append(transform.DOScale(Vector3.one, appearDuration)).SetEase(Ease.OutBack);
+        sequence.WaitForCompletion();
+        tween = sequence;
+    }
+    
+    public void Expand(Vector3 originalScale)
     {
         if (originalScale == default) originalScale = Vector3.one;
         if (tween != null) tween.Kill();

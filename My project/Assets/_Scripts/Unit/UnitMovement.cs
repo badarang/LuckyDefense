@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitMovement : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class UnitMovement : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (placeUpper) return; //상대 유닛은 드래그 불가능
         if (isDragging) return;
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         UnitManager.Instance.StartDragPosition(unit.GridPosition);
     }
 
@@ -66,6 +71,10 @@ public class UnitMovement : MonoBehaviour
     {
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (isDragging) return;
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         UnitManager.Instance.EndDragPosition();
     }
 

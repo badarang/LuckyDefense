@@ -138,7 +138,7 @@ public class UnitManager : Singleton<UnitManager>
     }
 
     //업그레이드할 때 사용
-    public void SummonUnit(Grade grade, Vector2Int spawnPosition, bool isMyPlayer = true)
+    public Unit SummonUnit(Grade grade, Vector2Int spawnPosition, bool isMyPlayer = true)
     {
         UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         UnitTypeEnum newUnitType = GetUnitType(grade);
@@ -146,12 +146,13 @@ public class UnitManager : Singleton<UnitManager>
         GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], GridToWorld(spawnPosition), Quaternion.identity);
         Unit newUnit = unitObj.GetComponent<Unit>();
         newUnit.Init(newUnitType, true, spawnPosition);
-        unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
-        unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
+        
+        return newUnit;
     }
     
     public void SellUnit(Unit unit, bool isMyPlayer = true)
     {
+        Debug.Log("Sell Unit Called");
         UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
 
@@ -233,23 +234,45 @@ public class UnitManager : Singleton<UnitManager>
         return new KeyValuePair<UnitGroup, Unit>(null, null);
     }
 
-    
+
     public void UpgradeUnit(Unit unit, bool isMyPlayer = true)
     {
-        Debug.Log("Upgrade Unit");
+        Debug.Log("Upgrade Unit Called");
         UnitGroup[,] unitGroups = isMyPlayer ?  lowerUnitGroups : upperUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
         if (unitGroup.units.Count < Statics.InitialGameDataDic["MaxUnitGather"]) return;
         if (unitGroup.units[0].Grade >= Grade.Epic) return;
         Grade newGrade = unitGroup.units[0].Grade + 1;
         
-        //unitGroup에 있는 모든 유닛들을 제거입
+        //unitGroup에 있는 모든 유닛들을 제거
         
         unitGroup.units.ForEach(u => Destroy(u.gameObject));
         unitGroup.units.Clear();
         
         //새로운 유닛 생성
-        SummonUnit(newGrade, unit.GridPosition);
+        Vector2Int originalPos = unit.GridPosition;
+        Unit newUnit = SummonUnit(newGrade, originalPos, isMyPlayer);
+        
+        //이미 다른 그룹에 같은 타입 유닛이 있으면 그 그룹에 추가
+        KeyValuePair<UnitGroup, Unit> targetUnitInfo = GetCanMoveUnitToAdjustMerge(newUnit, isMyPlayer);
+        if (targetUnitInfo.Key != null)
+        {
+            //직접 이동해야 함.
+            var targetUnit = targetUnitInfo.Value;
+            var targetGroup = targetUnitInfo.Key;
+            
+            newUnit.GridPosition = targetUnit.GridPosition;
+            Vector2 targetWorldPos = GridToWorld(targetUnit.GridPosition);
+            newUnit.GetComponent<UnitMovement>().StartMove(targetWorldPos, 20f);
+            
+            targetGroup.units.Add(newUnit);
+            targetGroup.OnUnitChanged?.Invoke(targetGroup);
+        }
+        else
+        {
+            unitGroups[unit.GridPosition.x, unit.GridPosition.y].units.Add(newUnit);
+        }
+        unitGroups[unit.GridPosition.x, unit.GridPosition.y].OnUnitChanged?.Invoke(unitGroups[unit.GridPosition.x, unit.GridPosition.y]);
     }
     
     private UnitTypeEnum GetRandomUnitType()
@@ -395,6 +418,7 @@ public class UnitManager : Singleton<UnitManager>
     
     public void SelectPosition(Vector2Int gridPosition)
     {
+        Debug.Log("Select Position Called");
         List<Unit> units = lowerUnitGroups[gridPosition.x, gridPosition.y].units;
         if (units.Count > 0)
         {
