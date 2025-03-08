@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class EnemyHpBar : MonoBehaviour
 {
+    Color fullHPColor = Color.green;
+    Color midHPColor = Color.yellow;
+    Color lowHPColor = Color.red;
     [SerializeField] private Image hpBar;
     [SerializeField] private TextMeshPro hpText;
 
@@ -17,23 +20,20 @@ public class EnemyHpBar : MonoBehaviour
     public void SetHpBar(float currentHp, float maxHp)
     {
         hpBar.fillAmount = currentHp / maxHp;
-        hpText.text = $"{currentHp}/{maxHp}";
+        hpText.text = $"{currentHp}";
         SetColor();
     }
     
     private void SetColor()
     {
-        if (hpBar.fillAmount > 0.7f)
+        if (hpBar.fillAmount > 0.5f)
         {
-            hpBar.color = Color.green;
-        }
-        else if (hpBar.fillAmount > 0.3f)
-        {
-            hpBar.color = Color.yellow;
+            hpBar.color = Color.Lerp(midHPColor, fullHPColor, (hpBar.fillAmount - 0.5f) * 2);
         }
         else
         {
-            hpBar.color = Color.red;
+            hpBar.color = Color.Lerp(lowHPColor, midHPColor, hpBar.fillAmount * 2);
         }
     }
+
 }

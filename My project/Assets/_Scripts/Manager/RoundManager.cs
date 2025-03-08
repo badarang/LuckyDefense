@@ -70,6 +70,7 @@ public class RoundManager : Singleton<RoundManager>
 
         Round currentRoundData = rounds[currentRound - 1];
         float roundTime = currentRoundData.roundTime;
+        StartCoroutine(WaveDisplayPanelCO());
         Invoke(nameof(AlertFiveSec), roundTime - 5f);
         UIManager.Instance.SetRoundTime(roundTime);
         UIManager.Instance.SetRoundText(currentRound);
@@ -148,6 +149,14 @@ public class RoundManager : Singleton<RoundManager>
             spawnCircle.StartShowAlert(5);
         }
     }
+    
+    private IEnumerator WaveDisplayPanelCO()
+    {
+        UIManager.Instance.ToggleWaveDisplayPanel(true);
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ToggleWaveDisplayPanel(false);
+    }
+    
 }
 
 [Serializable]

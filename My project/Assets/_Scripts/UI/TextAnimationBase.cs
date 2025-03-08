@@ -10,6 +10,17 @@ public class TextAnimationBase : MonoBehaviour
     private float disappearDuration = 1f;
     private Tween tween;
     
+    public void ExpandAlertDelayed(float delay)
+    {
+        StartCoroutine(ExpandAlertCoroutine(delay));
+    }
+    
+    IEnumerator ExpandAlertCoroutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ExpandAlert();
+    }
+    
     public void ExpandAlert()
     {
         if (tween != null) tween.Kill();

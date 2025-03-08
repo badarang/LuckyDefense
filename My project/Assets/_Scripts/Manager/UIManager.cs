@@ -167,4 +167,21 @@ public class UIManager : Singleton<UIManager>
             unitInfoPanel.GetComponent<UIAnimationBase>().Shrink();
         }
     }
+    
+    public void ToggleWaveDisplayPanel(bool isOn)
+    {
+        if (UIDictionary.TryGetValue("WaveDisplayPanel", out var waveDisplayPanel))
+        {
+            if (isOn)
+            {
+                UITextDictionary["WaveDisplayText"].text = $"Wave {RoundManager.Instance.currentRound}";
+                waveDisplayPanel.GetComponent<UIAnimationBase>().ExpandLikeTV();
+                UITextDictionary["WaveDisplayText"].GetComponent<TextAnimationBase>().ExpandAlertDelayed(.5f);
+            }
+            else
+            {
+                waveDisplayPanel.GetComponent<UIAnimationBase>().ShrinkLikeTV();
+            }
+        }
+    }
 }

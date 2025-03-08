@@ -35,5 +35,29 @@ public class UIAnimationBase : MonoBehaviour
 
         tween = sequence;
     }
+    
+    public void ExpandLikeTV()
+    {
+        if (tween != null) tween.Kill();
+        transform.localScale = new Vector3(0, 0, 1);
+        transform.gameObject.SetActive(true);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(transform.DOScaleX(1f, appearDuration)).SetEase(Ease.OutBack);
+        sequence.Insert(.2f, transform.DOScaleY(1.2f, appearDuration)).SetEase(Ease.OutBack);
+        sequence.Insert(.2f + appearDuration, transform.DOScaleY(1f, appearDuration)).SetEase(Ease.OutBack);
+        sequence.WaitForCompletion();
+        tween = sequence;
+    }
+    
+    public void ShrinkLikeTV()
+    {
+        if (tween != null) tween.Kill();
+    
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(transform.DOScaleY(0f, disappearDuration).SetEase(Ease.OutExpo))
+            .OnComplete(() => transform.gameObject.SetActive(false));
+
+        tween = sequence;
+    }
 
 }
