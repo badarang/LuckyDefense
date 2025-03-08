@@ -11,6 +11,7 @@ public class UIManager : Singleton<UIManager>
     public Dictionary<string, TextMeshProUGUI> UITextDictionary = new Dictionary<string, TextMeshProUGUI>();
     private WaitForSeconds oneSec = new WaitForSeconds(1f);
     private float enemyAlertDelay;
+    private Queue<GameObject> displayedGUIQueue = new Queue<GameObject>();
 
 
     private void Awake()
@@ -168,7 +169,7 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
-    
+
     public void HideUnitInfo()
     {
         if (UIDictionary.TryGetValue("UnitInfo", out var unitInfoPanel))
@@ -212,6 +213,29 @@ public class UIManager : Singleton<UIManager>
     {
         yield return new WaitForSeconds(delay);
         uiAnimationBase.Shrink();
+    }
+    
+    public void PushGUIQueue(GameObject gui)
+    {
+        displayedGUIQueue.Enqueue(gui);
+    }
+    
+    public void PopGUIQueue(bool setActive)
+    {
+        if (displayedGUIQueue.Count > 0)
+        {
+            while (displayedGUIQueue.Count > 0)
+            {
+                var gui = displayedGUIQueue.Dequeue();
+                if (TryGetComponent(out UIAnimationBase uiAnimationBase))
+                {
+                    if (setActive) uiAnimationBase.Expand();
+                    else uiAnimationBase.Shrink();
+                    return;
+                }
+                gui.SetActive(setActive);
+            }
+        }
     }
 
 }

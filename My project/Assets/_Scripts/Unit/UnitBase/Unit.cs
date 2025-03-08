@@ -2,46 +2,55 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public abstract class Unit : MonoBehaviour, IAttackable
 {
     #region Unit Properties
     [Header("Unit Properties")]
-    private UnitTypeEnum unitType;
+    [SerializeField] private UnitTypeEnum unitType;
     public UnitTypeEnum UnitType => unitType;
     
     [SerializeField] private GameObject circlePrefab;
+    private Transform transformGUI;
+    private Transform canvasGUI;
+    private GameObject rangeGizmo;
+    private Button sellButton;
+    private Button upgradeButton;
 
     [SerializeField]
     private Grade grade;
     public Grade Grade => grade;
     
     [SerializeField]
-    private float hp;
+    private float hp = 1;
 
     [SerializeField]
-    private float attackSpeed;
+    private float attackSpeed = 1;
     public float AttackSpeed => attackSpeed;
 
     [SerializeField]
-    private float range;
+    private float range = 1;
+    public float Range => range;
 
     [SerializeField]
-    private float damage;
+    private float damage = 10;
     public float Damage => damage;
 
     [SerializeField]
-    private float criticalChance;
+    private float criticalChance = .1f;
 
+    [SerializeField]
+    private GoodsType goodsType;
+    public GoodsType GoodsType => goodsType;
+    
     [SerializeField]
     private int sellPrice;
+    public int SellPrice => sellPrice;
 
     [SerializeField]
-    private Unit upgradeTo;
-
-    [SerializeField]
-    private float moveSpeed;
+    private float moveSpeed = 5;
     public float MoveSpeed => moveSpeed;
     
     [Header("Unit Info")]
@@ -104,6 +113,12 @@ public abstract class Unit : MonoBehaviour, IAttackable
         unitMovement = GetComponent<UnitMovement>();
         unitMovement.Init(isMyPlayer);
         GridPosition = spawnPosition;
+        
+        transformGUI = transform.Find("GUI");
+        canvasGUI = transformGUI.Find("GUICanvas");
+        rangeGizmo = transformGUI.Find("RangeGizmo").gameObject;
+        sellButton = canvasGUI.Find("SellButton").GetComponent<Button>();
+        upgradeButton = canvasGUI.Find("UpgradeButton").GetComponent<Button>();
 
         isInitialized = true;
         
@@ -219,6 +234,28 @@ public abstract class Unit : MonoBehaviour, IAttackable
             _entityAnimator.ToggleOutline(false);
         }
     }
+    
+    public void ToggleGUI(bool toggle)
+    {
+        if (toggle)
+        {
+            ToggleDrawRange(true);
+            canvasGUI.GetComponent<UIAnimationBase>().Expand(Vector3.one * .005f);
+            UIManager.Instance.PushGUIQueue(rangeGizmo);
+            UIManager.Instance.PushGUIQueue(canvasGUI.gameObject);
+        }
+        else
+        {
+            ToggleDrawRange(false);
+            canvasGUI.GetComponent<UIAnimationBase>().Shrink();
+        }
+    }
+    
+    public void ToggleDrawRange(bool toggle)
+    {
+        rangeGizmo.transform.localScale = new Vector3(range / 4, range / 4, 1);
+        rangeGizmo.SetActive(toggle);
+    }
 }
 
 
@@ -238,5 +275,6 @@ public enum UnitTypeEnum
 public enum UnitSkillTypeEnum
 {
     패시브,
+    스킬,
     액티브,
 }

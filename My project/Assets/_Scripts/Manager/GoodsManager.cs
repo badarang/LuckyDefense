@@ -33,3 +33,10 @@ public class GoodsManager : Singleton<GoodsManager>
         requiredSummonGold += Statics.InitialGameDataDic["UnitRequiredGoldIncrease"];
     }
 }
+
+
+public enum GoodsType
+{
+    Gold,
+    Diamond
+}

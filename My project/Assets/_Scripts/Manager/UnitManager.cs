@@ -5,20 +5,19 @@ using UnityEngine;
 
 public class UnitManager : Singleton<UnitManager>
 {
-    public GameObject unitPrefab;
-
     [SerializeField]
     private LineRenderer lineRenderer;
 
     [SerializeField]
     private GameObject destinationGUI;
-    
+
     [SerializeField] private LayerMask unitLayer;
 
     private const int Width = 6, Height = 3;
     private UnitGroup[,] upperUnitGroups = new UnitGroup[Width, Height];
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
     private int unitCount;
+    private Dictionary<UnitTypeEnum, GameObject> spawnableUnitDic;
     
 
     public int UnitCount {
@@ -41,6 +40,7 @@ public class UnitManager : Singleton<UnitManager>
         Statics.DebugColor("UnitManager Loaded", new Color(0, .8f, 0));
         InitializeUnitGroups();
         InitializeLineRenderer();
+        InitializeSpawnableUnitDic();
     }
 
     private void Update()
@@ -49,6 +49,7 @@ public class UnitManager : Singleton<UnitManager>
         {
             if (IsClickingOnUnit()) return;
             UIManager.Instance.HideUnitInfo();
+            UIManager.Instance.PopGUIQueue(setActive: false);
         }
         if (isDragging)
         {
@@ -94,11 +95,20 @@ public class UnitManager : Singleton<UnitManager>
         lineRenderer.useWorldSpace = true;
         lineRenderer.enabled = false;
     }
+    
+    private void InitializeSpawnableUnitDic()
+    {
+        spawnableUnitDic = new Dictionary<UnitTypeEnum, GameObject>();
+        foreach (var unit in Resources.LoadAll<GameObject>("Prefabs/Units"))
+        {
+            spawnableUnitDic.Add(unit.GetComponent<Unit>().UnitType, unit);
+        }
+    }
 
     public void SummonUnit(bool isMyPlayer = true)
     {
         var isUpper = !isMyPlayer;
-        UnitTypeEnum newUnitType = UnitTypeEnum.Sword;
+        UnitTypeEnum newUnitType = GetRandomUnitType();
         
         Vector2Int spawnPosition = FindSpawnPosition(newUnitType, isMyPlayer, isUpper);
         
@@ -111,11 +121,104 @@ public class UnitManager : Singleton<UnitManager>
         UnitGroup[,] unitGroups = isUpper ? upperUnitGroups : lowerUnitGroups;
 
         Vector2 worldPosition = GridToWorld(spawnPosition, isMyPlayer);
-        GameObject unitObj = Instantiate(unitPrefab, worldPosition, Quaternion.identity);
+        GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], worldPosition, Quaternion.identity);
         Unit newUnit = unitObj.GetComponent<Unit>();
         newUnit.Init(newUnitType, isMyPlayer, spawnPosition);
         unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
         unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
+    }
+
+    public void SummonUnit(Grade grade, Vector2Int spawnPosition)
+    {
+        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitTypeEnum newUnitType = GetUnitType(grade);
+        
+        GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], GridToWorld(spawnPosition), Quaternion.identity);
+        Unit newUnit = unitObj.GetComponent<Unit>();
+        newUnit.Init(newUnitType, true, spawnPosition);
+        unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
+        unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
+    }
+    
+    public void SellUnit(Unit unit)
+    {
+        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
+
+        if (unitGroup.units.Count == 0) return;
+        unitGroup.units.Remove(unitGroup.units[unitGroup.units.Count - 1]);
+        if (unitGroup.units[0].GoodsType == GoodsType.Gold)
+        {
+            GoodsManager.Instance.Gold += (int)(GoodsManager.Instance.RequiredSummonGold * .2f);
+        }
+        else
+        {
+            GoodsManager.Instance.Diamond += unitGroup.units[0].SellPrice;
+        }
+        
+        //TODO: 여기서 추가 예외처리 해야함.
+        //만약 X 위치에 A 유닛이 3개 있고 Y 위치에 A 유닛이 1개 있다면, X 위치에서 1개를 팔았을 때 Y 위치에 있던 유닛이 X 위치로 이동해야함.
+        
+        
+        unitGroup.OnUnitChanged?.Invoke(unitGroup);
+        Destroy(unit.gameObject);
+    }
+    
+    public void UpgradeUnit(Unit unit)
+    {
+        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
+        if (unitGroup.units.Count < Statics.InitialGameDataDic["MaxUnitGather"]) return;
+        if (unitGroup.units[0].Grade >= Grade.Epic) return;
+        Grade newGrade = unitGroup.units[0].Grade + 1;
+        
+        //unitGroup에 있는 모든 유닛들을 제거
+        foreach (var u in unitGroup.units)
+        {
+            Destroy(u.gameObject);
+        }
+        
+        //새로운 유닛 생성
+        SummonUnit(newGrade, unit.GridPosition);
+        
+        unitGroup.OnUnitChanged?.Invoke(unitGroup);
+    }
+    
+    private UnitTypeEnum GetRandomUnitType()
+    {
+        Grade grade = GetRandomGrade();
+        return GetUnitType(grade);
+    }
+
+    private UnitTypeEnum GetUnitType(Grade grade)
+    {
+        List<UnitTypeEnum> sameGradeUnits = new List<UnitTypeEnum>();
+        foreach (var unit in spawnableUnitDic.Keys)
+        {
+            var unitComponent = spawnableUnitDic[unit].GetComponent<Unit>();
+            if (unitComponent.Grade == grade)
+            {
+                sameGradeUnits.Add(unitComponent.UnitType);
+            }
+        }
+        
+        if (sameGradeUnits.Count == 0)
+        {
+            Debug.LogWarning("해당 등급의 유닛이 없어 소드맨 유닛을 소환합니다.");
+            return UnitTypeEnum.Sword;
+        }
+        
+        int randomIndex = UnityEngine.Random.Range(0, sameGradeUnits.Count);
+        return sameGradeUnits[randomIndex];
+    }
+    
+    private Grade GetRandomGrade()
+    {
+        //TODO: 확률 조정
+        int randomValue = UnityEngine.Random.Range(0, 100);
+        if (randomValue < 50) return Grade.Common;
+        if (randomValue < 70) return Grade.Rare;
+        return Grade.Epic;
     }
     
     #region Unit Spawn System
@@ -165,6 +268,8 @@ public class UnitManager : Singleton<UnitManager>
     
     private Vector2Int FindBestMergeablePosition(UnitTypeEnum newUnitType, List<Vector2Int> priorityPositions, UnitGroup[,] unitGroups)
     {
+        //신화 유닛은 Merge 불가
+        if (newUnitType == UnitTypeEnum.Cavalier || newUnitType == UnitTypeEnum.King) return new Vector2Int(-1, -1);
         foreach (var pos in priorityPositions)
         {
             if (unitGroups[pos.x, pos.y].units.Count > 0 && CanMerge(unitGroups[pos.x, pos.y].units, newUnitType))
@@ -176,7 +281,7 @@ public class UnitManager : Singleton<UnitManager>
 
     private bool CanMerge(List<Unit> unitGroup, UnitTypeEnum newUnitType)
     {
-        return unitGroup.Count < 3 && unitGroup[0].UnitType == newUnitType;
+        return unitGroup.Count < Statics.InitialGameDataDic["MaxUnitGather"] && unitGroup[0].UnitType == newUnitType;
     }
 
     private Vector2 GridToWorld(Vector2Int gridPos, bool isMyPlayer = true)
@@ -226,6 +331,8 @@ public class UnitManager : Singleton<UnitManager>
         if (units.Count > 0)
         {
             UIManager.Instance.ShowUnitInfo(units[0], units.Count);
+            Unit lastUnit = units[units.Count - 1];
+            lastUnit.ToggleGUI(true);
         }
     }
 

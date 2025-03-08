@@ -18,14 +18,14 @@ public static class Statics
         {"MaxUnitGrade", 4},
         {"MaxUnitGather", 3},
         {"MaxAliveEnemy", 100},
-        {"EnemyAlertThresHold", 1},
+        {"EnemyAlertThresHold", 75},
     };
 
     public static Color GradeColor(Grade grade)
     {
         switch (grade)
         {
-            case Grade.Normal:
+            case Grade.Common:
                 return new Color(1, 1, 1, 0.5f);
             case Grade.Rare:
                 return new Color(0, 1, .3f, .5f);
@@ -46,7 +46,7 @@ public static class Statics
 
 public enum Grade
 {
-    Normal,
+    Common,
     Rare,
     Epic,
     Mythic,

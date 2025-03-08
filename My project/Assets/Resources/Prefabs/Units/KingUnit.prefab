@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1252544388105901901
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614319291428449338, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      propertyPath: m_Name
+      value: KingUnit Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2251840463363966479, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2689337260878396129}
+  m_SourcePrefab: {fileID: 100100000, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+--- !u!1 &7539417784687588319 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8773164886972097682, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+  m_PrefabInstance: {fileID: 1252544388105901901}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7837313395186110666 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
+  m_PrefabInstance: {fileID: 1252544388105901901}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2689337260878396129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7837313395186110666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae5f111c9ed524f00b137cde9ed4ad87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 8
+  circlePrefab: {fileID: 7539417784687588319}
+  grade: 3
+  hp: 1
+  attackSpeed: 2.5
+  range: 1
+  damage: 1000
+  criticalChance: 0.1
+  goodsType: 1
+  sellPrice: 5
+  moveSpeed: 6
+  UnitIcon: {fileID: 0}
+  UnitName: "\uD0B9\uB9E8"
+  UnitSkillName: "\uC5E0\uBE0C\uB85C\uC2DC\uC544"
+  UnitSkillDescription: "\uC220\uC794\uC744 \uB358\uC838 \uC801\uC5D0\uAC8C 0.5\uCD08\uB9C8\uB2E4
+    \uACF5\uACA9\uB825\uC758 1000% \uB370\uBBF8\uC9C0\uB97C \uC785\uD788\uB294 \uC6C5\uB369\uC774\uB97C
+    \uC0DD\uC131\uD569\uB2C8\uB2E4."
+  UnitSkillType: 1
+  attackableUnitCount: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  currentTargets: []
