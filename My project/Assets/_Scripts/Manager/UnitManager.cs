@@ -140,7 +140,6 @@ public class UnitManager : Singleton<UnitManager>
     
     public void SellUnit(Unit unit)
     {
-        Debug.Log("Sell Unit");
         UnitGroup[,] unitGroups = lowerUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
 
@@ -153,26 +152,67 @@ public class UnitManager : Singleton<UnitManager>
         {
             GoodsManager.Instance.Diamond += unitGroup.units[0].SellPrice;
         }
-        
-        //TODO: 여기서 추가 예외처리 해야함.
-        //만약 X 위치에 A 유닛이 3개 있고 Y 위치에 A 유닛이 1개 있다면, X 위치에서 1개를 팔았을 때 Y 위치에 있던 유닛이 X 위치로 이동해야함.
 
-        unitGroup.units.Remove(unitGroup.units[unitGroup.units.Count - 1]);
+        unitGroup.units.Remove(unit);
         Destroy(unit.gameObject);
         unitGroup.OnUnitChanged?.Invoke(unitGroup);
-
+        
         //X 위치에 있던 타입 A 유닛을 팔면, A 유닛 수가 2 이상일 때는 유닛이 계속 선택된다. (계속 팔 수 있음, 편의성 부분)
         if (unitGroup.units.Count > 0)
         {
-            var endIdx = unitGroup.units.Count - 1;
-            SelectPosition(unitGroup.units[endIdx].GridPosition);
+            SelectPosition(unitGroup.units[0].GridPosition);
         }
         else
         {
             UIManager.Instance.HideUnitInfo();
         }
-        
+
+        //판매 후 항상 유닛 수 3개로 유지하는 로직
+        //만약 X 위치에 A 유닛이 3개 있고 Y 위치에 A 유닛이 1개 있다면, X 위치에서 1개를 팔았을 때 Y 위치에 있던 유닛이 X 위치로 이동해야함.
+        KeyValuePair<UnitGroup, Unit> canMoveUnit = GetCanMoveUnitToAdjustMerge(unit);
+        if (unitGroup.units.Count >= Statics.InitialGameDataDic["MaxUnitGather"] - 1 && canMoveUnit.Key != null)
+        {
+            var otherGroup = canMoveUnit.Key;
+            var unitToMove = canMoveUnit.Value;
+            var sellingGroup = unitGroup;
+            var soldUnit = unit;
+            
+            unitToMove.GridPosition = soldUnit.GridPosition;
+            Vector2 targetWorldPos = GridToWorld(soldUnit.GridPosition);
+            unitToMove.GetComponent<UnitMovement>().StartMove(targetWorldPos, 20f);
+                        
+            sellingGroup.units.Add(unitToMove);
+            otherGroup.units.Remove(unitToMove);
+            
+            otherGroup.OnUnitChanged?.Invoke(otherGroup);
+            sellingGroup.OnUnitChanged?.Invoke(sellingGroup);
+        }
     }
+    
+    private KeyValuePair<UnitGroup, Unit> GetCanMoveUnitToAdjustMerge(Unit soldUnit)
+    {
+        // lowerUnitGroups 배열 전체를 순회하며, 판매 위치가 아닌 다른 그리드에서 같은 타입 유닛을 찾음.
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (soldUnit.GridPosition == new Vector2Int(x, y))
+                    continue;
+
+                UnitGroup otherGroup = lowerUnitGroups[x, y];
+                
+                // 다른 그리드에 있는 유닛이 3마리 이상이면 움직일 필요 없음. (온전한 상태)
+                if (otherGroup.units.Count >= Statics.InitialGameDataDic["MaxUnitGather"]) continue;
+                
+                if (otherGroup.units.Count > 0 && otherGroup.units[0].UnitType == soldUnit.UnitType)
+                {
+                    return new KeyValuePair<UnitGroup, Unit>(otherGroup, otherGroup.units[0]);
+                }
+            }
+        }
+        return new KeyValuePair<UnitGroup, Unit>(null, null);
+    }
+
     
     public void UpgradeUnit(Unit unit)
     {
@@ -343,6 +383,7 @@ public class UnitManager : Singleton<UnitManager>
         {
             UIManager.Instance.ShowUnitInfo(units[0], units.Count);
             Unit lastUnit = units[units.Count - 1];
+            if (lastUnit == null) return;
             //신화 유닛은 합성, 판매 불가
             if (lastUnit.Grade >= Grade.Mythic) return;
             lastUnit.ToggleGUI(true, units.Count);
@@ -456,7 +497,16 @@ public class UnitManager : Singleton<UnitManager>
         UnitGroup unitGroup = unitGroups[gridPosition.x, gridPosition.y];
         foreach (var unit in unitGroup.units)
         {
+            if (unit == null) continue;
             unit.ToggleSelectedCircle(isActive);
+        }
+    }
+    
+    public void DebugUnitGroups()
+    {
+        for (int y = 2; y >= 0; y--)
+        {
+            Debug.Log($"{y}층 : {lowerUnitGroups[0, y].units.Count} {lowerUnitGroups[1, y].units.Count} {lowerUnitGroups[2, y].units.Count} {lowerUnitGroups[3, y].units.Count} {lowerUnitGroups[4, y].units.Count} {lowerUnitGroups[5, y].units.Count}");
         }
     }
     

@@ -11,7 +11,7 @@ public static class Statics
     {
         {"UnitRequiredGold", 20},
         {"UnitRequiredGoldIncrease", 2},
-        {"InitialGold", 100},
+        {"InitialGold", 1000},
         {"InitialDiamond", 0},
         {"MaxUnitCount", 20},
         {"MaxUnitLevel", 5},

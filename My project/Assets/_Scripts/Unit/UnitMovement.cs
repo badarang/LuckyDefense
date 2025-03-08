@@ -69,22 +69,23 @@ public class UnitMovement : MonoBehaviour
         UnitManager.Instance.EndDragPosition();
     }
 
-    public void StartMove(Vector2 target)
+    public void StartMove(Vector2 target, float fixedSpeed = 1)
     {
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
         }
-        moveCoroutine = StartCoroutine(MoveCO(target));
+        moveCoroutine = StartCoroutine(MoveCO(target, fixedSpeed));
     }
 
-    public IEnumerator MoveCO(Vector2 target)
+    public IEnumerator MoveCO(Vector2 target, float fixedSpeed)
     {
         Vector2 startPosition = transform.position;
         var isFacingRight = startPosition.x < target.x ? true : false;
         unit.Flip(isFacingRight);
         float distance = Vector2.Distance(startPosition, target);
         float speed = unit.MoveSpeed;
+        if (Mathf.Abs(fixedSpeed - 1) > .01f) speed = fixedSpeed;
         float time = distance / speed;
         float elapsedTime = 0;
         StartDrag();
