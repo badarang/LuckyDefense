@@ -30,6 +30,7 @@ public class UnitMovement : MonoBehaviour
         if (isDragging) return;
         if (EventSystem.current.IsPointerOverGameObject())
         {
+            Debug.Log("UI");
             return;
         }
         UnitManager.Instance.StartDragPosition(unit.GridPosition);

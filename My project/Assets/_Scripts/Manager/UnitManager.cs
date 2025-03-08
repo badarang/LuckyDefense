@@ -46,13 +46,15 @@ public class UnitManager : Singleton<UnitManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //UI를 클릭한 경우
             if (EventSystem.current.IsPointerOverGameObject())
             {
-                return;
+                if (EventSystem.current.currentSelectedGameObject.name == "SellButton" || EventSystem.current.currentSelectedGameObject.name == "UpgradeButton")
+                {
+                    return;
+                }
             }
-            UIManager.Instance.HideUnitInfo();
             UIManager.Instance.PopGUIQueue(setActive: false);
+            UIManager.Instance.HideUnitInfo();
         }
         if (isDragging)
         {
@@ -103,7 +105,7 @@ public class UnitManager : Singleton<UnitManager>
         }
     }
 
-    public void SummonUnit(bool isMyPlayer = true)
+    public void SummonUnit(bool isMyPlayer = true, Grade grade = Grade.None)
     {
         if (isMyPlayer)
         {
@@ -114,10 +116,14 @@ public class UnitManager : Singleton<UnitManager>
                 return;
             }
         }
-
         
         var isUpper = !isMyPlayer;
-        UnitTypeEnum newUnitType = GetRandomUnitType();
+        
+        UnitTypeEnum newUnitType;
+        //등급을 지정하지 않은 경우 랜덤으로 유닛을 소환
+        if (grade == Grade.None) newUnitType = GetRandomUnitType();
+        //등급을 지정한 경우 해당 등급의 유닛을 소환
+        else newUnitType = GetUnitType(grade);
         
         Vector2Int spawnPosition = FindSpawnPosition(newUnitType, isMyPlayer, isUpper);
         
