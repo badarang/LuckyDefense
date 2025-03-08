@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class TextAnimationBase : MonoBehaviour
@@ -27,6 +28,19 @@ public class TextAnimationBase : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.Append(transform.DOScale(Vector3.one * 1.3f, appearDuration)).SetEase(Ease.OutBack);
         sequence.Append(transform.DOScale(Vector3.one, appearDuration)).SetEase(Ease.OutExpo);
+        sequence.WaitForCompletion();
+        tween = sequence;
+    }
+    
+    public void ExpandAlert(Color color)
+    {
+        var originalColor = transform.GetComponent<TextMeshProUGUI>().color;
+        if (tween != null) tween.Kill();
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(transform.DOScale(Vector3.one * 1.3f, appearDuration)).SetEase(Ease.OutBack);
+        sequence.Insert(0f, transform.GetComponent<TextMeshProUGUI>().DOColor(color, appearDuration)).SetEase(Ease.OutExpo);
+        sequence.Append(transform.DOScale(Vector3.one, appearDuration)).SetEase(Ease.OutExpo);
+        sequence.Insert(appearDuration, transform.GetComponent<TextMeshProUGUI>().DOColor(originalColor, appearDuration)).SetEase(Ease.OutExpo);
         sequence.WaitForCompletion();
         tween = sequence;
     }

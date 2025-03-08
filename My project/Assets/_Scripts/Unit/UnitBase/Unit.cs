@@ -80,6 +80,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
     public Transform Flippable => flippable;
     private Transform rendererTransform;
     private bool isInitialized = false;
+    private bool isMyPlayer;
 
     #endregion
 
@@ -87,6 +88,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
     {
         StopAllCoroutines();
         isInitialized = false;
+        if (isMyPlayer) UnitManager.Instance.UnitCount--;
     }
 
     void Update()
@@ -121,7 +123,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         upgradeButton = canvasGUI.Find("UpgradeButton").GetComponent<Button>();
 
         isInitialized = true;
-        
+        this.isMyPlayer = isMyPlayer;
         if (isMyPlayer) UnitManager.Instance.UnitCount++;
 
     }
@@ -253,7 +255,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
             
             if (upgradeButton != null)
             {
-                var condition = unitNum >= Statics.InitialGameDataDic["MaxUnitGather"];
+                var condition = (unitNum >= Statics.InitialGameDataDic["MaxUnitGather"] && grade < Grade.Epic);
                 upgradeButton.interactable = condition;
                 upgradeButton.transform.Find("Lock").gameObject.SetActive(!condition);
 

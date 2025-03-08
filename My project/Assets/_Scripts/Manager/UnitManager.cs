@@ -105,6 +105,17 @@ public class UnitManager : Singleton<UnitManager>
 
     public void SummonUnit(bool isMyPlayer = true)
     {
+        if (isMyPlayer)
+        {
+            var condition = unitCount < Statics.InitialGameDataDic["MaxUnitCount"];
+            if (!condition)
+            {
+                UIManager.Instance.UITextDictionary["UnitCountText"].GetComponent<TextAnimationBase>().ExpandAlert(Color.red);
+                return;
+            }
+        }
+
+        
         var isUpper = !isMyPlayer;
         UnitTypeEnum newUnitType = GetRandomUnitType();
         
@@ -126,9 +137,10 @@ public class UnitManager : Singleton<UnitManager>
         unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
     }
 
-    public void SummonUnit(Grade grade, Vector2Int spawnPosition)
+    //업그레이드할 때 사용
+    public void SummonUnit(Grade grade, Vector2Int spawnPosition, bool isMyPlayer = true)
     {
-        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         UnitTypeEnum newUnitType = GetUnitType(grade);
         
         GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], GridToWorld(spawnPosition), Quaternion.identity);
@@ -138,19 +150,23 @@ public class UnitManager : Singleton<UnitManager>
         unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
     }
     
-    public void SellUnit(Unit unit)
+    public void SellUnit(Unit unit, bool isMyPlayer = true)
     {
-        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
 
         if (unitGroup.units.Count == 0) return;
-        if (unitGroup.units[0].GoodsType == GoodsType.Gold)
+
+        if (isMyPlayer)
         {
-            GoodsManager.Instance.Gold += (int)(GoodsManager.Instance.RequiredSummonGold * .2f);
-        }
-        else
-        {
-            GoodsManager.Instance.Diamond += unitGroup.units[0].SellPrice;
+            if (unitGroup.units[0].GoodsType == GoodsType.Gold)
+            {
+                GoodsManager.Instance.Gold += (int)(GoodsManager.Instance.RequiredSummonGold * .2f);
+            }
+            else
+            {
+                GoodsManager.Instance.Diamond += unitGroup.units[0].SellPrice;
+            }
         }
 
         unitGroup.units.Remove(unit);
@@ -158,18 +174,21 @@ public class UnitManager : Singleton<UnitManager>
         unitGroup.OnUnitChanged?.Invoke(unitGroup);
         
         //X 위치에 있던 타입 A 유닛을 팔면, A 유닛 수가 2 이상일 때는 유닛이 계속 선택된다. (계속 팔 수 있음, 편의성 부분)
-        if (unitGroup.units.Count > 0)
+        if (isMyPlayer)
         {
-            SelectPosition(unitGroup.units[0].GridPosition);
+            if (unitGroup.units.Count > 0)
+            { 
+                SelectPosition(unitGroup.units[0].GridPosition);
+            }
+            else
+            {
+                UIManager.Instance.HideUnitInfo();
+            }
         }
-        else
-        {
-            UIManager.Instance.HideUnitInfo();
-        }
-
+        
         //판매 후 항상 유닛 수 3개로 유지하는 로직
         //만약 X 위치에 A 유닛이 3개 있고 Y 위치에 A 유닛이 1개 있다면, X 위치에서 1개를 팔았을 때 Y 위치에 있던 유닛이 X 위치로 이동해야함.
-        KeyValuePair<UnitGroup, Unit> canMoveUnit = GetCanMoveUnitToAdjustMerge(unit);
+        KeyValuePair<UnitGroup, Unit> canMoveUnit = GetCanMoveUnitToAdjustMerge(unit, isMyPlayer);
         if (unitGroup.units.Count >= Statics.InitialGameDataDic["MaxUnitGather"] - 1 && canMoveUnit.Key != null)
         {
             var otherGroup = canMoveUnit.Key;
@@ -189,7 +208,7 @@ public class UnitManager : Singleton<UnitManager>
         }
     }
     
-    private KeyValuePair<UnitGroup, Unit> GetCanMoveUnitToAdjustMerge(Unit soldUnit)
+    private KeyValuePair<UnitGroup, Unit> GetCanMoveUnitToAdjustMerge(Unit soldUnit, bool isMyPlayer)
     {
         // lowerUnitGroups 배열 전체를 순회하며, 판매 위치가 아닌 다른 그리드에서 같은 타입 유닛을 찾음.
         for (int x = 0; x < Width; x++)
@@ -199,7 +218,8 @@ public class UnitManager : Singleton<UnitManager>
                 if (soldUnit.GridPosition == new Vector2Int(x, y))
                     continue;
 
-                UnitGroup otherGroup = lowerUnitGroups[x, y];
+                UnitGroup[,] unitGroups = isMyPlayer ?  lowerUnitGroups : upperUnitGroups;
+                UnitGroup otherGroup = unitGroups[x, y];
                 
                 // 다른 그리드에 있는 유닛이 3마리 이상이면 움직일 필요 없음. (온전한 상태)
                 if (otherGroup.units.Count >= Statics.InitialGameDataDic["MaxUnitGather"]) continue;
@@ -214,25 +234,22 @@ public class UnitManager : Singleton<UnitManager>
     }
 
     
-    public void UpgradeUnit(Unit unit)
+    public void UpgradeUnit(Unit unit, bool isMyPlayer = true)
     {
         Debug.Log("Upgrade Unit");
-        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitGroup[,] unitGroups = isMyPlayer ?  lowerUnitGroups : upperUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
         if (unitGroup.units.Count < Statics.InitialGameDataDic["MaxUnitGather"]) return;
         if (unitGroup.units[0].Grade >= Grade.Epic) return;
         Grade newGrade = unitGroup.units[0].Grade + 1;
         
-        //unitGroup에 있는 모든 유닛들을 제거
-        foreach (var u in unitGroup.units)
-        {
-            Destroy(u.gameObject);
-        }
+        //unitGroup에 있는 모든 유닛들을 제거입
+        
+        unitGroup.units.ForEach(u => Destroy(u.gameObject));
+        unitGroup.units.Clear();
         
         //새로운 유닛 생성
         SummonUnit(newGrade, unit.GridPosition);
-        
-        unitGroup.OnUnitChanged?.Invoke(unitGroup);
     }
     
     private UnitTypeEnum GetRandomUnitType()
