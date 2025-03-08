@@ -56,7 +56,6 @@ public class SummonUnitContainer : MonoBehaviour, IUITextBase
             GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
             GoodsManager.Instance.IncreaseRequiredSummonGold();
             UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
-            UIManager.Instance.ChangeGoldText(GoodsManager.Instance.Gold);
             UnitManager.Instance.SummonUnit(isMyPlayer: true);
         }
     }

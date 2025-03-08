@@ -19,13 +19,22 @@ public class GoodsManager : Singleton<GoodsManager>
     public int Gold
     {
         get => gold;
-        set => gold = value;
+        set
+        {
+            gold = value;
+            UIManager.Instance.ChangeRequiredGoldTextColor();
+            UIManager.Instance.ChangeGoldText(gold);
+        }
     }
     
     public int Diamond
     {
         get => diamond;
-        set => diamond = value;
+        set
+        {
+            diamond = value; 
+            UIManager.Instance.ChangeDiamondText(diamond);
+        }
     }
     
     public void IncreaseRequiredSummonGold()

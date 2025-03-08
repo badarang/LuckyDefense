@@ -235,12 +235,38 @@ public abstract class Unit : MonoBehaviour, IAttackable
         }
     }
     
-    public void ToggleGUI(bool toggle)
+    public void ToggleGUI(bool toggle, int unitNum)
     {
         if (toggle)
         {
             ToggleDrawRange(true);
             canvasGUI.GetComponent<UIAnimationBase>().Expand(Vector3.one * .005f);
+            
+            if (sellButton != null)
+            {
+                sellButton.onClick.RemoveAllListeners();
+                sellButton.onClick.AddListener(() =>
+                {
+                    UnitManager.Instance.SellUnit(this);
+                });
+            }
+            
+            if (upgradeButton != null)
+            {
+                var condition = unitNum >= Statics.InitialGameDataDic["MaxUnitGather"];
+                upgradeButton.interactable = condition;
+                upgradeButton.transform.Find("Lock").gameObject.SetActive(!condition);
+
+                if (condition)
+                {
+                    upgradeButton.onClick.RemoveAllListeners();
+                    upgradeButton.onClick.AddListener(() =>
+                    {
+                        UnitManager.Instance.UpgradeUnit(this);
+                    }); 
+                }
+            }
+            
             UIManager.Instance.PushGUIQueue(rangeGizmo);
             UIManager.Instance.PushGUIQueue(canvasGUI.gameObject);
         }

@@ -149,6 +149,25 @@ public class UIManager : Singleton<UIManager>
             goldText.text = gold.ToString();
         }
     }
+    public void ChangeRequiredGoldTextColor()
+    {
+        if (GoodsManager.Instance.Gold >= GoodsManager.Instance.RequiredSummonGold)
+        {
+            UITextDictionary["RequiredGoldAmountText"].color = Color.white;
+        }
+        else
+        {
+            UITextDictionary["RequiredGoldAmountText"].color = Color.red;
+        }
+    }
+    
+    public void ChangeDiamondText(int diamond)
+    {
+        if (UITextDictionary.TryGetValue("DiamondText", out var diamondText))
+        {
+            diamondText.text = diamond.ToString();
+        }
+    }
     
     public void ChangeUnitCountText(int aliveUnits)
     {
@@ -227,6 +246,8 @@ public class UIManager : Singleton<UIManager>
             while (displayedGUIQueue.Count > 0)
             {
                 var gui = displayedGUIQueue.Dequeue();
+                //GUI가 이미 파괴된 경우
+                if (gui == null) continue;
                 if (TryGetComponent(out UIAnimationBase uiAnimationBase))
                 {
                     if (setActive) uiAnimationBase.Expand();

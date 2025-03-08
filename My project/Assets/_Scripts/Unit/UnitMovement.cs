@@ -28,7 +28,6 @@ public class UnitMovement : MonoBehaviour
         if (placeUpper) return; //상대 유닛은 드래그 불가능
         if (isDragging) return;
         UnitManager.Instance.StartDragPosition(unit.GridPosition);
-        unit.ToggleSelectedCircle(true);
     }
 
     public void StartDrag()
@@ -68,7 +67,6 @@ public class UnitMovement : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (isDragging) return;
         UnitManager.Instance.EndDragPosition();
-        unit.ToggleSelectedCircle(false);
     }
 
     public void StartMove(Vector2 target)

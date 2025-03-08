@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitManager : Singleton<UnitManager>
 {
@@ -10,9 +11,7 @@ public class UnitManager : Singleton<UnitManager>
 
     [SerializeField]
     private GameObject destinationGUI;
-
-    [SerializeField] private LayerMask unitLayer;
-
+    
     private const int Width = 6, Height = 3;
     private UnitGroup[,] upperUnitGroups = new UnitGroup[Width, Height];
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
@@ -47,7 +46,11 @@ public class UnitManager : Singleton<UnitManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (IsClickingOnUnit()) return;
+            //UI를 클릭한 경우
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             UIManager.Instance.HideUnitInfo();
             UIManager.Instance.PopGUIQueue(setActive: false);
         }
@@ -61,16 +64,11 @@ public class UnitManager : Singleton<UnitManager>
                 destinationGUI.transform.position = GridToWorld(dragTo);
                 destinationGUI.SetActive(true);
                 UpdateDragLine();
+                ToggleUnitSelectedCircle(dragFrom, true);
             }
         }
     }
-    
-    private bool IsClickingOnUnit()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, unitLayer);
-    }
-    
+
     private void InitializeUnitGroups()
     {
         for (int x = 0; x < Width; x++)
@@ -142,11 +140,11 @@ public class UnitManager : Singleton<UnitManager>
     
     public void SellUnit(Unit unit)
     {
+        Debug.Log("Sell Unit");
         UnitGroup[,] unitGroups = lowerUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
 
         if (unitGroup.units.Count == 0) return;
-        unitGroup.units.Remove(unitGroup.units[unitGroup.units.Count - 1]);
         if (unitGroup.units[0].GoodsType == GoodsType.Gold)
         {
             GoodsManager.Instance.Gold += (int)(GoodsManager.Instance.RequiredSummonGold * .2f);
@@ -158,14 +156,27 @@ public class UnitManager : Singleton<UnitManager>
         
         //TODO: 여기서 추가 예외처리 해야함.
         //만약 X 위치에 A 유닛이 3개 있고 Y 위치에 A 유닛이 1개 있다면, X 위치에서 1개를 팔았을 때 Y 위치에 있던 유닛이 X 위치로 이동해야함.
-        
-        
-        unitGroup.OnUnitChanged?.Invoke(unitGroup);
+
+        unitGroup.units.Remove(unitGroup.units[unitGroup.units.Count - 1]);
         Destroy(unit.gameObject);
+        unitGroup.OnUnitChanged?.Invoke(unitGroup);
+
+        //X 위치에 있던 타입 A 유닛을 팔면, A 유닛 수가 2 이상일 때는 유닛이 계속 선택된다. (계속 팔 수 있음, 편의성 부분)
+        if (unitGroup.units.Count > 0)
+        {
+            var endIdx = unitGroup.units.Count - 1;
+            SelectPosition(unitGroup.units[endIdx].GridPosition);
+        }
+        else
+        {
+            UIManager.Instance.HideUnitInfo();
+        }
+        
     }
     
     public void UpgradeUnit(Unit unit)
     {
+        Debug.Log("Upgrade Unit");
         UnitGroup[,] unitGroups = lowerUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
         if (unitGroup.units.Count < Statics.InitialGameDataDic["MaxUnitGather"]) return;
@@ -332,7 +343,9 @@ public class UnitManager : Singleton<UnitManager>
         {
             UIManager.Instance.ShowUnitInfo(units[0], units.Count);
             Unit lastUnit = units[units.Count - 1];
-            lastUnit.ToggleGUI(true);
+            //신화 유닛은 합성, 판매 불가
+            if (lastUnit.Grade >= Grade.Mythic) return;
+            lastUnit.ToggleGUI(true, units.Count);
         }
     }
 
@@ -345,6 +358,7 @@ public class UnitManager : Singleton<UnitManager>
         lineRenderer.enabled = true;
         isDragging = true;
         destinationGUI.transform.position = GridToWorld(dragTo);
+        UIManager.Instance.PopGUIQueue(setActive: false);
     }
     
     public void EndDragPosition()
@@ -352,6 +366,8 @@ public class UnitManager : Singleton<UnitManager>
         isDragging = false;
         lineRenderer.enabled = false;
         destinationGUI.SetActive(false);
+        
+        ToggleUnitSelectedCircle(dragFrom, false);
 
         if (dragFrom == dragTo)
         {
@@ -434,6 +450,15 @@ public class UnitManager : Singleton<UnitManager>
         toGroup.OnUnitChanged?.Invoke(toGroup);
     }
     
+    private void ToggleUnitSelectedCircle(Vector2Int gridPosition, bool isActive)
+    {
+        UnitGroup[,] unitGroups = lowerUnitGroups;
+        UnitGroup unitGroup = unitGroups[gridPosition.x, gridPosition.y];
+        foreach (var unit in unitGroup.units)
+        {
+            unit.ToggleSelectedCircle(isActive);
+        }
+    }
     
     
     #endregion
