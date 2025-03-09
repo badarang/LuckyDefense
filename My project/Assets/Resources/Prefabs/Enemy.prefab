@@ -495,8 +495,9 @@ MonoBehaviour:
   speed: 2
   enemyType: 0
   dropGoodsType: 0
-  dropGoodsValue: 0
+  dropGoodsValue: 1
   HpBar: {fileID: 5286626116954344105}
+  StunStar: {fileID: 0}
 --- !u!114 &3989959845235854144
 MonoBehaviour:
   m_ObjectHideFlags: 0

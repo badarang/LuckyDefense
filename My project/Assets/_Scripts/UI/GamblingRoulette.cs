@@ -44,7 +44,12 @@ public class GamblingRoulette : MonoBehaviour
         }
         else
         {
-            if (isMyPlayer) UIManager.Instance.CreateDisplayText("실패...", Color.red, new Vector3(0, -6, 0));
+            if (isMyPlayer)
+            {
+                UIManager.Instance.CreateDisplayText("실패...", Color.red, new Vector3(0, -6, 0));
+                GoodsManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
+            }
+            
         }
     }
 }

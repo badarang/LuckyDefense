@@ -190,6 +190,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         {
             animator.ResetTrigger("Attack");
             animator.ResetTrigger("SpecialAttack");
+            attackCooldown = 0f;
             return null;
         }
 

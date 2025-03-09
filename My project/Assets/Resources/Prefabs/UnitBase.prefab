@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1 &1469994967625031362
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1 &7228829684909826026
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,6 +1004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1 &7330828212579111087
 GameObject:
   m_ObjectHideFlags: 0

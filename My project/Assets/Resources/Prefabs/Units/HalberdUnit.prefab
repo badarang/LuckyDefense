@@ -88,7 +88,7 @@ MonoBehaviour:
   hp: 1
   attackSpeed: 1
   range: 2
-  damage: 50
+  damage: 40
   criticalChance: 0.1
   goodsType: 1
   sellPrice: 1

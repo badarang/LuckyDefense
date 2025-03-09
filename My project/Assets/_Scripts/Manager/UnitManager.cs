@@ -48,6 +48,11 @@ public class UnitManager : Singleton<UnitManager>
         InitializeMythicUnitInfoDic();
         InitializePropertyDic();
     }
+    
+    private void OnDisable()
+    {
+        UnitPropertyDic.OnPropertyChanged -= OnPropertyChanged;
+    }
 
     private void Update()
     {
@@ -359,6 +364,7 @@ public class UnitManager : Singleton<UnitManager>
             unitGroups[originalPos.x, originalPos.y].units.Add(newUnit);
         }
         unitGroups[originalPos.x, originalPos.y].OnUnitChanged?.Invoke(unitGroups[originalPos.x, originalPos.y]);
+        UIManager.Instance.HideUnitInfo();
     }
 
     public void UpgradeUnit(Vector2Int pos, bool isMyPlayer = false)
@@ -898,7 +904,7 @@ public class PropertyDictionary<T, U>
 
     public U this[T key]
     {
-        get => dictionary[key];
+        get => dictionary.ContainsKey(key) ? dictionary[key] : default(U);
         set
         {
             if (!dictionary.ContainsKey(key) || !dictionary[key].Equals(value))

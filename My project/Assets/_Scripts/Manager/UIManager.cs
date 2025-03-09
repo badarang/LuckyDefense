@@ -40,8 +40,11 @@ public class UIManager : Singleton<UIManager>
     private void OnApplicationQuit()
     {
         base.OnApplicationQuit();
+        StopAllCoroutines();
         UITextDictionary.Clear();
         UIDictionary.Clear();
+        displayedGUIQueue.Clear();
+        congratQueue.Clear();
     }
     
     public void OnLoad()

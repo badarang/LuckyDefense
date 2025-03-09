@@ -62,11 +62,14 @@ public abstract class Enemy : MonoBehaviour, IHittable
     public void TakeDamage(float amount, bool isAttackerRight = true)
     {
         hp -= amount;
+        hp = Mathf.Clamp(hp, 0, maxHp);
         HpBar.gameObject.SetActive(true);
         HpBar.SetHpBar(hp, maxHp);
         _entityAnimator.StartHitAnimation(isAttackerRight);
         if (hp <= 0)
         {
+            HpBar.gameObject.SetActive(false);
+            StunStar.SetActive(false);
             Die();
         }
     }
@@ -83,7 +86,6 @@ public abstract class Enemy : MonoBehaviour, IHittable
     {
         if (IsDead) return;
         IsDead = true;
-        HpBar.gameObject.SetActive(false);
 
         if (dropGoodsType == GoodsType.Gold)
         {

@@ -109,10 +109,10 @@ public class RoundManager : Singleton<RoundManager>
         enemy.transform.parent = enemySpawnGroup.transform;
         enemy.SetActive(true);
 
-        var hpMultiplier = (int)currentRound / 10 + 1;
+        var hpMultiplier = ((int)currentRound + 1) * (currentRound / 10 + 1);
         enemy.GetComponent<Enemy>().SetHpMultiplier(hpMultiplier);
 
-        var defenseRatio = (float)currentRound / 100;
+        var defenseRatio = (float)currentRound * 2 / 100;
         enemy.GetComponent<Enemy>().SetDefenseRatio(defenseRatio);
 
         enemy.GetComponent<Enemy>().Init();
