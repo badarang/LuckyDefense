@@ -24,10 +24,12 @@ public class EnemyMovement : MonoBehaviour
             if (stunCounter > 0)
             {
                 IsWalking = false;
+                enemy.StunStar.SetActive(true);
             }
             else
             {
                 IsWalking = true;
+                enemy.StunStar.SetActive(false);
             }
         }
     }

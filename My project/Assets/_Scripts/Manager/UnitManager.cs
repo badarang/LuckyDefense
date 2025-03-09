@@ -152,7 +152,7 @@ public class UnitManager : Singleton<UnitManager>
     
     private void OnPropertyChanged(UnitPropertyEnum property, float newValue)
     {
-        Debug.Log($"Property {property} changed to {newValue}");
+        //Debug.Log($"Property {property} changed to {newValue}");
         UIManager.Instance.UIDictionary["UnitPropertyScrollView"].GetComponent<UnitPropertyScrollView>().ChangeProperty(property, newValue);
     }
     

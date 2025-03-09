@@ -148,6 +148,8 @@ public abstract class Unit : MonoBehaviour, IAttackable
         if (unitMovement.IsDragging) return;
 
         currentTargets = GetCurrentTarget(attackableUnitCount);
+        
+        if (currentTargets == null || currentTargets.Count == 0) return;
 
         var isCritical = Random.value <= criticalChance;
 
@@ -184,7 +186,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
             }
         }
         
-        if (enemiesInRange.Length <= 0 || currentTargets.Count <= 0)
+        if (enemiesInRange.Length <= 0 || tmpTargets.Count <= 0)
         {
             animator.ResetTrigger("Attack");
             animator.ResetTrigger("SpecialAttack");

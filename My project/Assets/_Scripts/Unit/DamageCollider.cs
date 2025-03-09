@@ -36,7 +36,6 @@ public class DamageCollider : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("OnTriggerEnter2D: " + other.name);
         if (other.TryGetComponent(out Enemy enemy))
         {
             enemies.Add(enemy);
@@ -45,7 +44,6 @@ public class DamageCollider : MonoBehaviour
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("OnTriggerExit2D: " + other.name);
         if (other.TryGetComponent(out Enemy enemy))
         {
             enemies.Remove(enemy);
@@ -65,9 +63,9 @@ public class DamageCollider : MonoBehaviour
         }
         else
         {
+            if (enemies.Count == 0) return;
             foreach (var enemy in enemies)
             {
-                Debug.Log("DamageCollider: " + enemy);
                 var isAttackerRight = transform.position.x > enemy.transform.position.x;
                 enemy.TakeDamage(damage, isAttackerRight);
             }

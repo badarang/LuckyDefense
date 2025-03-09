@@ -28,9 +28,9 @@ public class UnitPropertyScrollView : MonoBehaviour
     public void SetSize()
     {
         int activeCount = 0;
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < content.transform.childCount; i++)
         {
-            var child = transform.GetChild(i);
+            var child = content.transform.GetChild(i);
             if (child.gameObject.activeSelf)
             {
                 activeCount++;

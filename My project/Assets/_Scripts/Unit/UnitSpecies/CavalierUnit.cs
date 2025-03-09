@@ -19,6 +19,5 @@ public class CavalierUnit : Unit
                 target.Stun(3f);
             }
         }
-
     }
 }

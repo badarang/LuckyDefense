@@ -21,6 +21,8 @@ public abstract class Enemy : MonoBehaviour, IHittable
     public bool IsDead { get; set; }
     public EnemyHpBar HpBar;
     private Vector3 originalScale;
+    public GameObject StunStar;
+
     
     public void Init()
     {
@@ -42,6 +44,7 @@ public abstract class Enemy : MonoBehaviour, IHittable
             UIManager.Instance.ShowEnemyAlertPanel();
         }
         Appear();
+        StunStar = transform.Find("StunStar").gameObject;
     }
 
     private void OnDisable()

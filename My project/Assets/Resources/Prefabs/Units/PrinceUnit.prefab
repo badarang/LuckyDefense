@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
       propertyPath: m_Name
-      value: PrinceUnit Variant
+      value: PrinceUnit
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2251840463363966479, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
@@ -104,6 +104,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   currentTargets: []
+  projectilePrefab: {fileID: 1608885343609610037, guid: e4c6d36e7bebd471aa85c9a8c8d2000c, type: 3}
 --- !u!1 &3332125010357008350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8773164886972097682, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}

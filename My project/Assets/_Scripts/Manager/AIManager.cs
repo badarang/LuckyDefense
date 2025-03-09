@@ -7,7 +7,7 @@ public class AIManager : Singleton<AIManager>
     [Header("Goods")]
     private int gold = 100;
     private int requiredGold = 20;
-    private int diamond = 5;
+    private int diamond = 0;
     
     public int Gold
     {
