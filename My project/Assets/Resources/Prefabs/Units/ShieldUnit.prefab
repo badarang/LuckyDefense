@@ -108,10 +108,9 @@ MonoBehaviour:
   moveSpeed: 5
   UnitIcon: {fileID: 1738586382, guid: f23c8068e4f924c6c9b227e8c4e284a7, type: 3}
   UnitName: "\uC2E4\uB4DC\uB9E8"
-  UnitSkillName: "\uBC29\uD328 \uBC18\uACA9"
-  UnitSkillDescription: "10% \uD655\uB960\uB85C \uBC29\uD328\uB85C \uC801\uC744 \uBC00\uCCD0
-    2\uCD08\uAC04 \uAE30\uC808\uC2DC\uD0B5\uB2C8\uB2E4."
-  UnitSkillType: 1
+  UnitSkillName: "\uC0AC\uAE30 \uC9C4\uC791"
+  UnitSkillDescription: "\uC544\uAD70\uC758 \uACF5\uACA9\uC18D\uB3C4\uB97C 10% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
+  UnitSkillType: 0
   attackableUnitCount: 1
   enemyLayer:
     serializedVersion: 2

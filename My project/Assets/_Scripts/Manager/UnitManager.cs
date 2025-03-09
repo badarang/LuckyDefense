@@ -518,11 +518,15 @@ public class UnitManager : Singleton<UnitManager>
     private Grade GetRandomGrade()
     {
         int randomValue = UnityEngine.Random.Range(0, 100);
-        if (randomValue <= Statics.UnitPickUpChance[0]) return Grade.Common;
-        if (randomValue <= Statics.UnitPickUpChance[1]) return Grade.Rare;
+        Debug.Log($"Random Value: {randomValue}");
+
+        int commonThreshold = Statics.UnitPickUpChance[0];
+        int rareThreshold = commonThreshold + Statics.UnitPickUpChance[1];
+
+        if (randomValue < commonThreshold) return Grade.Common;
+        if (randomValue < rareThreshold) return Grade.Rare;
         return Grade.Epic;
     }
-    
     public Vector2Int GetCanUpgradePoition(bool isMyPlayer = true)
     {
         UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;

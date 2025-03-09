@@ -36,15 +36,15 @@ public abstract class Unit : MonoBehaviour, IAttackable
     public float AttackSpeed => attackSpeed;
 
     [SerializeField]
-    private float range = 1;
+    protected float range = 1;
     public float Range => range;
 
     [SerializeField]
-    private float damage = 10;
+    protected float damage = 10;
     public float Damage => damage;
 
     [SerializeField]
-    private float criticalChance = .1f;
+    protected float criticalChance = .1f;
 
     [SerializeField]
     private GoodsType goodsType;
@@ -69,18 +69,18 @@ public abstract class Unit : MonoBehaviour, IAttackable
     
     [Header("Combat Settings")]
     [SerializeField]
-    private int attackableUnitCount = 1;
+    protected int attackableUnitCount = 1;
 
     [SerializeField]
-    private LayerMask enemyLayer;
+    protected LayerMask enemyLayer;
     
     [SerializeField]
-    private List<Enemy> currentTargets = new List<Enemy>();
+    protected List<Enemy> currentTargets = new List<Enemy>();
 
-    private float attackCooldown = 0f;
-    private Animator animator;
-    private EntityAnimator _entityAnimator;
-    private UnitMovement unitMovement;
+    protected float attackCooldown = 0f;
+    protected Animator animator;
+    protected EntityAnimator _entityAnimator;
+    protected UnitMovement unitMovement;
     private Transform flippable;
     public Transform Flippable => flippable;
     private Transform rendererTransform;
@@ -141,7 +141,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         flippable.localScale = localScale;
     }
     
-    public void Attack()
+    public virtual void Attack()
     {
         if (unitMovement.IsDragging) return;
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
@@ -184,7 +184,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         Flip(isFacingRight);
     }
     
-    IEnumerator AttackCoroutine(bool isCritical, float targetTime)
+    protected IEnumerator AttackCoroutine(bool isCritical, float targetTime)
     {
         yield return new WaitForSeconds(targetTime);
         OnHit(isCritical);
@@ -203,6 +203,25 @@ public abstract class Unit : MonoBehaviour, IAttackable
         animator.SetTrigger("Idle");
     }
 
+    public Enemy GetNearestEnemy(Collider2D[] enemiesInRange)
+    {
+        if (enemiesInRange.Length <= 0) return null;
+        Enemy nearestEnemy = null;
+        float nearestDistance = Mathf.Infinity;
+        foreach (var enemyCollider in enemiesInRange)
+        {
+            var enemy = enemyCollider.GetComponent<Enemy>();
+            if (enemy == null || enemy.IsDead) continue;
+            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+        return nearestEnemy;
+    }
+
     public void TakeDamage(float amount)
     {
         //Not use
@@ -216,7 +235,6 @@ public abstract class Unit : MonoBehaviour, IAttackable
     void Die()
     {
         Destroy(gameObject);
-        
     }
 
     void OnDrawGizmosSelected()

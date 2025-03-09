@@ -8334,12 +8334,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 313177330}
   - {fileID: 1776262367}
   - {fileID: 2139967835}
   - {fileID: 1981974954}
   - {fileID: 843020335}
   - {fileID: 1499651685}
-  - {fileID: 313177330}
   m_Father: {fileID: 1545526337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -19359,6 +19359,16 @@ PrefabInstance:
     - target: {fileID: 2542645115849620343, guid: 4c859ffab22aa4830bbac601c0c0cec6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689337260878396129, guid: 4c859ffab22aa4830bbac601c0c0cec6, type: 3}
+      propertyPath: UnitSkillType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689337260878396129, guid: 4c859ffab22aa4830bbac601c0c0cec6, type: 3}
+      propertyPath: UnitSkillDescription
+      value: "10% \uD655\uB960\uB85C \uC220\uC794\uC744 \uB358\uC838 \uC801\uC5D0\uAC8C
+        0.5\uCD08\uB9C8\uB2E4 \uACF5\uACA9\uB825\uC758 1000% \uB370\uBBF8\uC9C0\uB97C
+        \uC785\uD788\uB294 \uC6C5\uB369\uC774\uB97C \uC0DD\uC131\uD569\uB2C8\uB2E4."
       objectReference: {fileID: 0}
     - target: {fileID: 7837313395186110666, guid: 4c859ffab22aa4830bbac601c0c0cec6, type: 3}
       propertyPath: m_Name

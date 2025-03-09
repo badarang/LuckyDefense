@@ -101,12 +101,14 @@ MonoBehaviour:
   UnitIcon: {fileID: -1546279729, guid: 4ba2dba3754df43b4ac15da852cbc77a, type: 3}
   UnitName: "\uD0B9\uB9E8"
   UnitSkillName: "\uC5E0\uBE0C\uB85C\uC2DC\uC544"
-  UnitSkillDescription: "\uC220\uC794\uC744 \uB358\uC838 \uC801\uC5D0\uAC8C 0.5\uCD08\uB9C8\uB2E4
-    \uACF5\uACA9\uB825\uC758 1000% \uB370\uBBF8\uC9C0\uB97C \uC785\uD788\uB294 \uC6C5\uB369\uC774\uB97C
-    \uC0DD\uC131\uD569\uB2C8\uB2E4."
-  UnitSkillType: 1
+  UnitSkillDescription: "10% \uD655\uB960\uB85C \uC220\uC794\uC744 \uB358\uC838 \uC801\uC5D0\uAC8C
+    0.5\uCD08\uB9C8\uB2E4 \uACF5\uACA9\uB825\uC758 1000% \uB370\uBBF8\uC9C0\uB97C
+    \uC785\uD788\uB294 \uC6C5\uB369\uC774\uB97C \uC0DD\uC131\uD569\uB2C8\uB2E4."
+  UnitSkillType: 2
   attackableUnitCount: 1
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   currentTargets: []
+  kingProjectilePrefab: {fileID: 6086093829372235973, guid: b815cea8573664921bc4762b9a7ebb31, type: 3}
+  kingDisplayProjectilePrefab: {fileID: 720828355166127499, guid: dce895ab961ae4a2f9e08c4a2f825df0, type: 3}

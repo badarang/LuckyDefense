@@ -334,6 +334,7 @@ GameObject:
   - component: {fileID: 3169137721863427423}
   - component: {fileID: 2189251581141865104}
   - component: {fileID: 3989959845235854144}
+  - component: {fileID: 1610794450828347819}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -408,7 +409,8 @@ MonoBehaviour:
   maxHp: 40
   speed: 2
   enemyType: 0
-  dropGold: 1
+  dropGoodsType: 0
+  dropGoodsValue: 0
   HpBar: {fileID: 5286626116954344105}
 --- !u!114 &3989959845235854144
 MonoBehaviour:
@@ -424,6 +426,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PathUpper: {fileID: 4206005259688057762, guid: b9101279f744a47fb81871061095c690, type: 3}
   PathLower: {fileID: 488765249368472142, guid: 4001f8c93b9264512b79ece39ea9eb7d, type: 3}
+--- !u!50 &1610794450828347819
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075657228313207197}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6670563596986172858
 GameObject:
   m_ObjectHideFlags: 0

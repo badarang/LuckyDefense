@@ -95,19 +95,15 @@ MonoBehaviour:
   moveSpeed: 10
   UnitIcon: {fileID: -1020715333, guid: 2e767dfeba10c4325902f43ad1d3dd74, type: 3}
   UnitName: "\uCE74\uBC1C\uB9AC\uC5B4"
-  UnitSkillName: "\uC0AC\uAE30 \uC9C4\uC791"
-  UnitSkillDescription: "\uC624\uB978\uCABD \uC544\uAD70\uC758 \uACF5\uACA9\uB825\uC744
-    50%, \uACF5\uACA9\uC18D\uB3C4\uB97C 50% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
-  UnitSkillType: 0
+  UnitSkillName: "\uC6B0\uB801\uCC2C \uD3EC\uD6A8"
+  UnitSkillDescription: "10% \uD655\uB960\uB85C \uC8FC\uBCC0 \uC801\uC744 2\uCD08\uB3D9\uC548
+    \uAE30\uC808\uC2DC\uD0B5\uB2C8\uB2E4."
+  UnitSkillType: 2
   attackableUnitCount: 5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   currentTargets: []
-  RequiredUnits:
-  - {fileID: 3917608145986306056, guid: d2c77cecf4ade4afca3061491b8cbefe, type: 3}
-  - {fileID: 8925309419743858732, guid: 2df4ad3682f8245c1a5523738f6d1b47, type: 3}
-  - {fileID: 1589290177870584038, guid: 44eacc0c3baee4ff58559581b9cf7865, type: 3}
 --- !u!1 &4544725351635957935 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8773164886972097682, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
