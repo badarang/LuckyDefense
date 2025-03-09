@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
         AIManager.Instance.OnLoad();
         GoodsManager.Instance.OnLoad();
         RoundManager.Instance.OnLoad();
+        ParticleManager.Instance.OnLoad();
     }
 
     private void Update()

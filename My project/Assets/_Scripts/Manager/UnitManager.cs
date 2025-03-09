@@ -505,6 +505,16 @@ public class UnitManager : Singleton<UnitManager>
         return new Vector2Int(-1, -1);
     }
     
+    public Sprite GetUnitSprite(UnitTypeEnum unitType)
+    {
+        return spawnableUnitDic[unitType].GetComponent<Unit>().UnitIcon;
+    }
+    
+    public string GetUnitName(UnitTypeEnum unitType)
+    {
+        return spawnableUnitDic[unitType].GetComponent<Unit>().UnitName;
+    }
+    
     #endregion
     
     #region Unit Spawn System

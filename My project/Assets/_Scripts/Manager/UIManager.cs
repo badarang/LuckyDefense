@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -12,26 +13,30 @@ public class UIManager : Singleton<UIManager>
     private WaitForSeconds oneSec = new WaitForSeconds(1f);
     private float enemyAlertDelay;
     private Queue<GameObject> displayedGUIQueue = new Queue<GameObject>();
+    
+    private Queue<UnitTypeEnum> congratQueue = new Queue<UnitTypeEnum>();
+    private bool isCongratProcessing = false;
 
 
     private void Awake()
     {
         base.Awake();
-        
-        TextMeshProUGUI[] textMeshPros = canvas.GetComponentsInChildren<TextMeshProUGUI>();
+    
+        TextMeshProUGUI[] textMeshPros = canvas.GetComponentsInChildren<TextMeshProUGUI>(true);
         foreach (var textMeshPro in textMeshPros)
         {
+            if (UITextDictionary.ContainsKey(textMeshPro.name)) continue;
             UITextDictionary.Add(textMeshPro.name, textMeshPro);
         }
 
-        UIAnimationBase[] uiAnimationBases = canvas.GetComponentsInChildren<UIAnimationBase>();
+        UIAnimationBase[] uiAnimationBases = canvas.GetComponentsInChildren<UIAnimationBase>(true);
         foreach (var uiAnimationBase in uiAnimationBases)
         {
             UIDictionary.Add(uiAnimationBase.name, uiAnimationBase.gameObject);
             uiAnimationBase.gameObject.SetActive(false);
         }
     }
-    
+
     private void OnApplicationQuit()
     {
         base.OnApplicationQuit();
@@ -277,12 +282,57 @@ public class UIManager : Singleton<UIManager>
                 Debug.Log("Rare!!");
                 break;
             case Grade.Epic:
-                Debug.Log("Epic!!");
+                ShowUnitCongratPanel(unitType);
+                ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Shine_Purple, Vector3.zero);
                 break;
             case Grade.Mythic:
+                ShowUnitCongratPanel(unitType);
+                ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Shine_Orange, Vector3.zero);
+                ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Star_Confetti, Vector3.zero);
                 Debug.Log("Mythic!!");
                 break;
         }
+    }
+    
+    private void ShowUnitCongratPanel(UnitTypeEnum unitType)
+    {
+        congratQueue.Enqueue(unitType);
+        if (!isCongratProcessing)
+        {
+            StartCoroutine(ProcessCongratQueue());
+        }
+    }
+    
+    private IEnumerator ProcessCongratQueue()
+    {
+        isCongratProcessing = true;
+        while (congratQueue.Count > 0)
+        {
+            UnitTypeEnum currentType = congratQueue.Dequeue();
+            yield return StartCoroutine(ShowUnitCongratPanelCO(currentType));
+        }
+        isCongratProcessing = false;
+    }
+    
+    private IEnumerator ShowUnitCongratPanelCO(UnitTypeEnum unitType)
+    {
+        if (UIDictionary.TryGetValue("UnitCongratPanel", out var unitCongratPanel))
+        {
+            if (unitCongratPanel.TryGetComponent<UnitCongratPanel>(out var unitCongratPanelComponent))
+            {
+                var sprite = UnitManager.Instance.GetUnitSprite(unitType);
+                var grade = UnitManager.Instance.GetUnitGrade(unitType);
+                var name = UnitManager.Instance.GetUnitName(unitType);
+
+                unitCongratPanelComponent.SetUnitCongratPanel(grade, name, sprite);
+                Sequence seq = unitCongratPanelComponent.StartAnimation();
+                unitCongratPanel.SetActive(true);
+                yield return seq.WaitForCompletion();
+                yield return new WaitForSeconds(0.5f);
+                unitCongratPanel.SetActive(false);
+            }
+        }
+        yield return null;
     }
     
     public void ShowGameClearPanel()

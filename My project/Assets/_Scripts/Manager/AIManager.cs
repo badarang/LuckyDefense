@@ -30,13 +30,13 @@ public class AIManager : Singleton<AIManager>
     
     [Header("AI")]
     private float behaviourDelay = 1f;
-    private float behaviourTimer = 0f;
+    private float behaviourTimer = 2f;
     private const int Width = 6, Height = 3;
     //[SerializeField] private UnitGroup[,] targetUnitGroups = new UnitGroup[Width, Height];
     
     public void OnLoad()
     {
-        Statics.DebugColor("AIManager Loaded", new Color(1, .5f, 1f));
+        Statics.DebugColor("AIManager Loaded", new Color(.2f, .2f, .6f));
     }
 
     private void Start()
