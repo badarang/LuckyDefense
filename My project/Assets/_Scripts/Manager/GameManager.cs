@@ -7,16 +7,17 @@ public class GameManager : Singleton<GameManager>
 {
     public GameState CurrentState { get; private set; }
     public Action OnGameStart;
+    public Action OnGameEnd;
     
     private void Awake()
     {
         base.Awake();
         OnLoad();
-        CurrentState = GameState.Lobby;
     }
     
     private void OnLoad()
     {
+        CurrentState = GameState.Lobby;
         Statics.DebugColor("GameManager Loaded", new Color(0, .5f, 1f));
         UIManager.Instance.OnLoad();
         UnitManager.Instance.OnLoad();
@@ -32,6 +33,33 @@ public class GameManager : Singleton<GameManager>
             CurrentState = GameState.InGame; 
             OnGameStart?.Invoke();
         }
+    }
+    
+    public void GameClear()
+    {
+        OnGameEnd?.Invoke();
+        CurrentState = GameState.InGameEnd;
+        UIManager.Instance.ShowGameClearPanel();
+    }
+    
+    public void GameOver()
+    {
+        StartCoroutine(GameOverCO());
+    }
+    
+    private IEnumerator GameOverCO()
+    {
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(.6f);
+                
+        OnGameEnd?.Invoke();
+        CurrentState = GameState.InGameEnd;
+        UIManager.Instance.ShowGameOverPanel();
+    }
+    
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
 
