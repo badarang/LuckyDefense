@@ -142,30 +142,13 @@ public abstract class Unit : MonoBehaviour, IAttackable
         else localScale.x = -Mathf.Abs(localScale.x);
         flippable.localScale = localScale;
     }
-    
+
     public virtual void Attack()
     {
         if (unitMovement.IsDragging) return;
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
-        
-        currentTargets.Clear();
-        int attackCount = Mathf.Min(attackableUnitCount, enemiesInRange.Length);
-        for (int i = 0; i < attackCount; i++)
-        {
-            Enemy enemy = enemiesInRange[i].GetComponent<Enemy>();
-            if (enemy != null && !enemy.IsDead)
-            {
-                currentTargets.Add(enemy);
-            }
-        }
-        
-        if (enemiesInRange.Length <= 0 || currentTargets.Count <= 0)
-        {
-            animator.ResetTrigger("Attack");
-            animator.ResetTrigger("SpecialAttack");
-            return;
-        }
-        
+
+        currentTargets = GetCurrentTarget(attackableUnitCount);
+
         var isCritical = Random.value <= criticalChance;
 
         if (_entityAnimator.AttackAnimationLength > 0)
@@ -184,6 +167,31 @@ public abstract class Unit : MonoBehaviour, IAttackable
         
         var isFacingRight = (currentTargets[0].transform.position.x < transform.position.x) ? false : true; 
         Flip(isFacingRight);
+    }
+    
+    public List<Enemy> GetCurrentTarget(int attackableUnitCount)
+    {
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
+        
+        List<Enemy> tmpTargets = new List<Enemy>();
+        int attackCount = Mathf.Min(attackableUnitCount, enemiesInRange.Length);
+        for (int i = 0; i < attackCount; i++)
+        {
+            Enemy enemy = enemiesInRange[i].GetComponent<Enemy>();
+            if (enemy != null && !enemy.IsDead)
+            {
+                tmpTargets.Add(enemy);
+            }
+        }
+        
+        if (enemiesInRange.Length <= 0 || currentTargets.Count <= 0)
+        {
+            animator.ResetTrigger("Attack");
+            animator.ResetTrigger("SpecialAttack");
+            return null;
+        }
+
+        return tmpTargets;
     }
     
     protected IEnumerator AttackCoroutine(bool isCritical, float targetTime)

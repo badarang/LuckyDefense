@@ -14,6 +14,23 @@ public class EnemyMovement : MonoBehaviour
     private Animator animator;
     private EntityAnimator entityAnimator;
     private GameObject flippable;
+    private float stunCounter;
+    public float StunCounter
+    {
+        get => stunCounter;
+        set
+        {
+            stunCounter = value;
+            if (stunCounter > 0)
+            {
+                IsWalking = false;
+            }
+            else
+            {
+                IsWalking = true;
+            }
+        }
+    }
 
     private bool isWalking;
 
@@ -54,6 +71,13 @@ public class EnemyMovement : MonoBehaviour
     {
         if (currentPath == null) return;
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
+        
+        if (StunCounter > 0)
+        {
+            StunCounter -= Time.deltaTime;
+            return;
+        }
+        
         if (!IsWalking || enemy.IsDead) return;
         if (targetPoint == null)
         {

@@ -2581,6 +2581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1 &313875772
 GameObject:
   m_ObjectHideFlags: 0
@@ -3493,6 +3494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!114 &386303247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7342,6 +7344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!114 &813389264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7562,6 +7565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!114 &843020337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9721,6 +9725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!1 &1075641000
 GameObject:
   m_ObjectHideFlags: 0
@@ -11530,6 +11535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!114 &1321702759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11810,6 +11816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1 &1337762862
 GameObject:
   m_ObjectHideFlags: 0
@@ -12300,7 +12307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90434a77263e149cc8f4912ced177556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollView: {fileID: 0}
+  scrollView: {fileID: 1347360178}
+  content: {fileID: 1253217723}
   unitPropertyPrefab: {fileID: 2182728894550786078, guid: a82baa89420a34354a1c10f8b3d7e871, type: 3}
 --- !u!114 &1347360183
 MonoBehaviour:
@@ -12315,6 +12323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 1
 --- !u!1 &1359342491
 GameObject:
   m_ObjectHideFlags: 0
@@ -13372,6 +13381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!114 &1499651687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13455,6 +13465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!114 &1501244957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14971,6 +14982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!114 &1587653415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16042,6 +16054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!114 &1708658434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16818,6 +16831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1 &1782406493
 GameObject:
   m_ObjectHideFlags: 0
@@ -17364,6 +17378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!4 &1872117450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6214813983072593903, guid: 5d413bfb8de774e67a61b56bfa2a4dae, type: 3}
@@ -17993,6 +18008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!114 &1981974956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18633,6 +18649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 1
+  DontHideOnStart: 0
 --- !u!114 &2017274480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20284,6 +20301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsExpandedFirst: 0
+  DontHideOnStart: 0
 --- !u!1001 &258515876654844553
 PrefabInstance:
   m_ObjectHideFlags: 0

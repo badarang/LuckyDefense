@@ -68,6 +68,14 @@ public abstract class Enemy : MonoBehaviour, IHittable
         }
     }
     
+    public void Stun(float duration)
+    {
+        if (TryGetComponent(out EnemyMovement enemyMovement))
+        {
+            enemyMovement.StunCounter = duration;
+        }
+    }
+    
     public void Die()
     {
         if (IsDead) return;

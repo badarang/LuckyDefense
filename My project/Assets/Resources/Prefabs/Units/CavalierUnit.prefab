@@ -96,7 +96,7 @@ MonoBehaviour:
   UnitIcon: {fileID: -1020715333, guid: 2e767dfeba10c4325902f43ad1d3dd74, type: 3}
   UnitName: "\uCE74\uBC1C\uB9AC\uC5B4"
   UnitSkillName: "\uC6B0\uB801\uCC2C \uD3EC\uD6A8"
-  UnitSkillDescription: "10% \uD655\uB960\uB85C \uC8FC\uBCC0 \uC801\uC744 2\uCD08\uB3D9\uC548
+  UnitSkillDescription: "10% \uD655\uB960\uB85C \uC8FC\uBCC0 \uC801\uC744 3\uCD08\uB3D9\uC548
     \uAE30\uC808\uC2DC\uD0B5\uB2C8\uB2E4."
   UnitSkillType: 2
   attackableUnitCount: 5
