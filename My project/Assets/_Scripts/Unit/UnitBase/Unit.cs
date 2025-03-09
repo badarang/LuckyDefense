@@ -89,7 +89,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
     #endregion
 
-    private void OnDisable()
+    public virtual void OnDisable()
     {
         StopAllCoroutines();
         isInitialized = false;
@@ -104,7 +104,9 @@ public abstract class Unit : MonoBehaviour, IAttackable
         if (attackCooldown <= 0f)
         {
             Attack();
-            attackCooldown = 1f / attackSpeed;
+            
+            var attackSpeedMultiplier = UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.AttackSpeed];
+            attackCooldown = (1f / attackSpeed) * (1 - attackSpeedMultiplier);
         }
     }
 
@@ -194,12 +196,24 @@ public abstract class Unit : MonoBehaviour, IAttackable
     {
         foreach (var enemy in currentTargets)
         {
-            if (enemy == null || enemy.IsDead) continue; //enemy가 도중에 죽은 경우
+            if (enemy == null || enemy.IsDead) continue; // enemy가 도중에 죽은 경우
+    
             bool isAttackerRight = enemy.transform.position.x < transform.position.x;
-            int finalDamage = Mathf.RoundToInt(damage * (isCritical ? 2f : 1f) * (1 - enemy.DefenseRatio));
+
+            //공격력 계산
+            var damageRatioDecreaseMultiplier = Mathf.Clamp01(UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.Damage]);
+            var enforcedDamage = Mathf.RoundToInt(damage * (1 + damageRatioDecreaseMultiplier));
+
+            //방어력 계산
+            var defenseRatioDecreaseMultiplier = Mathf.Clamp01(UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.DefenseRatio]);
+            var enemyDefenseRatio = Mathf.Clamp01(enemy.DefenseRatio * (1 - defenseRatioDecreaseMultiplier));
+            int finalDamage = Mathf.RoundToInt(enforcedDamage * (isCritical ? 2f : 1f) * (1 - enemyDefenseRatio));
+            finalDamage = Mathf.Max(1, finalDamage);
+
             UIManager.Instance.CreateDamageText(enemy.transform.position, finalDamage, isCritical);
             enemy.TakeDamage(finalDamage, isAttackerRight);
         }
+
         animator.SetTrigger("Idle");
     }
 
@@ -331,4 +345,18 @@ public enum UnitSkillTypeEnum
     패시브,
     스킬,
     액티브,
+}
+
+
+public enum UnitPropertyEnum
+{
+    Damage,
+    AttackSpeed,
+    DefenseRatio,
+    CriticalChance,
+    HP,
+    Range,
+    MoveSpeed,
+    AttackableUnitCount,
+
 }

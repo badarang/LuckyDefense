@@ -22,6 +22,7 @@ public class UnitManager : Singleton<UnitManager>
     public Dictionary <UnitTypeEnum, MythicUnitInfo> MythicUnitInfoDic;
     [SerializeField] private GameObject trailPrefab;
 
+    public PropertyDictionary<UnitPropertyEnum, float> UnitPropertyDic = new PropertyDictionary<UnitPropertyEnum, float>();
 
     public int UnitCount {
         get => unitCount;
@@ -45,6 +46,7 @@ public class UnitManager : Singleton<UnitManager>
         InitializeLineRenderer();
         InitializeSpawnableUnitDic();
         InitializeMythicUnitInfoDic();
+        InitializePropertyDic();
     }
 
     private void Update()
@@ -130,6 +132,28 @@ public class UnitManager : Singleton<UnitManager>
         {
             MythicUnitInfoDic.Add(unit.mythicUnitType, unit);
         }
+    }
+
+    private void InitializePropertyDic()
+    {
+        UnitPropertyDic.Initialize(new Dictionary<UnitPropertyEnum, float>
+        {
+            { UnitPropertyEnum.Damage, 0f },
+            { UnitPropertyEnum.AttackSpeed, 0f },
+            { UnitPropertyEnum.DefenseRatio, 0f },
+            { UnitPropertyEnum.CriticalChance, 0f },
+            { UnitPropertyEnum.HP, 0f },
+            { UnitPropertyEnum.Range, 0f },
+            { UnitPropertyEnum.MoveSpeed, 0f },
+            { UnitPropertyEnum.AttackableUnitCount, 0f },
+        });
+        UnitPropertyDic.OnPropertyChanged += OnPropertyChanged;
+    }
+    
+    private void OnPropertyChanged(UnitPropertyEnum property, float newValue)
+    {
+        Debug.Log($"Property {property} changed to {newValue}");
+        UIManager.Instance.UIDictionary["UnitPropertyScrollView"].GetComponent<UnitPropertyScrollView>().ChangeProperty(property, newValue);
     }
     
     #endregion
@@ -518,7 +542,6 @@ public class UnitManager : Singleton<UnitManager>
     private Grade GetRandomGrade()
     {
         int randomValue = UnityEngine.Random.Range(0, 100);
-        Debug.Log($"Random Value: {randomValue}");
 
         int commonThreshold = Statics.UnitPickUpChance[0];
         int rareThreshold = commonThreshold + Statics.UnitPickUpChance[1];
@@ -863,5 +886,31 @@ public class UnitManager : Singleton<UnitManager>
     public void ToggleDestinationGUI(bool isActive)
     {
         destinationGUI.SetActive(isActive);
+    }
+}
+
+
+public class PropertyDictionary<T, U>
+{
+    private Dictionary<T, U> dictionary = new Dictionary<T, U>();
+
+    public event Action<T, U> OnPropertyChanged;
+
+    public U this[T key]
+    {
+        get => dictionary[key];
+        set
+        {
+            if (!dictionary.ContainsKey(key) || !dictionary[key].Equals(value))
+            {
+                dictionary[key] = value;
+                OnPropertyChanged?.Invoke(key, value);
+            }
+        }
+    }
+
+    public void Initialize(Dictionary<T, U> initialValues)
+    {
+        dictionary = new Dictionary<T, U>(initialValues);
     }
 }

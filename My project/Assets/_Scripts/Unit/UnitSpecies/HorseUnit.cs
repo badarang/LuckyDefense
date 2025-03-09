@@ -4,5 +4,13 @@ using UnityEngine;
 
 public class HorseUnit : Unit
 {
-
+    private void OnEnable()
+    {
+        UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.Damage] += 0.2f;
+    }
+    
+    public override void OnDisable()
+    {
+        UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.Damage] -= 0.2f;
+    }
 }

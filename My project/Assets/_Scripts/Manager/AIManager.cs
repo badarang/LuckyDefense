@@ -65,7 +65,7 @@ public class AIManager : Singleton<AIManager>
         //전체 유닛이 신화가 아니라면
         if (!IsAllMythic())
         {
-            Debug.Log($"Gold {gold}, Diamond {diamond} Unit {unitCount}");
+            //Debug.Log($"Gold {gold}, Diamond {diamond} Unit {unitCount}");
             
             //신화 소환이 가능하다면
             List<int> processList = new List<int>();

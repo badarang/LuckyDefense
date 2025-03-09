@@ -33,7 +33,7 @@ public class UIManager : Singleton<UIManager>
         foreach (var uiAnimationBase in uiAnimationBases)
         {
             UIDictionary.Add(uiAnimationBase.name, uiAnimationBase.gameObject);
-            uiAnimationBase.gameObject.SetActive(false);
+            if (!uiAnimationBase.DontHideOnStart) uiAnimationBase.gameObject.SetActive(false);
         }
     }
 

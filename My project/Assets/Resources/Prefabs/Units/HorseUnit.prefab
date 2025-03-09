@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9052892201814361991, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
       propertyPath: m_Name
-      value: HorseUnit Variant
+      value: HorseUnit
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2251840463363966479, guid: e79dbd17dcc6b42ab9e0b0911c530182, type: 3}
@@ -100,7 +100,7 @@ MonoBehaviour:
   UnitIcon: {fileID: -202932178, guid: f192bf175f96240fb93ab7271e39c3af, type: 3}
   UnitName: "\uAE30\uB9C8\uBCD1"
   UnitSkillName: "\uC6B0\uB801\uCC2C \uD3EC\uD6A8"
-  UnitSkillDescription: "\uC544\uAD70\uC758 \uACF5\uACA9\uC18D\uB3C4\uB97C 20% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
+  UnitSkillDescription: "\uC544\uAD70\uC758 \uACF5\uACA9\uB825\uC744 20% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
   UnitSkillType: 0
   attackableUnitCount: 3
   enemyLayer:

@@ -7,6 +7,7 @@ public class UIAnimationBase : MonoBehaviour
 {
     [Header("UI Settings")]
     public bool IsExpandedFirst;
+    public bool DontHideOnStart;
     
     [Header("Animation Settings")]
     private float appearDuration = .5f;
