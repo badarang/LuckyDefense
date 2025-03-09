@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Wave_1
   m_EditorClassIdentifier: 
   spawnData:
-  - spawnTime: 0
-    enemyPrefab: {fileID: 0}
+  - enemyPrefab: {fileID: 0}
     isUpper: -1
-  - spawnTime: 1
-    enemyPrefab: {fileID: 0}
+  - enemyPrefab: {fileID: 0}
     isUpper: -1
-  - spawnTime: 2
-    enemyPrefab: {fileID: 0}
+  - enemyPrefab: {fileID: 0}
+    isUpper: -1
+  - enemyPrefab: {fileID: 0}
     isUpper: -1

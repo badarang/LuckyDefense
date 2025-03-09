@@ -11,6 +11,7 @@ public class HalberdUnit : Unit
     
     public override void OnDisable()
     {
+        base.OnDisable();
         UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.DefenseRatio] -= 0.1f;
     }
 }

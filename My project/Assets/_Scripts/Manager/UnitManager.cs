@@ -158,6 +158,7 @@ public class UnitManager : Singleton<UnitManager>
     private void OnPropertyChanged(UnitPropertyEnum property, float newValue)
     {
         //Debug.Log($"Property {property} changed to {newValue}");
+        if (UIManager.Instance.UIDictionary["UnitPropertyScrollView"] == null) return;
         UIManager.Instance.UIDictionary["UnitPropertyScrollView"].GetComponent<UnitPropertyScrollView>().ChangeProperty(property, newValue);
     }
     
@@ -337,9 +338,13 @@ public class UnitManager : Singleton<UnitManager>
         
         //unitGroup에 있는 모든 유닛들을 제거
         
-        unitGroup.units.ForEach(u => Destroy(u.gameObject));
+        unitGroup.units.ForEach(u =>
+        {
+            Destroy(u.gameObject);
+        });
         unitGroup.units.Clear();
         
+
         //새로운 유닛 생성
         Vector2Int originalPos = unit.GridPosition;
         Unit newUnit = SummonUnit(newGrade, originalPos, isMyPlayer);

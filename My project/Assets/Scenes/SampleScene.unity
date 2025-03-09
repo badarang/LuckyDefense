@@ -3057,27 +3057,13 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-  - roundTime: 20
-    roundSpawnData:
-    - spawnTime: 0
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
   - roundTime: 20
@@ -3085,27 +3071,27 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+  - roundTime: 20
+    roundSpawnData:
+    - spawnTime: 0
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 8c195381a5ffd41e7bf9c77c7070f5fc, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-  - roundTime: 20
-    roundSpawnData:
-    - spawnTime: 0
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
   - roundTime: 20
@@ -3113,13 +3099,27 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+  - roundTime: 20
+    roundSpawnData:
+    - spawnTime: 0
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 8c195381a5ffd41e7bf9c77c7070f5fc, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 5
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 8c195381a5ffd41e7bf9c77c7070f5fc, type: 2}
   - roundTime: 20
@@ -3127,33 +3127,16 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-  - roundTime: 20
-    roundSpawnData:
-    - spawnTime: 0
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
-      wavePresets:
-      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
   - roundTime: 20
@@ -3161,16 +3144,16 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
   - roundTime: 20
@@ -3178,16 +3161,33 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+  - roundTime: 20
+    roundSpawnData:
+    - spawnTime: 0
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
+      wavePresets:
+      - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
   - roundTime: 30
@@ -3195,19 +3195,19 @@ MonoBehaviour:
     - spawnTime: 0
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 8c195381a5ffd41e7bf9c77c7070f5fc, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 8c195381a5ffd41e7bf9c77c7070f5fc, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 01db1e8d9617949a9be16300e433a846, type: 2}
-    - spawnTime: 4
+    - spawnTime: 2
       wavePresets:
       - {fileID: 11400000, guid: 8c195381a5ffd41e7bf9c77c7070f5fc, type: 2}
   defaultEnemyPrefab: {fileID: 5075657228313207197, guid: 04d79a7d784e14c6f8ab5b8ad4284c64, type: 3}

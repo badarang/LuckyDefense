@@ -66,8 +66,10 @@ public class DamageCollider : MonoBehaviour
             if (enemies.Count == 0) return;
             foreach (var enemy in enemies)
             {
+                int damage = (int)this.damage;
                 var isAttackerRight = transform.position.x > enemy.transform.position.x;
                 enemy.TakeDamage(damage, isAttackerRight);
+                UIManager.Instance.CreateDamageText(enemy.transform.position, damage, isCritical: true);
             }
             damageTimer = damageDelay;
         }

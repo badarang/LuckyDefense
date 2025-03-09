@@ -48,6 +48,9 @@ public class GameManager : Singleton<GameManager>
     
     public void GameOver()
     {
+        if (CurrentState == GameState.InGameEnd) return;
+        OnGameEnd?.Invoke();
+        CurrentState = GameState.InGameEnd;
         StartCoroutine(GameOverCO());
     }
     
@@ -55,9 +58,6 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 0.2f;
         yield return new WaitForSeconds(.6f);
-                
-        OnGameEnd?.Invoke();
-        CurrentState = GameState.InGameEnd;
         UIManager.Instance.ShowGameOverPanel();
     }
     

@@ -11,6 +11,7 @@ public class HorseUnit : Unit
     
     public override void OnDisable()
     {
+        base.OnDisable();
         UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.Damage] -= 0.2f;
     }
 }

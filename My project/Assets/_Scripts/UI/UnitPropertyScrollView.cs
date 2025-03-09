@@ -17,7 +17,7 @@ public class UnitPropertyScrollView : MonoBehaviour
         
         var child = content.GetChild(idx);
 
-        child.gameObject.SetActive(value != 0);
+        child.gameObject.SetActive(value > .01f);
 
         var container = child.GetComponent<UnitPropertyIconContainer>();
         container.SetValue(value);

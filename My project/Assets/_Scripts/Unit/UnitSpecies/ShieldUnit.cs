@@ -12,6 +12,7 @@ public class ShieldUnit : Unit
     
     public override void OnDisable()
     {
+        base.OnDisable();
         UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.AttackSpeed] -= 0.1f;
     }
 }

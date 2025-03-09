@@ -11,6 +11,7 @@ public class SpearUnit : Unit
     
     public override void OnDisable()
     {
+        base.OnDisable();
         UnitManager.Instance.UnitPropertyDic[UnitPropertyEnum.DefenseRatio] -= 0.05f;
     }
 }

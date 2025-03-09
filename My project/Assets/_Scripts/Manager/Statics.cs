@@ -18,8 +18,8 @@ public static class Statics
         {"MaxUnitLevel", 5},
         {"MaxUnitGrade", 4},
         {"MaxUnitGather", 3},
-        {"MaxAliveEnemy", 100},
-        {"EnemyAlertThresHold", 75},
+        {"MaxAliveEnemy", 30},
+        {"EnemyAlertThresHold", 20},
         {"GameClearRound", 40}
     };
     
