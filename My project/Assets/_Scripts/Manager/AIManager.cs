@@ -65,6 +65,8 @@ public class AIManager : Singleton<AIManager>
         //전체 유닛이 신화가 아니라면
         if (!IsAllMythic())
         {
+            Debug.Log($"Gold {gold}, Diamond {diamond} Unit {unitCount}");
+            
             //신화 소환이 가능하다면
             List<int> processList = new List<int>();
             foreach (var mythicUnitEnum in Statics.MythicUnitEnumList)
@@ -128,11 +130,11 @@ public class AIManager : Singleton<AIManager>
             {
                 var changedPosition = new Vector2Int(-1, -1);
                 //유닛이 최대치가 아니라면
-                if (UnitManager.Instance.UnitCount < Statics.InitialGameDataDic["MaxUnitCount"])
+                if (unitCount < Statics.InitialGameDataDic["MaxUnitCount"])
                 {
                     changedPosition = UnitManager.Instance.SummonUnit(isMyPlayer: false);
+                    unitCount++;
                     gold -= requiredGold;
-                    Debug.Log("AI Remain Gold: " + gold);
                     requiredGold += Statics.InitialGameDataDic["UnitRequiredGoldIncrease"];
                 }
                 //유닛이 최대치라면
@@ -140,6 +142,7 @@ public class AIManager : Singleton<AIManager>
                 {
                     //등급이 낮은 유닛을 선택하여 제거
                     changedPosition = UnitManager.Instance.RemoveUnitOrderByGrade(isMyPlayer: false);
+                    unitCount--;
                 }
 
                 if (changedPosition.x != -1)
@@ -172,11 +175,12 @@ public class AIManager : Singleton<AIManager>
         var random = Random.Range(0, 100);
         if (random <= Statics.GamblingChance[gamblingIdx])
         {
+            Statics.DebugColor($"AIManager Gambling Success with {gamblingIdx}" , Color.green);
             UnitManager.Instance.SummonUnit(isMyPlayer: false, grade: Grade.Rare + gamblingIdx);
         }
         else
         {
-            Debug.Log($"AIManager Gambling Failed with {gamblingIdx}");
+            Statics.DebugColor($"AIManager Gambling Fail with {gamblingIdx}" , Color.red);
         }
     }
 

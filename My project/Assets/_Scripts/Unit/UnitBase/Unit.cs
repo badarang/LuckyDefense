@@ -108,7 +108,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         }
     }
 
-    public void Init(UnitTypeEnum unitType, bool isMyPlayer, Vector2Int spawnPosition)
+    public void Init(UnitTypeEnum unitType, bool isMyPlayer, Vector2Int spawnPosition, bool isAlreadySummoned = false)
     {
         this.unitType = unitType;
         animator = GetComponentInChildren<Animator>();
@@ -129,7 +129,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
 
         isInitialized = true;
         this.isMyPlayer = isMyPlayer;
-        if (isMyPlayer) UnitManager.Instance.UnitCount++;
+        if (isMyPlayer && !isAlreadySummoned) UnitManager.Instance.UnitCount++;
 
     }
 

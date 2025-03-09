@@ -34,7 +34,7 @@ public class TextAnimationBase : MonoBehaviour
     
     public void ExpandAlert(Color color)
     {
-        var originalColor = transform.GetComponent<TextMeshProUGUI>().color;
+        var originalColor = Color.white;
         if (tween != null) tween.Kill();
         Sequence sequence = DOTween.Sequence();
         sequence.Append(transform.DOScale(Vector3.one * 1.3f, appearDuration)).SetEase(Ease.OutBack);

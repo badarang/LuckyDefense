@@ -290,17 +290,12 @@ public class UIManager : Singleton<UIManager>
             case Grade.Common:
                 break;
             case Grade.Rare:
-                Debug.Log("Rare!!");
                 break;
             case Grade.Epic:
                 ShowUnitCongratPanel(unitType);
-                ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Shine_Purple, Vector3.zero);
                 break;
             case Grade.Mythic:
                 ShowUnitCongratPanel(unitType);
-                ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Shine_Orange, Vector3.zero);
-                ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Star_Confetti, Vector3.zero);
-                Debug.Log("Mythic!!");
                 break;
         }
     }
@@ -327,6 +322,16 @@ public class UIManager : Singleton<UIManager>
     
     private IEnumerator ShowUnitCongratPanelCO(UnitTypeEnum unitType)
     {
+        if (UnitManager.Instance.GetUnitGrade(unitType) == Grade.Mythic)
+        {
+            ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Shine_Orange, Vector3.zero);
+            ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Star_Confetti, Vector3.zero);
+        }
+        else if (UnitManager.Instance.GetUnitGrade(unitType) == Grade.Epic)
+        {
+            ParticleManager.Instance.SpawnParticle(ParticleType.VFX_Shine_Purple, Vector3.zero);
+        }
+        
         if (UIDictionary.TryGetValue("UnitCongratPanel", out var unitCongratPanel))
         {
             if (unitCongratPanel.TryGetComponent<UnitCongratPanel>(out var unitCongratPanelComponent))

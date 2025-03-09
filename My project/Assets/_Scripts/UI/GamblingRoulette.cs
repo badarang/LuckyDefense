@@ -21,25 +21,15 @@ public class GamblingRoulette : MonoBehaviour
     {
         if (UnitManager.Instance.UnitCount >= Statics.InitialGameDataDic["MaxUnitCount"])
         {
-            UIManager.Instance.UITextDictionary["GamblingUnitCountText"].GetComponent<TextAnimationBase>().ExpandAlert();
+            UIManager.Instance.UITextDictionary["GamblingUnitCountText"].GetComponent<TextAnimationBase>().ExpandAlert(Color.red);
             return;
         }
         
         if (GoodsManager.Instance.Diamond < Statics.GamblingCost[gamblingIdx])
         {
-            UIManager.Instance.UITextDictionary["GamblingDiamondText"].GetComponent<TextAnimationBase>().ExpandAlert();
+            UIManager.Instance.UITextDictionary["GamblingDiamondText"].GetComponent<TextAnimationBase>().ExpandAlert(Color.red);
             return;
         }
-
-        if (isMyPlayer)
-        {
-            GoodsManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
-        }
-        else
-        {
-            AIManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
-        }
-        
         StartCoroutine(SpinRouletteCO(isMyPlayer));
     }
 
@@ -50,7 +40,7 @@ public class GamblingRoulette : MonoBehaviour
         if (random <= Statics.GamblingChance[gamblingIdx])
         {
             if (isMyPlayer) UIManager.Instance.CreateDisplayText("성공!", Color.green, new Vector3(0, -6, 0));
-            UnitManager.Instance.SummonUnit(isMyPlayer: isMyPlayer, grade: Grade.Rare + gamblingIdx);
+            UnitManager.Instance.SummonUnit(isMyPlayer: isMyPlayer, grade: Grade.Rare + gamblingIdx, usingGold: false);
         }
         else
         {

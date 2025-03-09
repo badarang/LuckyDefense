@@ -136,7 +136,7 @@ public class UnitManager : Singleton<UnitManager>
 
     #region Unit Action
 
-    public Vector2Int SummonUnit(bool isMyPlayer = true, Grade grade = Grade.None)
+    public Vector2Int SummonUnit(bool isMyPlayer = true, Grade grade = Grade.None, bool usingGold = true)
     {
         if (isMyPlayer)
         {
@@ -146,10 +146,26 @@ public class UnitManager : Singleton<UnitManager>
                 UIManager.Instance.UITextDictionary["UnitCountText"].GetComponent<TextAnimationBase>().ExpandAlert(Color.red);
                 return new Vector2Int(-1, -1);
             }
-            
-            GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
-            GoodsManager.Instance.IncreaseRequiredSummonGold();
-            UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
+
+            if (usingGold)
+            {
+                GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
+                GoodsManager.Instance.IncreaseRequiredSummonGold();
+                UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
+            }
+            else
+            {
+                var gamblingIdx = grade - Grade.Rare;
+                if (isMyPlayer)
+                {
+                    GoodsManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
+                }
+                else
+                {
+                    AIManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
+                }
+
+            }
         }
 
         var isUpper = !isMyPlayer;
@@ -180,22 +196,23 @@ public class UnitManager : Singleton<UnitManager>
     {
         UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         Vector2 worldPosition = GridToWorld(spawnPosition, isMyPlayer);
-        
+        GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], worldPosition, Quaternion.identity);
+        unitObj.SetActive(false);
+        Unit newUnit = unitObj.GetComponent<Unit>();
+        unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
+        if (isMyPlayer) UnitCount++;
+
         Vector3 trailOriginalPos = isMyPlayer ? new Vector3(0, -8.6f, 0) : new Vector3(0, 3.1f, 0);
         
         var trailObject = Instantiate(trailPrefab, trailOriginalPos, Quaternion.identity);
         trailObject.transform.DOJump(worldPosition, 1f, 1, .25f).SetEase(Ease.OutQuad).onComplete += () =>
         {
             Destroy(trailObject);
-            GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], worldPosition, Quaternion.identity);
-            Unit newUnit = unitObj.GetComponent<Unit>();
-            newUnit.Init(newUnitType, isMyPlayer, spawnPosition);
-            unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
+            unitObj.SetActive(true);
+            newUnit.Init(newUnitType, isMyPlayer, spawnPosition, isAlreadySummoned: true);
             unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
-
         };
-        
-}
+    }
 
 
     //업그레이드할 때 사용
