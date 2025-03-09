@@ -49,4 +49,10 @@ public class DisplayText : MonoBehaviour
         //Set Scale
         displayText.fontSize = isCritical ? 5 : 3;
     }
+    
+    public void SetText(string str, Color col)
+    {
+        displayText.text = str;
+        displayText.color = col;
+    }
 }

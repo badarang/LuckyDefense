@@ -6,6 +6,7 @@ public static class Statics
 {
     public static List<int> UnitPickUpChance = new List<int> { 50, 39, 11 };
     public static List<int> GamblingChance = new List<int> { 60, 20 };
+    public static List<int> GamblingCost = new List<int> { 1, 2 };
     public static float SpeedPerOneAnimation = .083f;
     public static Dictionary<string, int> InitialGameDataDic = new Dictionary<string, int>
     {

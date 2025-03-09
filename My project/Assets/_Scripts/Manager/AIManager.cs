@@ -7,7 +7,7 @@ public class AIManager : Singleton<AIManager>
     [Header("Goods")]
     private int gold = 100;
     private int requiredGold = 20;
-    private int diamond = 0;
+    private int diamond = 5;
     
     public int Gold
     {
@@ -66,9 +66,11 @@ public class AIManager : Singleton<AIManager>
         if (!IsAllMythic())
         {
             //신화 소환이 가능하다면
+            List<int> processList = new List<int>();
             foreach (var mythicUnitEnum in Statics.MythicUnitEnumList)
             {
                 int process = UnitManager.Instance.GetProcess(mythicUnitEnum, isMyPlayer: false);
+                processList.Add(process);
                 if (process < 100) continue;
                 UnitManager.Instance.UpgradeUnitMythic(mythicUnitEnum, isMyPlayer: false);
                 return;
@@ -82,6 +84,45 @@ public class AIManager : Singleton<AIManager>
                 return;
             }
 
+            //룰렛을 돌릴 수 있는지 확인
+            var rouletteIdx = -1;
+            var isDecided = false;
+            //Epic을 만드는 것이 우선
+            if (diamond >= 2) rouletteIdx = 1;
+            
+            if (diamond >= Statics.GamblingCost[0])
+            {
+                foreach (var process in processList)
+                {
+                    //Rare 유닛이 없어서 신화를 못 소환하는 경우
+                    if (process == 90)
+                    {
+                        rouletteIdx = 0;
+                        isDecided = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!isDecided && diamond >= Statics.GamblingCost[1])
+            {
+                foreach (var process in processList)
+                {
+                    //Epic 유닛이 없어서 신화를 못 소환하는 경우
+                    if (process == 70)
+                    {
+                        rouletteIdx = 1;
+                        break;
+                    }
+                }
+            }
+            
+            if (rouletteIdx != -1)
+            {
+                AISpinRoulette(rouletteIdx);
+                return;
+            }
+
             //돈이 충분하다면
             if (gold >= requiredGold)
             {
@@ -91,7 +132,7 @@ public class AIManager : Singleton<AIManager>
                 {
                     changedPosition = UnitManager.Instance.SummonUnit(isMyPlayer: false);
                     gold -= requiredGold;
-                    Debug.Log("AIManager Remain Gold: " + gold);
+                    Debug.Log("AI Remain Gold: " + gold);
                     requiredGold += Statics.InitialGameDataDic["UnitRequiredGoldIncrease"];
                 }
                 //유닛이 최대치라면
@@ -122,6 +163,21 @@ public class AIManager : Singleton<AIManager>
         }
 
         return true;
+    }
+
+    private void AISpinRoulette(int gamblingIdx)
+    {
+        diamond -= Statics.GamblingCost[gamblingIdx];
+        
+        var random = Random.Range(0, 100);
+        if (random <= Statics.GamblingChance[gamblingIdx])
+        {
+            UnitManager.Instance.SummonUnit(isMyPlayer: false, grade: Grade.Rare + gamblingIdx);
+        }
+        else
+        {
+            Debug.Log($"AIManager Gambling Failed with {gamblingIdx}");
+        }
     }
 
     // private bool IsTargetUnitGroup()

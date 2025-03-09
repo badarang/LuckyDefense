@@ -146,6 +146,17 @@ public class UIManager : Singleton<UIManager>
             damageTextComponent.SetText(damage, isCritical);
         }
     }
+
+    public void CreateDisplayText(string str, Color color, Vector3 position)
+    {
+        GameObject displayText = PoolManager.Instance.GetDisplayText();
+        displayText.transform.position = position;
+        if (displayText.TryGetComponent<DisplayText>(out var displayTextComponent))
+        {
+            displayTextComponent.Init();
+            displayTextComponent.SetText(str, color);
+        }
+    }
     
     public void ChangeGoldText(int gold)
     {

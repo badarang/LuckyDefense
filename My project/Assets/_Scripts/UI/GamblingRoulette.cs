@@ -17,26 +17,44 @@ public class GamblingRoulette : MonoBehaviour
         pickUpButton.onClick.AddListener(() => { SpinRoulette(); });
     }
 
-    private void SpinRoulette()
+    private void SpinRoulette(bool isMyPlayer = true)
     {
-        StartCoroutine(SpinRouletteCO());
-    }
-
-    private IEnumerator SpinRouletteCO()
-    {
-        //TODO: 룰렛 연출
-        yield return new WaitForSeconds(.75f);
-        var random = Random.Range(0, 100);
-        if (random <= Statics.GamblingChance[gamblingIdx])
+        if (UnitManager.Instance.UnitCount >= Statics.InitialGameDataDic["MaxUnitCount"])
         {
-            Statics.DebugColor("성공!", Color.green);
-            UnitManager.Instance.SummonUnit(isMyPlayer: true, grade: Grade.Rare + gamblingIdx);
-            //TODO: 성공 연출
+            UIManager.Instance.UITextDictionary["GamblingUnitCountText"].GetComponent<TextAnimationBase>().ExpandAlert();
+            return;
+        }
+        
+        if (GoodsManager.Instance.Diamond < Statics.GamblingCost[gamblingIdx])
+        {
+            UIManager.Instance.UITextDictionary["GamblingDiamondText"].GetComponent<TextAnimationBase>().ExpandAlert();
+            return;
+        }
+
+        if (isMyPlayer)
+        {
+            GoodsManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
         }
         else
         {
-            Statics.DebugColor("실패!", Color.red);
-            //TODO: 실패 연출
+            AIManager.Instance.Diamond -= Statics.GamblingCost[gamblingIdx];
+        }
+        
+        StartCoroutine(SpinRouletteCO(isMyPlayer));
+    }
+
+    private IEnumerator SpinRouletteCO(bool isMyPlayer)
+    {
+        yield return new WaitForSeconds(.1f);
+        var random = Random.Range(0, 100);
+        if (random <= Statics.GamblingChance[gamblingIdx])
+        {
+            if (isMyPlayer) UIManager.Instance.CreateDisplayText("성공!", Color.green, new Vector3(0, -6, 0));
+            UnitManager.Instance.SummonUnit(isMyPlayer: isMyPlayer, grade: Grade.Rare + gamblingIdx);
+        }
+        else
+        {
+            if (isMyPlayer) UIManager.Instance.CreateDisplayText("실패...", Color.red, new Vector3(0, -6, 0));
         }
     }
 }
