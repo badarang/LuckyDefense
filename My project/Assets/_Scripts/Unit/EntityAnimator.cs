@@ -30,6 +30,19 @@ public class EntityAnimator : MonoBehaviour
 
     public void InitUnit(Unit _unit)
     {
+        transform.localScale = Vector3.zero;
+        
+        transform.DOScale(new Vector3(0.6f, 1.2f, 1f), 0.05f).onComplete += () =>
+        {
+            transform.DOScale(new Vector3(1.1f, 0.7f, 1f), 0.05f).onComplete += () =>
+            {
+               transform.DOScale(originalScale, 0.07f).onComplete += () =>
+               {
+                   transform.localScale = originalScale;
+               };
+            };
+        };
+
         AnimationClip attackClip = GetAttackAnimationClip();
         if (attackClip != null)
         {

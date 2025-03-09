@@ -8423,6 +8423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 979999409}
   destinationGUI: {fileID: 1611872470}
+  trailPrefab: {fileID: 8755382008147780304, guid: 5aecc52d37bff44c69358431e7850cdb, type: 3}
 --- !u!4 &979999408
 Transform:
   m_ObjectHideFlags: 0

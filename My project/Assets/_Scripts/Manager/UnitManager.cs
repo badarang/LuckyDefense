@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class UnitManager : Singleton<UnitManager>
     private int unitCount;
     private Dictionary<UnitTypeEnum, GameObject> spawnableUnitDic;
     public Dictionary <UnitTypeEnum, MythicUnitInfo> MythicUnitInfoDic;
+    [SerializeField] private GameObject trailPrefab;
 
 
     public int UnitCount {
@@ -169,18 +171,32 @@ public class UnitManager : Singleton<UnitManager>
             Debug.LogWarning("소환할 수 있는 위치가 없습니다!");
             return new Vector2Int(-1, -1);
         }
-        
-        UnitGroup[,] unitGroups = isUpper ? upperUnitGroups : lowerUnitGroups;
-
-        Vector2 worldPosition = GridToWorld(spawnPosition, isMyPlayer);
-        GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], worldPosition, Quaternion.identity);
-        Unit newUnit = unitObj.GetComponent<Unit>();
-        newUnit.Init(newUnitType, isMyPlayer, spawnPosition);
-        unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
-        unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
+        SummonAnimation(spawnPosition, newUnitType, isMyPlayer);
         
         return spawnPosition;
     }
+    
+    private void SummonAnimation(Vector2Int spawnPosition, UnitTypeEnum newUnitType, bool isMyPlayer)
+    {
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        Vector2 worldPosition = GridToWorld(spawnPosition, isMyPlayer);
+        
+        Vector3 trailOriginalPos = isMyPlayer ? new Vector3(0, -8.6f, 0) : new Vector3(0, 3.1f, 0);
+        
+        var trailObject = Instantiate(trailPrefab, trailOriginalPos, Quaternion.identity);
+        trailObject.transform.DOJump(worldPosition, 1f, 1, .25f).SetEase(Ease.OutQuad).onComplete += () =>
+        {
+            Destroy(trailObject);
+            GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], worldPosition, Quaternion.identity);
+            Unit newUnit = unitObj.GetComponent<Unit>();
+            newUnit.Init(newUnitType, isMyPlayer, spawnPosition);
+            unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
+            unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
+
+        };
+        
+}
+
 
     //업그레이드할 때 사용
     public Unit SummonUnit(Grade grade, Vector2Int spawnPosition, bool isMyPlayer = true)

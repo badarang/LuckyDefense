@@ -52,10 +52,10 @@ public class UnitCongratPanel : MonoBehaviour
         sequence.Insert(1.7f, nameRect.DOLocalMove(nameOriginalPos + new Vector3(100f, 0f, 0f), 0.3f).SetEase(Ease.InBack));
 
         RectTransform imageRect = unitImage.rectTransform;
-        sequence.Insert(0, imageRect.DOScale(new Vector3(0.6f, 1.4f, imageOriginalScale.z), 0.5f).SetEase(Ease.OutBack));
-        sequence.Insert(0.5f, imageRect.DOScale(imageOriginalScale, 0.5f).SetEase(Ease.InBack));
+        sequence.Insert(0, imageRect.DOScale(new Vector3(0.6f, 1.4f, imageOriginalScale.z), 0.15f));
+        sequence.Insert(.15f, imageRect.DOScale(new Vector3(1.2f, .7f, imageOriginalScale.z), 0.2f));
+        sequence.Insert(.35f, imageRect.DOScale(imageOriginalScale, 0.2f));
         sequence.Insert(1.7f, imageRect.DOScaleY(0, 0.3f).SetEase(Ease.InBack));
-
         sequence.Insert(1.7f, canvasGroup.DOFade(0, 0.3f));
 
         return sequence;
