@@ -196,7 +196,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
         {
             if (enemy == null || enemy.IsDead) continue; //enemy가 도중에 죽은 경우
             bool isAttackerRight = enemy.transform.position.x < transform.position.x;
-            int finalDamage = Mathf.RoundToInt((isCritical) ? damage * 2f : damage);
+            int finalDamage = Mathf.RoundToInt(damage * (isCritical ? 2f : 1f) * (1 - enemy.DefenseRatio));
             UIManager.Instance.CreateDamageText(enemy.transform.position, finalDamage, isCritical);
             enemy.TakeDamage(finalDamage, isAttackerRight);
         }

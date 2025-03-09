@@ -61,6 +61,15 @@ public class UnitManager : Singleton<UnitManager>
             UIManager.Instance.PopGUIQueue(setActive: false);
             UIManager.Instance.HideUnitInfo();
         }
+        
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (isDragging)
+            {
+                EndDragPosition();
+            }
+        }
+        
         if (isDragging)
         {
             //dragFrom 에서 dragTo로 UI 선을 표시함. (노란색 점선)
@@ -69,7 +78,7 @@ public class UnitManager : Singleton<UnitManager>
             {
                 dragTo = gridPos;
                 destinationGUI.transform.position = GridToWorld(dragTo);
-                destinationGUI.SetActive(true);
+                ToggleDestinationGUI(true);
                 UpdateDragLine();
                 ToggleUnitSelectedCircle(dragFrom, true);
             }
@@ -278,7 +287,6 @@ public class UnitManager : Singleton<UnitManager>
         if (targetUnitInfo.Key != null)
         {
             //직접 이동해야 함.
-            Debug.Log("UpgradeUnit: Move Unit");
             var targetUnit = targetUnitInfo.Value;
             var targetGroup = targetUnitInfo.Key;
             
@@ -291,7 +299,6 @@ public class UnitManager : Singleton<UnitManager>
         }
         else
         {
-            Debug.Log("UpgradeUnit: Add Unit");
             unitGroups[originalPos.x, originalPos.y].units.Add(newUnit);
         }
         unitGroups[originalPos.x, originalPos.y].OnUnitChanged?.Invoke(unitGroups[originalPos.x, originalPos.y]);
@@ -477,10 +484,9 @@ public class UnitManager : Singleton<UnitManager>
     
     private Grade GetRandomGrade()
     {
-        //TODO: 확률 조정
         int randomValue = UnityEngine.Random.Range(0, 100);
-        if (randomValue < 50) return Grade.Common;
-        if (randomValue < 70) return Grade.Rare;
+        if (randomValue <= Statics.UnitPickUpChance[0]) return Grade.Common;
+        if (randomValue <= Statics.UnitPickUpChance[1]) return Grade.Rare;
         return Grade.Epic;
     }
     
@@ -631,8 +637,7 @@ public class UnitManager : Singleton<UnitManager>
     {
         isDragging = false;
         lineRenderer.enabled = false;
-        destinationGUI.SetActive(false);
-        
+        ToggleDestinationGUI(false);
         ToggleUnitSelectedCircle(dragFrom, false);
 
         if (dragFrom == dragTo)
@@ -807,4 +812,9 @@ public class UnitManager : Singleton<UnitManager>
     }
     
     #endregion
+    
+    public void ToggleDestinationGUI(bool isActive)
+    {
+        destinationGUI.SetActive(isActive);
+    }
 }

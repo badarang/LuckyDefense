@@ -30,12 +30,15 @@ public class RoundManager : Singleton<RoundManager>
     private void Awake()
     {
         base.Awake();
-        GenerateRounds();
     }
 
     private void Start()
     {
         GameManager.Instance.OnGameStart += OnGameStart;
+        GameManager.Instance.OnGameEnd += () =>
+        {
+            StopAllCoroutines();
+        };
     }
     
     public void OnLoad()
@@ -62,13 +65,16 @@ public class RoundManager : Singleton<RoundManager>
     
     private IEnumerator RepeatRound()
     {
-        if (currentRound > rounds.Count)
+        if (currentRound > Statics.InitialGameDataDic["GameClearRound"])
         {
-            Debug.LogWarning($"라운드 수가 초과되었습니다. 현재 라운드: {currentRound}");
+            Debug.LogWarning($"게임 승리! 현재 라운드: {currentRound}");
+            //TODO: 게임 승리 처리 
+            GameManager.Instance.GameClear();
             yield break;
         }
-
-        Round currentRoundData = rounds[currentRound - 1];
+        
+        int quotient = currentRound / 10; // 적들이 강해지는 정도
+        Round currentRoundData = rounds[(currentRound - 1) % 10];
         float roundTime = currentRoundData.roundTime;
         StartCoroutine(WaveDisplayPanelCO());
         Invoke(nameof(AlertFiveSec), roundTime - 5f);
@@ -102,6 +108,13 @@ public class RoundManager : Singleton<RoundManager>
         GameObject enemy = PoolManager.Instance.GetEnemy(enemyPrefab, pos);
         enemy.transform.parent = enemySpawnGroup.transform;
         enemy.SetActive(true);
+
+        var hpMultiplier = (int)currentRound / 10 + 1;
+        enemy.GetComponent<Enemy>().SetHpMultiplier(hpMultiplier);
+
+        var defenseRatio = (float)currentRound / 100;
+        enemy.GetComponent<Enemy>().SetDefenseRatio(defenseRatio);
+
         enemy.GetComponent<Enemy>().Init();
     }
 
@@ -129,14 +142,13 @@ public class RoundManager : Singleton<RoundManager>
     
     private void CheckAliveEnemies()
     {
+        if (AliveEnemies >= Statics.InitialGameDataDic["MaxAliveEnemy"])
+        {
+            GameManager.Instance.GameOver();
+        }
         UIManager.Instance.SetAliveEnemiesBar(AliveEnemies, Statics.InitialGameDataDic["MaxAliveEnemy"]);
     }
 
-    private void GenerateRounds()
-    {
-        //TODO: Generate Round
-    }
-    
     public void GoToNextRound()
     {
         currentRound++;

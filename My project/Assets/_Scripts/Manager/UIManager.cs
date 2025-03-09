@@ -51,6 +51,12 @@ public class UIManager : Singleton<UIManager>
             SetAllUIText();
             StartCoroutine(ExpandAllUISequencially());
         };
+        
+        GameManager.Instance.OnGameEnd += () =>
+        {
+            StopAllCoroutines();
+            PopGUIQueue(false);
+        };
     }
     
     private void Update()
@@ -268,14 +274,32 @@ public class UIManager : Singleton<UIManager>
             case Grade.Common:
                 break;
             case Grade.Rare:
-                Debug.Log("Rare");
+                Debug.Log("Rare!!");
                 break;
             case Grade.Epic:
-                Debug.Log("Epic");
+                Debug.Log("Epic!!");
                 break;
             case Grade.Mythic:
-                Debug.Log("Mythic");
+                Debug.Log("Mythic!!");
                 break;
+        }
+    }
+    
+    public void ShowGameClearPanel()
+    {
+        if (UIDictionary.TryGetValue("GameClearPanel", out var gameClearPanel))
+        {
+            gameClearPanel.GetComponent<GameEndPanel>().Init();
+            gameClearPanel.GetComponent<UIAnimationBase>().Expand();
+        }
+    }
+    
+    public void ShowGameOverPanel()
+    {
+        if (UIDictionary.TryGetValue("GameOverPanel", out var gameOverPanel))
+        {
+            gameOverPanel.GetComponent<GameEndPanel>().Init();
+            gameOverPanel.GetComponent<UIAnimationBase>().Expand();
         }
     }
 }

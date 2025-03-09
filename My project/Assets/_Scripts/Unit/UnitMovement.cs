@@ -30,7 +30,6 @@ public class UnitMovement : MonoBehaviour
         if (isDragging) return;
         if (EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("UI");
             return;
         }
         UnitManager.Instance.StartDragPosition(unit.GridPosition);
@@ -81,7 +80,6 @@ public class UnitMovement : MonoBehaviour
         {
             return;
         }
-        UnitManager.Instance.EndDragPosition();
     }
 
     public void StartMove(Vector2 target, float fixedSpeed = 1)

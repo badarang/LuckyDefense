@@ -7,19 +7,20 @@ public class PoolManager : Singleton<PoolManager>
 {
     [SerializeField] private GameObject displayTextPrefab;
     
-    private Queue<GameObject> _displayTextPool = new Queue<GameObject>();
-    private Queue<GameObject> _enemyPool = new Queue<GameObject>();
+    private Dictionary<GameObject, Queue<GameObject>> enemyPools = new Dictionary<GameObject, Queue<GameObject>>();
+    private Queue<GameObject> displayTextPool = new Queue<GameObject>();
+    private Queue<GameObject> enemyPool = new Queue<GameObject>();
     
     public GameObject GetDisplayText()
     {
-        if (_displayTextPool.Count == 0)
+        if (displayTextPool.Count == 0)
         {
             GameObject displayText = Instantiate(displayTextPrefab);
             displayText.SetActive(false);
-            _displayTextPool.Enqueue(displayText);
+            displayTextPool.Enqueue(displayText);
         }
 
-        GameObject displayTextFromPool = _displayTextPool.Dequeue();
+        GameObject displayTextFromPool = displayTextPool.Dequeue();
         displayTextFromPool.SetActive(true);
         return displayTextFromPool;
     }
@@ -27,27 +28,35 @@ public class PoolManager : Singleton<PoolManager>
     public void ReturnDisplayText(GameObject displayText)
     {
         displayText.SetActive(false);
-        _displayTextPool.Enqueue(displayText);
+        displayTextPool.Enqueue(displayText);
     }
 
     public GameObject GetEnemy(GameObject enemyPrefab, Vector3 position)
     {
-        if (_enemyPool.Count == 0)
+        if (!enemyPools.ContainsKey(enemyPrefab))
+        {
+            enemyPools[enemyPrefab] = new Queue<GameObject>();
+        }
+
+        Queue<GameObject> pool = enemyPools[enemyPrefab];
+        
+        if (pool.Count == 0)
         {
             GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
             enemy.SetActive(false);
-            _enemyPool.Enqueue(enemy);
+            pool.Enqueue(enemy);
         }
-
-        GameObject enemyFromPool = _enemyPool.Dequeue();
+        
+        GameObject enemyFromPool = pool.Dequeue();
         enemyFromPool.transform.position = position;
         enemyFromPool.SetActive(true);
+
         return enemyFromPool;
     }
 
     public void ReturnEnemy(GameObject enemy)
     {
         enemy.SetActive(false);
-        _enemyPool.Enqueue(enemy);
+        enemyPool.Enqueue(enemy);
     }
 }

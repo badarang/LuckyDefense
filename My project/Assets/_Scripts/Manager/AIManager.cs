@@ -5,7 +5,7 @@ using UnityEngine;
 public class AIManager : Singleton<AIManager>
 {
     [Header("Goods")]
-    private int gold = 1000;
+    private int gold = 100;
     private int requiredGold = 20;
     private int diamond = 0;
     
@@ -61,6 +61,7 @@ public class AIManager : Singleton<AIManager>
 
     private void MakeAllUnitsMythical()
     {
+        //TODO: AI 고도화 작업 필요. (후순위)
         //전체 유닛이 신화가 아니라면
         if (!IsAllMythic())
         {
@@ -68,7 +69,6 @@ public class AIManager : Singleton<AIManager>
             foreach (var mythicUnitEnum in Statics.MythicUnitEnumList)
             {
                 int process = UnitManager.Instance.GetProcess(mythicUnitEnum, isMyPlayer: false);
-                Debug.Log($"{mythicUnitEnum}: " + process);
                 if (process < 100) continue;
                 UnitManager.Instance.UpgradeUnitMythic(mythicUnitEnum, isMyPlayer: false);
                 return;
@@ -91,7 +91,7 @@ public class AIManager : Singleton<AIManager>
                 {
                     changedPosition = UnitManager.Instance.SummonUnit(isMyPlayer: false);
                     gold -= requiredGold;
-                    Debug.Log("AIManager: " + gold);
+                    Debug.Log("AIManager Remain Gold: " + gold);
                     requiredGold += Statics.InitialGameDataDic["UnitRequiredGoldIncrease"];
                 }
                 //유닛이 최대치라면
