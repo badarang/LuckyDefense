@@ -14,6 +14,7 @@ public class UnitManager : Singleton<UnitManager>
     
     private const int Width = 6, Height = 3;
     private UnitGroup[,] upperUnitGroups = new UnitGroup[Width, Height];
+    public UnitGroup[,] UpperUnitGroups => upperUnitGroups;
     private UnitGroup[,] lowerUnitGroups = new UnitGroup[Width, Height];
     private int unitCount;
     private Dictionary<UnitTypeEnum, GameObject> spawnableUnitDic;
@@ -74,6 +75,8 @@ public class UnitManager : Singleton<UnitManager>
             }
         }
     }
+    
+    #region Initialization
 
     private void InitializeUnitGroups()
     {
@@ -117,8 +120,12 @@ public class UnitManager : Singleton<UnitManager>
             MythicUnitInfoDic.Add(unit.mythicUnitType, unit);
         }
     }
+    
+    #endregion
 
-    public void SummonUnit(bool isMyPlayer = true, Grade grade = Grade.None)
+    #region Unit Action
+
+    public Vector2Int SummonUnit(bool isMyPlayer = true, Grade grade = Grade.None)
     {
         if (isMyPlayer)
         {
@@ -126,19 +133,23 @@ public class UnitManager : Singleton<UnitManager>
             if (!condition)
             {
                 UIManager.Instance.UITextDictionary["UnitCountText"].GetComponent<TextAnimationBase>().ExpandAlert(Color.red);
-                return;
+                return new Vector2Int(-1, -1);
             }
+            
+            GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
+            GoodsManager.Instance.IncreaseRequiredSummonGold();
+            UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
         }
-        
-        GoodsManager.Instance.Gold -= GoodsManager.Instance.RequiredSummonGold;
-        GoodsManager.Instance.IncreaseRequiredSummonGold();
-        UIManager.Instance.ChangeRequiredGoldText(GoodsManager.Instance.RequiredSummonGold);
-        
+
         var isUpper = !isMyPlayer;
         
         UnitTypeEnum newUnitType;
         //등급을 지정하지 않은 경우 랜덤으로 유닛을 소환
-        if (grade == Grade.None) newUnitType = GetRandomUnitType();
+        if (grade == Grade.None)
+        {
+            newUnitType = GetRandomUnitType();
+            UIManager.Instance.ShowConfetti(newUnitType);
+        }
         //등급을 지정한 경우 해당 등급의 유닛을 소환
         else newUnitType = GetUnitType(grade);
         
@@ -147,7 +158,7 @@ public class UnitManager : Singleton<UnitManager>
         if (spawnPosition.x == -1)
         {
             Debug.LogWarning("소환할 수 있는 위치가 없습니다!");
-            return;
+            return new Vector2Int(-1, -1);
         }
         
         UnitGroup[,] unitGroups = isUpper ? upperUnitGroups : lowerUnitGroups;
@@ -158,6 +169,8 @@ public class UnitManager : Singleton<UnitManager>
         newUnit.Init(newUnitType, isMyPlayer, spawnPosition);
         unitGroups[spawnPosition.x, spawnPosition.y].units.Add(newUnit);
         unitGroups[spawnPosition.x, spawnPosition.y].OnUnitChanged?.Invoke(unitGroups[spawnPosition.x, spawnPosition.y]);
+        
+        return spawnPosition;
     }
 
     //업그레이드할 때 사용
@@ -241,32 +254,7 @@ public class UnitManager : Singleton<UnitManager>
             sellingGroup.OnUnitChanged?.Invoke(sellingGroup);
         }
     }
-    
-    private KeyValuePair<UnitGroup, Unit> GetCanMoveUnitToAdjustMerge(Unit soldUnit, bool isMyPlayer)
-    {
-        // lowerUnitGroups 배열 전체를 순회하며, 판매 위치가 아닌 다른 그리드에서 같은 타입 유닛을 찾음.
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                if (soldUnit.GridPosition == new Vector2Int(x, y))
-                    continue;
 
-                UnitGroup[,] unitGroups = isMyPlayer ?  lowerUnitGroups : upperUnitGroups;
-                UnitGroup otherGroup = unitGroups[x, y];
-                
-                // 다른 그리드에 있는 유닛이 3마리 이상이면 움직일 필요 없음. (온전한 상태)
-                if (otherGroup.units.Count >= Statics.InitialGameDataDic["MaxUnitGather"]) continue;
-                
-                if (otherGroup.units.Count > 0 && otherGroup.units[0].UnitType == soldUnit.UnitType)
-                {
-                    return new KeyValuePair<UnitGroup, Unit>(otherGroup, otherGroup.units[0]);
-                }
-            }
-        }
-        return new KeyValuePair<UnitGroup, Unit>(null, null);
-    }
-    
     public void UpgradeUnit(Unit unit, bool isMyPlayer = true)
     {
         Debug.Log("Upgrade Unit Called");
@@ -342,8 +330,114 @@ public class UnitManager : Singleton<UnitManager>
         //신화 유닛은 단독으로 존재. (합성 불가)
         unitGroups[spawnPos.x, spawnPos.y].units.Add(newUnit);
         unitGroups[spawnPos.x, spawnPos.y].OnUnitChanged?.Invoke(unitGroups[spawnPos.x, spawnPos.y]);
+
+        UIManager.Instance.ShowConfetti(newUnit.UnitType);
     }
 
+    //AI가 유닛을 판매할 때 사용
+    public Vector2Int RemoveUnitOrderByGrade(bool isMyPlayer = false)
+    {
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        List<Unit> units = new List<Unit>();
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                units.AddRange(unitGroups[x, y].units);
+            }
+        }
+
+        if (units.Count == 0) return new Vector2Int(-1, -1);
+        
+        units.Sort((a, b) => a.Grade.CompareTo(b.Grade));
+        SellUnit(units[0], isMyPlayer);
+        
+        return units[0].GridPosition;
+    }
+    
+    public void RepositionUnit(Vector2Int gridPosition, bool isMyPlayer = false)
+    {
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        UnitGroup unitGroup = unitGroups[gridPosition.x, gridPosition.y];
+        if (unitGroup.units.Count == 0) return;
+        var unit = unitGroup.units[0];
+        
+        Vector2Int currentGridPos = unit.GridPosition;
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            new Vector2Int(-1, 0),
+            new Vector2Int(0, -1),
+            new Vector2Int(0, 1),
+            new Vector2Int(1, 0),
+        };
+
+        HashSet<Vector2Int> visitedPositions = new HashSet<Vector2Int>();
+        int maxIterations = Width * Height;
+        int iteration = 0;
+
+        while (true)
+        {
+            bool condition = unit.Range < 1.5f 
+                             && currentGridPos.x > 0 && currentGridPos.x < Width - 1 
+                             && currentGridPos.y > 0 && currentGridPos.y < Height - 1;
+
+            if (!condition || iteration >= maxIterations) break;
+            iteration++;
+
+            bool moved = false;
+
+            foreach (var dir in directions)
+            {
+                Vector2Int newPos = currentGridPos + dir;
+
+                if (newPos.x < 0 || newPos.x >= Width || newPos.y < 0 || newPos.y >= Height) continue;
+                if (visitedPositions.Contains(newPos)) continue;
+
+                if (unitGroups[newPos.x, newPos.y].units.Count > 0 && unitGroups[newPos.x, newPos.y].units[0].Range < 1.5f) continue;
+
+                Debug.Log($"RepositionUnit: {newPos}");
+                MovePosition(currentGridPos, newPos, isMyPlayer);
+                visitedPositions.Add(currentGridPos);
+                currentGridPos = newPos;
+                moved = true;
+                break; 
+            }
+
+            if (!moved) break; 
+        }
+    }
+
+
+    
+    #endregion
+
+    #region Getter
+    
+    private KeyValuePair<UnitGroup, Unit> GetCanMoveUnitToAdjustMerge(Unit soldUnit, bool isMyPlayer)
+    {
+        // lowerUnitGroups 배열 전체를 순회하며, 판매 위치가 아닌 다른 그리드에서 같은 타입 유닛을 찾음.
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (soldUnit.GridPosition == new Vector2Int(x, y))
+                    continue;
+
+                UnitGroup[,] unitGroups = isMyPlayer ?  lowerUnitGroups : upperUnitGroups;
+                UnitGroup otherGroup = unitGroups[x, y];
+                
+                // 다른 그리드에 있는 유닛이 3마리 이상이면 움직일 필요 없음. (온전한 상태)
+                if (otherGroup.units.Count >= Statics.InitialGameDataDic["MaxUnitGather"]) continue;
+                
+                if (otherGroup.units.Count > 0 && otherGroup.units[0].UnitType == soldUnit.UnitType)
+                {
+                    return new KeyValuePair<UnitGroup, Unit>(otherGroup, otherGroup.units[0]);
+                }
+            }
+        }
+        return new KeyValuePair<UnitGroup, Unit>(null, null);
+    }
+    
     private UnitTypeEnum GetRandomUnitType()
     {
         Grade grade = GetRandomGrade();
@@ -380,6 +474,8 @@ public class UnitManager : Singleton<UnitManager>
         if (randomValue < 70) return Grade.Rare;
         return Grade.Epic;
     }
+    
+    #endregion
     
     #region Unit Spawn System
     
@@ -443,20 +539,6 @@ public class UnitManager : Singleton<UnitManager>
     private bool CanMerge(List<Unit> unitGroup, UnitTypeEnum newUnitType)
     {
         return unitGroup.Count < Statics.InitialGameDataDic["MaxUnitGather"] && unitGroup[0].UnitType == newUnitType;
-    }
-
-    private Vector2 GridToWorld(Vector2Int gridPos, bool isMyPlayer = true)
-    {
-        float worldX = gridPos.x - 2.5f;
-        float worldY = gridPos.y + (isMyPlayer ? -5.8f : 1f);
-        return new Vector2(worldX * gridSize, worldY * gridSize);
-    }
-    
-    private Vector2Int WorldToGrid(Vector3 worldPos)
-    {
-        float x = Mathf.Round(worldPos.x + 2.5f) + .5f;
-        float y = worldPos.y + 6.3f;
-        return new Vector2Int((int)x, (int)y);
     }
 
     #endregion
@@ -662,6 +744,34 @@ public class UnitManager : Singleton<UnitManager>
             }
         }
         return 0;
+    }
+    
+    public Unit GetUnit(UnitTypeEnum unitType)
+    {
+        return spawnableUnitDic[unitType].GetComponent<Unit>();
+    }
+    
+    public Grade GetUnitGrade(UnitTypeEnum unitType)
+    {
+        return spawnableUnitDic[unitType].GetComponent<Unit>().Grade;
+    }
+    
+    #endregion
+    
+    #region Grid System
+    
+    private Vector2 GridToWorld(Vector2Int gridPos, bool isMyPlayer = true)
+    {
+        float worldX = gridPos.x - 2.5f;
+        float worldY = gridPos.y + (isMyPlayer ? -5.8f : -1.3f);
+        return new Vector2(worldX * gridSize, worldY * gridSize);
+    }
+    
+    private Vector2Int WorldToGrid(Vector3 worldPos)
+    {
+        float x = Mathf.Round(worldPos.x + 2.5f) + .5f;
+        float y = worldPos.y + 6.3f;
+        return new Vector2Int((int)x, (int)y);
     }
     
     #endregion

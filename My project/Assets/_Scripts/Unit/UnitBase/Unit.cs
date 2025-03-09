@@ -10,7 +10,12 @@ public abstract class Unit : MonoBehaviour, IAttackable
     #region Unit Properties
     [Header("Unit Properties")]
     [SerializeField] private UnitTypeEnum unitType;
-    public UnitTypeEnum UnitType => unitType;
+
+    public UnitTypeEnum UnitType
+    {
+        get => unitType;
+        set => unitType = value;
+    }
     
     [SerializeField] private GameObject circlePrefab;
     private Transform transformGUI;

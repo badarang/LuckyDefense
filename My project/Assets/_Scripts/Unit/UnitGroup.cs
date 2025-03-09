@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
+[System.Serializable]
 public class UnitGroup
 {
     public List<Unit> units = new List<Unit>();

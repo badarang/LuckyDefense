@@ -260,4 +260,22 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    
+    public void ShowConfetti(UnitTypeEnum unitType)
+    {
+        switch (UnitManager.Instance.GetUnitGrade(unitType))
+        {
+            case Grade.Common:
+                break;
+            case Grade.Rare:
+                Debug.Log("Rare");
+                break;
+            case Grade.Epic:
+                Debug.Log("Epic");
+                break;
+            case Grade.Mythic:
+                Debug.Log("Mythic");
+                break;
+        }
+    }
 }

@@ -66,6 +66,7 @@ public abstract class Enemy : MonoBehaviour, IHittable
         IsDead = true;
         HpBar.gameObject.SetActive(false);
         GoodsManager.Instance.Gold += dropGold;
+        AIManager.Instance.Gold += dropGold;
         RoundManager.Instance.AliveEnemies--;
         StartCoroutine(DestroyEnemy());
     }
