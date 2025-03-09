@@ -26,7 +26,7 @@ public class UnitMovement : MonoBehaviour
     void OnMouseDown()
     {
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
-        if (placeUpper) return; //상대 유닛은 드래그 불가능
+        if (placeUpper) return; // AI 유닛은 드래그 불가
         if (isDragging) return;
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -72,6 +72,11 @@ public class UnitMovement : MonoBehaviour
     {
         if (GameManager.Instance.CurrentState != GameState.InGame) return;
         if (isDragging) return;
+        if (placeUpper)
+        {
+            UnitManager.Instance.SelectPosition(unit.GridPosition, isMyPlayer: !placeUpper);
+            return;
+        }
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;

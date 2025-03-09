@@ -20,6 +20,12 @@ public static class Statics
         {"MaxAliveEnemy", 100},
         {"EnemyAlertThresHold", 75},
     };
+    
+    public static List<UnitTypeEnum> MythicUnitEnumList = new List<UnitTypeEnum>
+    {
+        UnitTypeEnum.King,
+        UnitTypeEnum.Cavalier
+    };
 
     public static Color GradeColor(Grade grade)
     {

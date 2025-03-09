@@ -224,6 +224,11 @@ public abstract class Unit : MonoBehaviour, IAttackable
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+    
+    public GameObject GetRangeGizmo()
+    {
+        return rangeGizmo;
+    }
 
     public void ToggleSelectedCircle(bool isShow)
     {
@@ -232,6 +237,7 @@ public abstract class Unit : MonoBehaviour, IAttackable
     
     public void ToggleOutline(bool toggle)
     {
+        if (!isMyPlayer) return;
         if (toggle)
         {
             _entityAnimator.ToggleOutline(true);
@@ -246,7 +252,6 @@ public abstract class Unit : MonoBehaviour, IAttackable
     {
         if (toggle)
         {
-            ToggleDrawRange(true);
             canvasGUI.GetComponent<UIAnimationBase>().Expand(Vector3.one * .005f);
             
             if (sellButton != null)
@@ -274,16 +279,14 @@ public abstract class Unit : MonoBehaviour, IAttackable
                 }
             }
             
-            UIManager.Instance.PushGUIQueue(rangeGizmo);
             UIManager.Instance.PushGUIQueue(canvasGUI.gameObject);
         }
         else
         {
-            ToggleDrawRange(false);
             canvasGUI.GetComponent<UIAnimationBase>().Shrink();
         }
     }
-    
+
     public void ToggleDrawRange(bool toggle)
     {
         rangeGizmo.transform.localScale = new Vector3(range / 4, range / 4, 1);

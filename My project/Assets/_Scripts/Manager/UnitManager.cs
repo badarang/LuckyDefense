@@ -179,9 +179,9 @@ public class UnitManager : Singleton<UnitManager>
         UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         UnitTypeEnum newUnitType = GetUnitType(grade);
         
-        GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], GridToWorld(spawnPosition), Quaternion.identity);
+        GameObject unitObj = Instantiate(spawnableUnitDic[newUnitType], GridToWorld(spawnPosition, isMyPlayer), Quaternion.identity);
         Unit newUnit = unitObj.GetComponent<Unit>();
-        newUnit.Init(newUnitType, true, spawnPosition);
+        newUnit.Init(newUnitType, isMyPlayer, spawnPosition);
         
         return newUnit;
     }
@@ -189,7 +189,7 @@ public class UnitManager : Singleton<UnitManager>
     //신화 유닛 소환 시 사용
     public Unit SummonUnit(UnitTypeEnum unitType, Vector2Int spawnPosition, bool isMyPlayer = true)
     {
-        GameObject unitObj = Instantiate(spawnableUnitDic[unitType], GridToWorld(spawnPosition), Quaternion.identity);
+        GameObject unitObj = Instantiate(spawnableUnitDic[unitType], GridToWorld(spawnPosition, isMyPlayer), Quaternion.identity);
         Unit newUnit = unitObj.GetComponent<Unit>();
         newUnit.Init(unitType, isMyPlayer, spawnPosition);
         
@@ -244,7 +244,7 @@ public class UnitManager : Singleton<UnitManager>
             var soldUnit = unit;
             
             unitToMove.GridPosition = soldUnit.GridPosition;
-            Vector2 targetWorldPos = GridToWorld(soldUnit.GridPosition);
+            Vector2 targetWorldPos = GridToWorld(soldUnit.GridPosition, isMyPlayer);
             unitToMove.GetComponent<UnitMovement>().StartMove(targetWorldPos, 20f);
                         
             sellingGroup.units.Add(unitToMove);
@@ -257,8 +257,8 @@ public class UnitManager : Singleton<UnitManager>
 
     public void UpgradeUnit(Unit unit, bool isMyPlayer = true)
     {
-        Debug.Log("Upgrade Unit Called");
-        UnitGroup[,] unitGroups = isMyPlayer ?  lowerUnitGroups : upperUnitGroups;
+        Debug.Log($"Upgrade Unit Called {unit.UnitType} isMyPlayer: {isMyPlayer} {unit.GridPosition}");
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
         UnitGroup unitGroup = unitGroups[unit.GridPosition.x, unit.GridPosition.y];
         if (unitGroup.units.Count < Statics.InitialGameDataDic["MaxUnitGather"]) return;
         if (unitGroup.units[0].Grade >= Grade.Epic) return;
@@ -278,11 +278,12 @@ public class UnitManager : Singleton<UnitManager>
         if (targetUnitInfo.Key != null)
         {
             //직접 이동해야 함.
+            Debug.Log("UpgradeUnit: Move Unit");
             var targetUnit = targetUnitInfo.Value;
             var targetGroup = targetUnitInfo.Key;
             
             newUnit.GridPosition = targetUnit.GridPosition;
-            Vector2 targetWorldPos = GridToWorld(targetUnit.GridPosition);
+            Vector2 targetWorldPos = GridToWorld(targetUnit.GridPosition, isMyPlayer);
             newUnit.GetComponent<UnitMovement>().StartMove(targetWorldPos, 20f);
             
             targetGroup.units.Add(newUnit);
@@ -290,9 +291,17 @@ public class UnitManager : Singleton<UnitManager>
         }
         else
         {
-            unitGroups[unit.GridPosition.x, unit.GridPosition.y].units.Add(newUnit);
+            Debug.Log("UpgradeUnit: Add Unit");
+            unitGroups[originalPos.x, originalPos.y].units.Add(newUnit);
         }
-        unitGroups[unit.GridPosition.x, unit.GridPosition.y].OnUnitChanged?.Invoke(unitGroups[unit.GridPosition.x, unit.GridPosition.y]);
+        unitGroups[originalPos.x, originalPos.y].OnUnitChanged?.Invoke(unitGroups[originalPos.x, originalPos.y]);
+    }
+
+    public void UpgradeUnit(Vector2Int pos, bool isMyPlayer = false)
+    {
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        UnitGroup unitGroup = unitGroups[pos.x, pos.y];
+        UpgradeUnit(unitGroup.units[0], isMyPlayer);
     }
 
     public void UpgradeUnitMythic(UnitTypeEnum mythicUnit, bool isMyPlayer = true)
@@ -475,6 +484,21 @@ public class UnitManager : Singleton<UnitManager>
         return Grade.Epic;
     }
     
+    public Vector2Int GetCanUpgradePoition(bool isMyPlayer = true)
+    {
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (unitGroups[x, y].units.Count < Statics.InitialGameDataDic["MaxUnitGather"]) continue;
+                if (unitGroups[x, y].units[0].Grade < Grade.Epic) return new Vector2Int(x, y);
+            }
+        }
+
+        return new Vector2Int(-1, -1);
+    }
+    
     #endregion
     
     #region Unit Spawn System
@@ -568,18 +592,26 @@ public class UnitManager : Singleton<UnitManager>
         return WorldToGrid(worldPos);
     }
     
-    public void SelectPosition(Vector2Int gridPosition)
+    public void SelectPosition(Vector2Int gridPosition, bool isMyPlayer = true)
     {
-        Debug.Log("Select Position Called");
-        List<Unit> units = lowerUnitGroups[gridPosition.x, gridPosition.y].units;
+        UnitGroup[,] unitGroups = isMyPlayer ? lowerUnitGroups : upperUnitGroups;
+        List<Unit> units = unitGroups[gridPosition.x, gridPosition.y].units;
         if (units.Count > 0)
         {
             UIManager.Instance.ShowUnitInfo(units[0], units.Count);
             Unit lastUnit = units[units.Count - 1];
             if (lastUnit == null) return;
+
+            //사거리 표시
+            lastUnit.ToggleDrawRange(true);
+            var rangeGizmo = lastUnit.GetRangeGizmo();
+            UIManager.Instance.PushGUIQueue(rangeGizmo);
+            
             //신화 유닛은 합성, 판매 불가
             if (lastUnit.Grade >= Grade.Mythic) return;
-            lastUnit.ToggleGUI(true, units.Count);
+            
+            //GUI 표시
+            if (isMyPlayer) lastUnit.ToggleGUI(true, units.Count);
         }
     }
 

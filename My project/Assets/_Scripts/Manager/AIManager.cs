@@ -64,6 +64,24 @@ public class AIManager : Singleton<AIManager>
         //전체 유닛이 신화가 아니라면
         if (!IsAllMythic())
         {
+            //신화 소환이 가능하다면
+            foreach (var mythicUnitEnum in Statics.MythicUnitEnumList)
+            {
+                int process = UnitManager.Instance.GetProcess(mythicUnitEnum, isMyPlayer: false);
+                Debug.Log($"{mythicUnitEnum}: " + process);
+                if (process < 100) continue;
+                UnitManager.Instance.UpgradeUnitMythic(mythicUnitEnum, isMyPlayer: false);
+                return;
+            }
+            
+            //업그레이드 가능한 유닛이 있다면
+            var canUpgradePosition = UnitManager.Instance.GetCanUpgradePoition(isMyPlayer: false);
+            if (canUpgradePosition.x != -1)
+            {
+                UnitManager.Instance.UpgradeUnit(canUpgradePosition, isMyPlayer: false);
+                return;
+            }
+
             //돈이 충분하다면
             if (gold >= requiredGold)
             {
