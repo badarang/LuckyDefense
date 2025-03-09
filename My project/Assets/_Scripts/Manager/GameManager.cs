@@ -29,10 +29,13 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
-            CurrentState = GameState.InGame; 
-            OnGameStart?.Invoke();
+            if (CurrentState == GameState.Lobby)
+            {
+                CurrentState = GameState.InGame; 
+                OnGameStart?.Invoke();
+            }
         }
     }
     
