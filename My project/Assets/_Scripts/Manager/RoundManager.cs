@@ -73,7 +73,6 @@ public class RoundManager : Singleton<RoundManager>
             yield break;
         }
         
-        int quotient = currentRound / 10; // 적들이 강해지는 정도
         Round currentRoundData = rounds[(currentRound - 1) % 10];
         float roundTime = currentRoundData.roundTime;
         StartCoroutine(WaveDisplayPanelCO());
@@ -109,7 +108,7 @@ public class RoundManager : Singleton<RoundManager>
         enemy.transform.parent = enemySpawnGroup.transform;
         enemy.SetActive(true);
 
-        var hpMultiplier = ((int)currentRound + 1) * (currentRound / 10 + 1);
+        var hpMultiplier = (currentRound + 1) * (int)Mathf.Pow((currentRound / 10 + 1), 2);
         enemy.GetComponent<Enemy>().SetHpMultiplier(hpMultiplier);
 
         var defenseRatio = (float)currentRound * 2 / 100;
